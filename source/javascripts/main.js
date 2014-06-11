@@ -47,5 +47,5 @@ $(document).ready(function(){
 $(window).load(function(){
 	$('.spinner').fadeOut('slow');
 	$('.preloader').delay(350).fadeOut('slow');
-	$('.preloader1').delay(150).fadeOut('slow');
+	$('.preloader1').delay(50).fadeOut('slow');
 });
