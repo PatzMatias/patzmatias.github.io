@@ -231,7 +231,6 @@ article {
     border-radius: 5px;
     background: #fff url('/images/noise.png') top left !important;
     padding: 40px;
-    padding-top: 100px;
     border: 1px solid #ccc;
     &:before{
     position: absolute;
@@ -665,7 +664,7 @@ a:not(.home-icon){
 
 
 b, strong{
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .preloader{
   position: fixed;

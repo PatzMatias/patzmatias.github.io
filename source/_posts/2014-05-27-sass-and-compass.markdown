@@ -172,25 +172,25 @@ To create a partial file its name must be prefixed with an underscore `_` like `
 While SASS enhances the coding experience for CSS,  **Compass** eases the creation of the projects folder that is SASS ready and the use of SASS terminal commands. Here is some example:
 
 SASS terminal commands:
-```
-sass input.scss output.css //SASS command for producing a CSS style sheet from the SCSS file
 
-sass --watch input.scss:output.css //Command for producing a CSS style sheet from the SCSS file and                                                    watch it for changes for reproduction
+    sass input.scss output.css //SASS command for producing a CSS style sheet from the SCSS file
 
-sass --watch app/sass:public/stylesheets //Command for watching an entire directory for changes in SCSS                                                         files and and automatic CSS file production
-```
+    sass --watch input.scss:output.css //Command for producing a CSS style sheet from the SCSS file and                                                    watch it for changes for reproduction
+
+    sass --watch app/sass:public/stylesheets //Command for watching an entire directory for changes in SCSS                                                         files and and automatic CSS file production
+
 
 Compass terminal commands:
-```
-compass compile //to convert SCSS files to CSS style sheets
 
-compass watch // to watch the entire directory of SASS and automatic CSS style sheet production
+    compass compile //to convert SCSS files to CSS style sheets
 
-compass create projectname or /path/and/projectname/ // to create a project folder that is SASS ready
+    compass watch // to watch the entire directory of SASS and automatic CSS style sheet production
 
-compass validate //Compass is also capable of validating the CSS style sheets
-```
+    compass create projectname or /path/and/projectname/ // to create a project folder that is SASS ready
+
+    compass validate //Compass is also capable of validating the CSS style sheets
+
 
 Compass made SCSS to CSS file conversion easier by making the command much simpler. Compass also has its core utilities that can help the user to layout and style his website. 
 
-That's all for now! I'll be doing a post about Bootstrap next time so keep posted. Thanks for reading :)
+That's all for now! I'll be doing a post about Bootstrap next time so keep posted. Thanks for reading. :)
