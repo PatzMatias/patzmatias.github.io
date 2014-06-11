@@ -17,3 +17,5 @@ fonts_dir = "source/fonts"
 
 line_comments = false
 output_style = :compressed
+
+require "animation"

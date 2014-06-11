@@ -1,0 +1,81 @@
+---
+layout: default
+---
+<div class="preloader">
+  <div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+  </div>
+</div>
+<div class="home-page">
+  <div class="home-landing-area" data-start="background-position: 50% -100px;" data-90p="background-position: 50% -300px;">
+    <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2">
+        <h1 class="site-title">{{site.title}}</h1>
+        <p class="site-subtitle">{{site.subtitle}}</p>
+      </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="home-field">
+    <div class="home-landing her-row">
+      <div class="container">
+        <div class="row">
+          {% include custom/home_landing_row.html %}
+        </div>
+      </div>
+    </div>
+
+    <div class="article-list" id="blog">
+      <div class="container-fluid">
+        {% for post in paginator.posts %}
+          {% assign content = post.content %}
+          <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+              {% include article_listing.html %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+<div class="paginate">
+  <div class="container">
+    <div class="row">
+        {% if paginator.total_pages > 1 %}
+          <div class="col-md-offset-2 col-md-8">
+            <div class="page-num">
+            {% if paginator.previous_page %}
+              <a class="prev" href="{{paginator.previous_page}}#blog"><i class="fa fa-chevron-circle-left"></i> Prev</a>
+            {% endif %}
+            {% for page in (1..paginator.total_pages) %}
+              {% capture url %}/{{site.pagination_dir}}/page/{{page}}{% endcapture %}
+              {% if page == 1 %}
+                {% assign url = "/" %}
+              {% endif %}
+              {% if page != paginator.page %}
+                <a href="{{url}}#blog">{{page}}</a>
+              {% else %}
+                <span>{{page}}</span>
+              {% endif %}
+            {% endfor %}
+            {% if paginator.next_page %}
+              <a class="next" href="{{paginator.next_page}}#blog">Next <i class="fa fa-chevron-circle-right"></i></a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="archive-link">
+      <h3><a href="/posts/">All Posts</a></h3>
+    </div>
+  </div>
+</div>
+

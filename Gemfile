@@ -9,12 +9,14 @@ group :development do
   gem 'haml', '~> 3.1.7'
   gem 'compass', '~> 0.12.2'
   gem 'sass', '~> 3.2'
-  gem 'sass-globbing', '~> 1.0.0'
+  gem 'sass-globbing', '~> 1.1.0'
   gem 'rubypants', '~> 0.2.0'
   gem 'rb-fsevent', '~> 0.9'
   gem 'stringex', '~> 1.4.0'
   gem 'liquid', '~> 2.3.0'
   gem 'directory_watcher', '1.4.1'
+  gem 'coderay', '1.1.0'
+  gem 'animation', '~> 0.1.alpha.3'
 end
 
 gem 'sinatra', '~> 1.4.2'

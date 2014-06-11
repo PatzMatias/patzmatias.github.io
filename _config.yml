@@ -2,12 +2,12 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://PatzMatias.github.io
+title: Patrick A. Matias
+subtitle: learn. create. share.
+author: Patrick A. Matias
 simple_search: https://www.google.com/search
-description:
+description: Hi! I am Patrick, 24 years old, a fresh IT graduate from the Philippines. I'm interested in Web and App Development, Multimedia Arts and Photography.
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -19,7 +19,7 @@ date_format: "ordinal"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email:
+email: patzmatias@gmail.com
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -39,12 +39,13 @@ rdiscount:
     - autolink
     - footnotes
     - smart
+
 pygments: false # default python pygments have been replaced by pygments.rb
 
-paginate: 10          # Posts per page on the blog index
+paginate: 3          # Posts per page on the blog index
 pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
-recent_posts: 5       # Posts in the sidebar Recent Posts section
-excerpt_link: "Read on &rarr;"  # "Continue reading" link text at the bottom of excerpted articles
+recent_posts: 3       # Posts in the sidebar Recent Posts section
+excerpt_link: "Read on <i class='fa fa-angle-double-right'></i> "#"Continue reading" link text at the bottom of excerpted articles
 
 titlecase: true       # Converts page and post titles to titlecase
 
@@ -63,22 +64,22 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Github repositories
-github_user:
-github_repo_count: 0
+github_user: PatzMatias
+github_repo_count: 3
 github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
 twitter_user:
-twitter_tweet_button: true
+twitter_tweet_button: false
 
 # Google +1
 google_plus_one: false
-google_plus_one_size: medium
+google_plus_one_size: extra-large
 
 # Google Plus Profile
 # Hidden: No visible button, just add author information to search results
-googleplus_user:
+googleplus_user: 117521965885043360258
 googleplus_hidden: false
 
 # Pinboard
@@ -97,4 +98,4 @@ disqus_show_comment_count: false
 google_analytics_tracking_id:
 
 # Facebook Like
-facebook_like: false
+facebook_like: true
