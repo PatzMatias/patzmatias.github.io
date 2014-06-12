@@ -745,3 +745,67 @@ b, strong{
   background-color: #ffffff;
   z-index: 9999;
 }
+
+#page{
+  .page-content{
+    font-family: 'Open Sans', sans-serif;
+    padding-top: 15px;
+    padding-bottom: 40px;
+    .paper{
+      border-radius: 5px;
+      background: #fff url('/images/noise.png') top left !important;
+      padding: 40px;
+      border: 1px solid #ccc;
+      &:before{
+      position: absolute;
+      z-index: -1;
+      content: "";
+      -moz-border-radius: 100px / 10px;
+      -webkit-border-radius: 100px / 10px;
+      border-radius: 100px / 10px;
+      -moz-box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      left: 10px;
+      right: 10px;
+      top: 50%;
+      bottom: 0;      
+      }
+    }
+  }
+  .title{
+      font-family: 'Kaushan Script', cursive;
+      font-weight: 400;
+      font-size: 45px;
+      text-align: center;
+  }
+  .entry-title{
+    margin: 0px auto;
+    text-transform: uppercase;
+    letter-spacing: 0.7rem;
+    background: transparent;
+    text-align: center;
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 30px;
+    margin-top: 14px;
+  }
+  #blog-archives{
+    .year-header{
+      font-weight: 400;
+      font-size: 45px;
+      /* letter-spacing: 1rem; */
+      color: #E2E2E2;
+      text-shadow: -1px -1px 0px #9E9E9E;
+    }
+    .archive-post{
+      h1{
+        font-family: 'Lobster', 'Georgia', sans-serif;
+        font-weight: 400;
+        font-size: 30px;
+      }
+    }
+  }
+
+}

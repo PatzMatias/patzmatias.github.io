@@ -1,16 +1,30 @@
 ---
 layout: default
 ---
-
 <div>
-<article role="article">
+<article role="article" id="page">
   {% if page.title %}
-  <header>
-    <h1 class="entry-title">{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
-    {% if page.date %}<p class="meta">{% include post/date.html %}{{ time }}</p>{% endif %}
-  </header>
+  <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-6 col-md-offset-3">
+        <h3 class="title">Patrick A. Matias</h3>
+        <header>
+          <h1 class="entry-title">{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
+          {% if page.date %}<p class="meta">{% include post/date.html %}{{ time }}</p>{% endif %}
+        </header>
+      </div>
+    </div>
+  </div>
   {% endif %}
+  <article role="article" class="page-content">
+  <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-6 col-md-offset-3 paper">
   {{ content }}
+        </div>
+    </div>
+  </div>
+   <article role="article">
   {% unless page.footer == false %}
     <footer>
       {% if page.date or page.author %}<p class="meta">
