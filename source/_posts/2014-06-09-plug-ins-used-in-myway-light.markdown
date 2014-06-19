@@ -72,7 +72,7 @@ I used two features of Skrollr which is the **Parallax** and **Color Transforms*
 {% jsfiddle bXT2y result,html,css,js light %}
 
 I used Color Transforms on the Navigation Bar, and Parallax on the intro background and the section headers.
----
+___
 ##Bootstrap 3 Lightbox (Ekko-lightbox)##
 
 Bootstrap 3 Lightbox is a lightbox module built around Bootstrap's modal plug-in for viewing images, YouTube videos and galleries. For me, the best thing about this plug-in is that it's style is CSS and fully customizable. This plug is used in this part of the website, [MyWay Light Gallery](http://patzmatias.github.io/myway-light/#gallery-top 'MyWay Light Gallery').
