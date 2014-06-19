@@ -7,9 +7,25 @@
       	 <script src="{{root_url}}/javascripts/SmoothScroll.js"></script>
          <script src="{{root_url}}/javascripts/skrollr.min.js"></script>
          <script type="text/javascript">
-	    	var s = skrollr.init({
-	    	forceHeight: false});
-		</script>
+  	    	var s = skrollr.init({
+  	    	forceHeight: false});
+		    </script>
+         <script type="text/javascript">
+          if (!window.jXHR){
+              var jxhr = document.createElement('script');
+              jxhr.type = 'text/javascript';
+              jxhr.src = '{{ root_url}}/javascripts/libs/jXHR.js';
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(jxhr, s);
+          }
+
+          github.showRepos({
+              user: '{{site.github_user}}',
+              count: {{site.github_repo_count}},
+              skip_forks: {{site.github_skip_forks}},
+              target: '#gh_repos'
+          });
+    </script>
     </div>
   </div>
 </footer>
