@@ -35,17 +35,9 @@ The grid system is a powerful toot for creating a responsive-ready web design. B
     
     (Media queries determine the viewport size of a device or a browser and loads the CSS properties contained in it.)
     
-To implement the grid system, the user must use Bootstrap's class prefixes for the containers. his is how would the HTML code for its implementation would look like:
+To implement the grid system, the user must use Bootstrap's class prefixes for the containers. This is how would the HTML code for its implementation would look like and you can check the demo to see how it works:
 
-```
-  <div class="container-fluid">
-      <div class="row">
-          <div class="col-lg-3 col-sm-3"></div>
-          <div class="col-lg-6 col-md-3"></div>
-          <div class="col-lg-3 col-md-3"></div>
-      </div>
-  </div>
-```
+{% jsfiddle g5PYn html,result %}
 
 The class "container-fluid" is required by the "row" class for proper alignment and padding. The class "row" is used to group the columns which must be the immediate children of class "row". The maximum number of columns that each "row" can contain is **12**. The class prefix for columns are written this way `col-screensize-columnsize`. There are four available screen sizes:
 
@@ -55,90 +47,26 @@ The class "container-fluid" is required by the "row" class for proper alignment 
       ** Medium = 'm'
       ** Large = 'lg'
 
-
-{% img img-responsive /images/gridsystem.png 'Bootstrap Grid System Sample' %}
-
 The column size can be any number between 1 to 12. If the "row" meets the maximum number of columns, the next column will be appended to the next row.  That's mostly it for the grid system.
 ___
 ###**Navbar**###
 
 Bootstrap provides an easy set-up for a navigation bar that is customizable and also responsive. Let's take a look on their example from the website:
 
-{% img img-responsive /images/navbar.png 'Bootstrap Navbar Sample' %}
+{%jsfiddle 8pzKG result,html%}
 
-```
-  <!--Sample's Code-->
-
-  <nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Brand</a>
-      </div>
-
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Link</a></li>
-          <li><a href="#">Link</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Separated link</a></li>
-              <li class="divider"></li>
-              <li><a href="#">One more separated link</a></li>
-            </ul>
-          </li>
-        </ul>
-        <form class="navbar-form navbar-left" role="search">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
-          </div>
-          <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Link</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Separated link</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-```
 You can see from our example that the user can add a lot of things in the Navbar. The site title is there `<a class="navbar-brand" href="#">Brand</a>`, a dropdown-menu, and a search-box form. In addition, the user can quickly assign your links to the left or right side of the bar just by adding the class `navbar-left` or `navbar-right`. Also, the bar can be a regular static sidebar by using the `navbar-default` class or fix it to top by adding the class `navbar-fixed-top`. The `navbar-header` contains the button with the class `navbar-toggle`, these button shows-up when the viewport reaches the size of a mobile-display presenting a mobile-friendly menu.
 ___
 ###**Carousel**###
 
-Bootstrap's built-in carousel allows user to easily add a carousel without writing long-lines of JavaScript codes. Bootstrap uses jQuery on its JavaScript components to make it a plug-in. 
+Bootstrap's built-in carousel allows user to easily add a carousel without writing long-lines of JavaScript codes. Bootstrap uses jQuery on its JavaScript components to make it a plug-in. In our example below you can see all of the class prefixes that can be used for the caarousel.
 
-{% img img-responsive /images/carousel.png 'Bootstrap Carousel Sample' %}
-```
   <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-
     <ol class="carousel-indicators">
       <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
       <li data-target="#carousel-example-generic" data-slide-to="1"></li>
       <li data-target="#carousel-example-generic" data-slide-to="2"></li>
     </ol>
-
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
@@ -149,7 +77,6 @@ Bootstrap's built-in carousel allows user to easily add a carousel without writi
       </div>
       ...
     </div>
-
     <!-- Controls -->
     <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left"></span>
@@ -158,19 +85,25 @@ Bootstrap's built-in carousel allows user to easily add a carousel without writi
       <span class="glyphicon glyphicon-chevron-right"></span>
     </a>
   </div>
+
+After that code you should call the plug-in and use the id as selector, in this case the id is `carousel-example-generic`:
+
+```js
+  $('#carousel-example-generic').carousel({
+  interval: 2000
+  pause: hover
+  });
 ```
+
+See it in this demo:
+
+{%jsfiddle jf3sU result,html,js,css default 400px %}
+
 Bootstrap's carousel plug-in allows the user to optionally add indicators and captions. The user also doesn't need to code on Javascript for the controls.
 ___
 ###**Buttons**###
 
-Adding style to buttons is a lot easier with Bootstrap, just use their class-prefixes and it would automatically add a style preset.
-
-```
-  <button type="button" class="btn btn-primary" data-toggle="button">
-    Single toggle
-  </button>
-```
-Bootstrap has a total of 6 preset styles. Just add the following class prefixes to use them:
+Adding style to buttons is a lot easier with Bootstrap, just use their class-prefixes and it would automatically add a style preset. Bootstrap has a total of 6 preset styles. Just add the following class prefixes to use them:
 
 *  `btn-default`
 *  `btn-primary`
@@ -179,7 +112,9 @@ Bootstrap has a total of 6 preset styles. Just add the following class prefixes 
 *  `btn-success`
 *  `btn-danger`
 
-{% img img-responsive /images/buttonpresets.png 'Bootstrap Navbar Sample' %}
+Checkout this demo:
+
+{% jsfiddle tZec7 result,html %}
 ___
 ###**Responsive Image Class**###
 
@@ -187,12 +122,16 @@ Bootstrap's responsive image class can be used by adding the class prefix `img-r
 
 ```
     .img-responsive{
-        width: 100%;
+        max-width: 100%;
         height: auto;
     }
 ```
 
-The image will always fit itself to the width of the container and still maintain its aspect ratio because its height is in auto.
+{%jsfiddle xXsQ7 result,html %}
+
+{%jsfiddle xXsQ7 result default 300px 50% %}
+
+The image will always fit itself to the width of the container and still maintain its aspect ratio because its height is in auto. You can try it out at this jsfiddle [demo](http://jsfiddle.net/xXsQ7) and resize the result container.
 
 These are just 6 of Bootstrap's components and you can see more at their website at [getbootstrap.com](http://getbootstrap.com "Bootstrap")
 

@@ -61,7 +61,7 @@ ___
 
 FontAwesome is not necessarily a plug-in but a CSS Framework that has a library of SVG Icon Fonts. Checkout my JSfiddle sample.
 
-{% jsfiddle d4qCS result,html,css,js light %}
+{% jsfiddle d4qCS result,html,css light %}
 
 The user only needs to include the class prefixes of the icon of their choice on HTML inline elements like `<i></i>` and `<span></span>`. They can have it spinning or customize it with CSS.
 ___

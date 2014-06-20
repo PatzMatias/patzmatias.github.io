@@ -121,7 +121,7 @@
           position: absolute;
           content: "";
           bottom: 50px;
-          left: 25px;
+          left: 24px;
           width: 50%;
           top: 70%;
           // max-width:300px;
@@ -141,7 +141,7 @@
           position: absolute;
           content: "";
           bottom: 46px;
-          left: 25px;
+          left: 24px;
           width: 50%;
           top: 70%;
           // max-width:300px;
@@ -440,7 +440,139 @@ body{
   height: 100%;
 }
 
-@media (min-width: 1360px){
+@media (min-width: 1610px){
+.home-landing-area{
+  position: relative;
+  color: #fff;
+  background-attachment: fixed;
+  background-clip: border-box;
+  background-color: #323232;
+  background: url("/images/background.jpg") repeat center center;
+  background-origin: border-box;
+  background-size: cover;
+  margin: 0px;
+  text-align: center;
+      .site-title{
+          width: 100%;
+          margin-top: 35%;
+          font-family: 'Kaushan Script', cursive;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 100px;
+          line-height: 1;
+          margin-bottom: 8px;
+          outline: 0;
+          word-break: break-word;
+          text-shadow: 0px 3px 5px rgba(0,0,0,1);
+      }
+      .site-subtitle{
+          width: 100%;
+          padding: 10px;
+          font-family: 'Open Sans', sans-serif;
+          text-transform: uppercase;
+          letter-spacing: 1rem;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 22px;
+          text-shadow: 0px 3px 5px rgba(0,0,0,1);
+      }
+}
+  .archive-link{
+    background: rgba(250,250,250, 1) url('/images/noise.png') top left;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 40px;
+      h3{
+        margin-top: 20px;
+        margin: 0 auto;
+        font-family: 'Open Sans', sans-serif;
+        font-size:18px;
+        font-weight: 300;
+        background-color: #0099ff;
+        padding: 10px;
+        width: 7%;
+        border-radius: 10px;
+        text-transform: uppercase;
+        a{
+          text-decoration: none;
+          color: #fff;
+          &:hover{
+            color: #1d1d1d;
+          }
+        }
+      }
+  }
+}
+
+
+
+@media (max-width: 1600px){
+.home-landing-area{
+  position: relative;
+  color: #fff;
+  background-attachment: fixed;
+  background-clip: border-box;
+  background-color: #323232;
+  background: url("/images/background.jpg") repeat center center;
+  background-origin: border-box;
+  background-size: cover;
+  margin: 0px;
+  text-align: center;
+      .site-title{
+          width: 100%;
+          margin-top: 40%;
+          font-family: 'Kaushan Script', cursive;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 100px;
+          line-height: 1;
+          margin-bottom: 8px;
+          outline: 0;
+          word-break: break-word;
+          text-shadow: 0px 3px 5px rgba(0,0,0,1);
+      }
+      .site-subtitle{
+          width: 100%;
+          padding: 10px;
+          font-family: 'Open Sans', sans-serif;
+          text-transform: uppercase;
+          letter-spacing: 1rem;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 22px;
+          text-shadow: 0px 3px 5px rgba(0,0,0,1);
+      }
+}
+  .archive-link{
+    background: rgba(250,250,250, 1) url('/images/noise.png') top left;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 40px;
+      h3{
+        margin-top: 20px;
+        margin: 0 auto;
+        font-family: 'Open Sans', sans-serif;
+        font-size:18px;
+        font-weight: 300;
+        background-color: #0099ff;
+        padding: 10px;
+        width: 7%;
+        border-radius: 10px;
+        text-transform: uppercase;
+        a{
+          text-decoration: none;
+          color: #fff;
+          &:hover{
+            color: #1d1d1d;
+          }
+        }
+      }
+  }
+}
+
+
+
+@media (max-width: 1360px){
 .home-landing-area{
   position: relative;
   color: #fff;
