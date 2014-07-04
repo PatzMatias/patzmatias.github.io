@@ -8,23 +8,5 @@
   <ul id="gh_repos">
     <li class="loading"><span>Status updating</span> &nbsp;<i class="fa fa-spinner fa-spin"></i></li>
   </ul>
-    <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '{{ root_url}}/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: '{{site.github_user}}',
-            count: {{site.github_repo_count}},
-            skip_forks: {{site.github_skip_forks}},
-            target: '#gh_repos'
-        });
-    });
-  </script>
 </section>
 {% endif %}

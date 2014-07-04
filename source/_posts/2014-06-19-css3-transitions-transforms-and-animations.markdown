@@ -16,7 +16,7 @@ I'll begin with MyWay Light's loading screen. Checkout this demo:
 
 {%jsfiddle 2B5bD result,html,css %}
 
-The object'=s above are using CSS3's `animation` property, `@keyframes` rule, and `transform` property. 
+The object's above are using CSS3's `animation` property, `@keyframes` rule, and `transform` property. 
 
 
     transform: translate(X,Y); /*positions an object in the container depending on the values of the X-axis and Y-axis. This was used on the container of the circles. (See .preloader .spinner selector on the CSS tab of the demo above)*/
@@ -24,20 +24,19 @@ The object'=s above are using CSS3's `animation` property, `@keyframes` rule, an
     animation: bouncedelay 1.4s infinite ease-in-out; 
     /* This is the overall effect used in the circles. Here it is the description of the attributes as followed: 
     (animation: animation-name duration iteration easing;)
-    - bouncedelay is a keyframe animation-name/property declared by the user. It works pretty much like a method from a programming language. It contains the properties for the animation.
-    */
-   
-   @keyframes animation-name {
-   /* You can use 'from' and 'to' for a simple task*/
+    - bouncedelay is a keyframe animation-name/property declared by the user. It works pretty much like a method from a programming language. It contains the properties for the animation.*/
+
+    @keyframes animation-name {
+    /* You can use 'from' and 'to' for a simple task*/
     from{... } //properties at the beginning of the animation's duration
     to{...} //properties in-between and to the end animation's duration
-    
+
     /* If you don't want to use 'from' and 'to' and you want more control over the animation use the one below*/
     
     0%{...} //properties at 0% of the animation's duration
     50%{...} //properties at 50% of the animation's durationduration
     100%{...} //properties at 100% of the animation's duration
-    
+
     /*You can specify properties for any amount between 0% and 100% depending on what part of the animation you would like for it to take effect.*/
 	}
 
