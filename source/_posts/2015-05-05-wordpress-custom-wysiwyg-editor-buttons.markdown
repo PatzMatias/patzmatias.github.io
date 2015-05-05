@@ -56,6 +56,7 @@ If you want to learn more about button you can checkout these resources:
 
  - [WordPress 3.9+ TinyMCE 4 Tweaks: Adding Styles, Buttons, Fonts, Drop-downs & Pop-Ups](http://www.wpexplorer.com/wordpress-tinymce-tweaks/)
  - [Twist That Code: How to Add Custom Buttons for WordPress TinyMCE Editor](http://www.1stwebdesigner.com/wordpress-tinymce-editor/)
+ - [Wordpress Codex: TinyMCE Custom Buttons](https://codex.wordpress.org/TinyMCE_Custom_Buttons)
 
 Thanks for reading! :)
 
