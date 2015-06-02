@@ -8,6 +8,8 @@ categories:
 
 This is a continuation of the post about **[Wordpress Shortcodes](http://patzmatias.github.io/blog/2015/05/01/wordpress-shortcodes/)** and this time we're going to add a button for the shortcode and other purposes like a set of html tags, or a preformatted text.
 
+<!--more-->
+
 1. First, we create a script file that contains the label, an optional custom icon and the button functionality that adds the content. Store this file in your theme folder.
 	
 	    (function() {

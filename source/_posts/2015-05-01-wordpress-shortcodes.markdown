@@ -8,6 +8,8 @@ categories: [Wordpress, Web Development]
 
 This feature has been integrated to WordPress in version 2.5.  **WordPress Shortcodes** are like customized html tags recognized by WordPress' system. Shortcode means shortcut, it can create objects, or embed files which would normally require a lot of code in just one line or tag. WordPress has built-in shortcode tags for its internal functions for gallery, embedded videos and audios, and more. 
 
+<!--more-->
+
 (*For a list of built-in shortcodes just visit this link: https://en.support.wordpress.com/shortcodes/)*
 
 ### **Custom Shortcodes**
