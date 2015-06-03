@@ -22,11 +22,11 @@ To learn Ruby code, I went to codecademy and used their free learning course for
 
  Here is what I've learned.
 
-Printing a string.
+**Printing a string.**
 
     puts "Hello World!"
 
-Some built-in methods of Ruby
+**Some built-in methods of Ruby**
 
     -199.abs                                # => 199 / Absolute Values
     "Hello World".length                    # => 11 / Getting string length
@@ -37,9 +37,9 @@ Some built-in methods of Ruby
     "Hello World!".split("")                # => ["Hello","World"] / Splits the string from the given character
     ["Hello","World"].join                  # => "HelloWorld" / Combines the string of arrays
 
-Control Structure
+**Control Structure**
 
-    Like other programming languages Ruby has the if, else, elsif, case, and, short-if expression but Ruby has a control structure called `unless`, which works like an if statement but will only execute if the expression is false. Ruby also has a reverse `if` and `unless` syntax.
+Like other programming languages Ruby has the if, else, elsif, case, and, short-if expression but Ruby has a control structure called `unless`, which works like an if statement but will only execute if the expression is false. Ruby also has a reverse `if` and `unless` syntax.
 
 
     # Unless
@@ -59,7 +59,7 @@ Control Structure
     
     puts "Oi!" unless a > 5
 
-Looping
+**Looping**
 
 Ruby also uses `while` to loop but it also has an inverted `while` called 'until' which executes until the expression evaluates to false. `while` and `until` can also be written in reverse syntax. Ruby also has a simple loop method called `times` which repeats itself based on the number defined on call.
 
@@ -89,7 +89,7 @@ Ruby also uses `while` to loop but it also has an inverted `while` called 'until
     end
 
 
-Iterators
+**Iterators**
 
 Ruby iterates arrays by using the `each` iterator. `each` simple loops to all of the data in an array and execute the block of statements inside it.
 
@@ -128,7 +128,7 @@ Another iterator is called `collect`. This iterator returns all the elements of 
     # 25
 
 
-Hash
+**Hash**
     
 A hash or an associative array is a dictionary-like collection of unique keys and their value.
 
@@ -150,11 +150,11 @@ A hash or an associative array is a dictionary-like collection of unique keys an
     hash.delete :stone                            # deletes the pair :stone => 'hard' and returns "hard"
     hash.delete_if {|key,value| value == 'soft'}   # deletes the pair :cotton => 'soft' and returns {}
 
-Block, Procs and Lambda
+**Block, Procs and Lambda**
 
 Blocks, Procs, and Lambda works similarly but have different behaviors. Look at the samples below.
 
-Blocks pertains to a block of codes inside or outside a method. Lets just use `collect` iterator as a simple example for blocks.
+**Blocks** pertains to a block of codes inside or outside a method. Lets just use `collect` iterator as a simple example for blocks.
 
     # Blocks
     array = [1, 2, 3, 4]
@@ -166,7 +166,7 @@ Blocks pertains to a block of codes inside or outside a method. Lets just use `c
 
     #if these code gets wrapped inside a method then everything written above will be a block.
 
-Procs are also known as procedures which means this blocks of codes are reusable.
+**Procs** are also known as procedures which means this blocks of codes are reusable.
 
     # Procs
     # This procs simply rounds off the array of floats
@@ -176,7 +176,7 @@ Procs are also known as procedures which means this blocks of codes are reusable
 
     ints = floats.collect(&round_down)
 
-Lambdas are identical to procs with some exception in a bit of syntax and behavior.
+**Lambdas** are identical to procs with some exception in a bit of syntax and behavior.
 
     # Lamda example
     def lambda_demo(a_lambda)
@@ -204,16 +204,15 @@ One difference between Lambdas and Procs behavior is that when Procs ends execut
     puts proc_sample # returns "I'm a proc."
     puts lambda_sample # returns "lambda_sample method finished."
 
-Classes
+**Classes**
 
-  Creating a class in Ruby always starts with the keyword class followed by the class name and terminate it with the keyword `end`. Ruby classes has four types of variables, a global variable, class variable, instance variable, and a local variable. Here is a snippet for an example.
+Creating a class in Ruby always starts with the keyword class followed by the class name and terminate it with the keyword `end`. Ruby classes has four types of variables, a global variable, class variable, instance variable, and a local variable. Here is a snippet for an example.
 
-  $global_var = "I'm a global variable. I always start with a ($) sign" # available all across classes and the program
+    $global_var = "I'm a global variable. I always start with a ($) sign" # available all across classes and the program
 
-  class MyClass
+    class MyClass
 
-   @@class_var = "I'm a class variable. I always start with two (@) symbols" # only available to the objects inside the class.
-
+    @@class_var = "I'm a class variable. I always start with two (@) symbols" # only available to the objects inside the class.
 
     def initialize
       @foo = 28 # Instance variable (Always starts with an @ symbol. Available across methods for any particular instance or object.
@@ -241,11 +240,11 @@ Classes
   instance.print_num
   puts instance.foo #=> 496
 
-####Conclusion
+####**Conclusion**
 
 That sums up all of what I've learned about Ruby. I've enjoyed coding with it when I did the Ruby course in codecademy. Although Ruby is not that easy to learn for beginners like me, I like how clean and simple Ruby's syntax look. Next time, I'll be studying how to create my own gems with Ruby.
 
-
+----------------------------------------------------------------
 ### **Rails**
 
 **Ruby on Rails** or just **Rails** is a web application framework gem. Rails was created in 2003 by David Heinemeier Hansson. Rails has an MVC (Model-View-Controller) architecture. Here are some of parts of the Rails that programmers loved.
