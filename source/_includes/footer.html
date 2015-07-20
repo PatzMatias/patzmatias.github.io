@@ -7,8 +7,14 @@
       	 <script src="{{root_url}}/javascripts/SmoothScroll.js"></script>
          <script src="{{root_url}}/javascripts/skrollr.min.js"></script>
          <script type="text/javascript">
-  	    	var s = skrollr.init({
-  	    	forceHeight: false});
+          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+          var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+          console.log(w);
+
+          if(w>640)
+  	    	  var s = skrollr.init({forceHeight: false});
+          
+
 		    </script>
          <script type="text/javascript">
           if (!window.jXHR){

@@ -61,4 +61,4 @@ That's most of what you'll be doing with a AngularJS + Wordpress app. Right now 
 
 ###**Summary**
 
-AngularJS + Wordpress really works great together and creating the app is almost similar to working with an AngularJS app with a regular API. There may be a better solution for an API but Wordpress is good if you need a free API that you can modify yourself and it starting point for beginners on understanding how APIs work if you are used to being a Wordpress Developer.
+AngularJS + Wordpress really works great together and creating the app is almost similar to working with an AngularJS app with a regular API. There may be a better solution for an API but Wordpress is good if you need a free API that you can modify yourself and its a good starting point for beginners on understanding how APIs work if you are used to being a Wordpress Developer.
