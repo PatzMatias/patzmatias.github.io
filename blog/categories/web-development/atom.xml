@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Web Development | Patrick A. Matias]]></title>
+  <link href="http://PatzMatias.github.io/blog/categories/web-development/atom.xml" rel="self"/>
+  <link href="http://PatzMatias.github.io/"/>
+  <updated>2016-05-30T17:49:08+08:00</updated>
+  <id>http://PatzMatias.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick A. Matias]]></name>
+    <email><![CDATA[patzmatias@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Wordpress Shortcodes]]></title>
+    <link href="http://PatzMatias.github.io/blog/2015/05/01/wordpress-shortcodes/"/>
+    <updated>2015-05-01T10:49:11+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2015/05/01/wordpress-shortcodes</id>
+    <content type="html"><![CDATA[<p>This feature has been integrated to WordPress in version 2.5.  <strong>WordPress Shortcodes</strong> are like customized html tags recognized by WordPress' system. Shortcode means shortcut, it can create objects, or embed files which would normally require a lot of code in just one line or tag. WordPress has built-in shortcode tags for its internal functions for gallery, embedded videos and audios, and more.</p>
+
+<!--more-->
+
+
+<p>(<em>For a list of built-in shortcodes just visit this link: <a href="https://en.support.wordpress.com/shortcodes/">https://en.support.wordpress.com/shortcodes/</a>)</em></p>
+
+<h3><strong>Custom Shortcodes</strong></h3>
+
+<p>WordPress allow users to create a custom shortcode which opens of new options for entering content like controlling the layout of the content in the site, and pulling other custom contents or objects from the WYSIWYG Editor.</p>
+
+<h4><strong><em>Creating and Adding Shortcode to the WordPress System</em></strong></h4>
+
+<ol>
+<li>First, the <code>function(){}</code> for the shortcode must be created. This is where all the codes for the shortcode will be created. Here are some examples of how it can be created and used:</li>
+</ol>
+
+
+<h4><strong>Simple text:</strong></h4>
+
+<pre><code>// A simple shortcode that returns a text.
+    function shortcode_function( ) {
+        return '&lt;h1&gt;I am a shortcode.&lt;/h1&gt;';
+    }
+</code></pre>
+
+<h3><strong>Using <code>$atts</code> and <code>$content</code></strong></h3>
+
+<p><code>$atts</code> will allow the shortcode to have attributes similar to an html tag and <code>$content</code> contains the text between the shortcode tags.</p>
+
+<pre><code>// A shortcode that utilizes $atts and $content, to display text add a custom class for the tag and add a background-color
+function shortcode_function( $atts, $content ) {
+    extract(shortcode_atts(array(
+            'background_color'=&gt;'#000',
+            'custom_class'=&gt;'',
+            'title'=&gt;'',
+    ));
+    return '&lt;div class="'. $custom_class. '" style="background-color: ' . $background_color . ';"&gt;&lt;h1&gt;'.$title.'&lt;/h1&gt;&lt;p&gt;'.do_shortcode($content).'&lt;/p&gt;&lt;/div&gt;';
+}
+</code></pre>
+
+<h3><strong> Using <code>$tags</code> </strong></h3>
+
+<p><code>$tags</code> allows one shortcode function to be called in different tag names.</p>
+
+<pre><code>// A shortcode that utilizes $tag and other parameters,
+function shortcode_function( $atts, $content,$tag ) {
+    switch ($tag) {
+        case 'simple_text':
+            return '&lt;h1&gt;I am a shortcode.&lt;/h1&gt;';
+            break;
+        case 'custom_text_tags':
+            extract(shortcode_atts(array(
+                    'background_color'=&gt;'#000',
+                    'custom_class'=&gt;'',
+                    'title'=&gt;'',
+            ));
+        $display = '&lt;div class="'. $custom_class. '" style="background-color: ' . $background_color . ';"&gt;&lt;h1&gt;'.$title.'&lt;/h1&gt;&lt;p&gt;'.do_shortcode($content).'&lt;/p&gt;&lt;/div&gt;';
+        return display;
+            break;
+        default:
+            return '&lt;h1&gt;I am a shortcode.&lt;/h1&gt;';
+    }
+}
+</code></pre>
+
+<h3><strong>Pulling posts or a custom post type</strong></h3>
+
+<p>This is an actual code that I used for a project to pull posts from a custom post type and add it to a carousel.</p>
+
+<pre><code>function($atts, $content=null){
+     ob_start();
+       $args = array(
+        'posts_per_page' =&gt; -1,
+       'post_type' =&gt;'carousel_post_type',
+       'order'=&gt;'ASC'
+      );
+
+    $items = get_posts($args);
+    $count = count($items);
+      echo '&lt;div id="carousel" class="carousel slide" data-ride="carousel"&gt;';
+        echo '&lt;ol class="carousel-indicators"&gt;';
+        for($i = 0; $i&lt;$count; $i++) : 
+          $index = ($i==0)? 'active' : '';
+          echo '&lt;li data-target="#resources-carousel" data-slide-to="' . $i . '" class="'. $index .'"&gt;&lt;/li&gt;';
+        endfor;
+        echo '&lt;div class="carousel-inner" role="listbox"&gt;';
+        foreach($resources as $key =&gt; $resource) :
+              $heading = get_field('heading',$resource-&gt;ID);
+              $link = get_field('resource_link',$resource-&gt;ID);
+              $content = $resource-&gt;post_content;
+              $key_index = ($key==0) ? 'active' : '';
+
+              echo '&lt;div class="item '.$key_index.'"&gt;';
+              echo '&lt;div class="resources"&gt;';
+                  echo '&lt;a href="'.$link.'"&gt;';
+                      echo '&lt;div class="res-heading"&gt;';
+                          echo '&lt;span class="fa fa-book fa-2x pull-left"&gt;&lt;/span&gt;';
+                          echo '&lt;h4 class="pull-left"&gt;'. $heading .'&lt;/h4&gt;';
+                          echo '&lt;/div&gt;'                         
+                      echo '&lt;div class="res-body"&gt;'.$content.'&lt;/div&gt;';
+                  echo '&lt;/a&gt;';
+               echo '&lt;/div&gt;';
+              echo '&lt;/div&gt;';
+        echo '&lt;/div&gt;';  
+      echo '&lt;/ol&gt;';
+      echo '&lt;/div&gt;';                
+    return ob_get_clean();
+}
+</code></pre>
+
+<ol>
+<li><p>The next step is to add the function to the WordPress.</p>
+
+<pre><code> add_shortcode('custom_shortcode_name','shortcode_function');
+</code></pre></li>
+</ol>
+
+
+<h3><strong>Using the Shortcode</strong></h3>
+
+<p>In the WYSIWYG Editor, we just need to enter the tag:</p>
+
+<pre><code>[custom_shortcode_name]
+</code></pre>
+
+<p>or if we utilized the <code>$tag</code> parameter we also just use it like the first example.</p>
+
+<pre><code>[simple_text]
+//or
+[custom_text_tags class="myclass" background_color="#000" title="My Shortcode"]My Shortcode content[/custom_text_tags]
+</code></pre>
+
+<p>That&rsquo;s all for shortcodes. Maybe you noticed that the shortcode gets longer if <code>$atts</code> is used. It can be solved by adding a custom button on the WYSIWYG editor and we will be exploring that on my next post. Keep on reading!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Plug-ins Used in MyWay Light]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/06/09/plug-ins-used-in-myway-light/"/>
+    <updated>2014-06-09T15:07:36+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/06/09/plug-ins-used-in-myway-light</id>
+    <content type="html"><![CDATA[<p>MyWay Light is one of the exercises I&rsquo;ve done recently, it is a one-page website theme for Wordpress that I&rsquo;ve tried to recreate as close as possible and to discover how its design and effects were executed. <!-- more --> If you want to see it go here > <a href="http://patzmatias.github.io/myway-light" title="MyWay Light Theme by Awerest">MyWay Light Demo</a>. On the process of reading its code I learned that it used these plug-ins:</p>
+
+<ul>
+<li><a href="https://gist.github.com/galambalazs/6477177/" title="gist.github.com/galambalazs/6477177/">SmoothScroll</a></li>
+<li><a href="http://fortawesome.github.io/Font-Awesome/" title="fortawesome.github.io/Font-Awesome/">Font-Awesome</a></li>
+<li><a href="https://github.com/Prinzhorn/skrollr" title="github.com/Prinzhorn/skrollr">Skrollr</a></li>
+<li><a href="https://github.com/ashleydw/lightbox" title="github.com/ashleydw/lightbox">Bootstrap 3 Lightbox (Ekko-lightbox)</a></li>
+<li><a href="https://github.com/marioestrada/jQuery-gMap" title="github.com/marioestrada/jQuery-gMap">jQuery gMap Plug-in</a></li>
+<li><a href="https://github.com/ENFOS/FlowupLabels.js" title="github.com/ENFOS/FlowupLabels.js">FlowUpLabels</a></li>
+<li><a href="http://malsup.com/jquery/form/" title="malsup.com/jquery/form/">jQuery Form Plug-in</a></li>
+</ul>
+
+
+<p>Reading unto each documentation of the plug-ins here is what I&rsquo;ve learned.</p>
+
+<hr />
+
+<h3><strong>SmoothScroll</strong></h3>
+
+<p>Looking into MyWay Light Demo you&rsquo;ll notice how smooth it moves when you use the mousewheel to scroll up and down the website. This plug-in&rsquo;s event is binded into the mousewheel, it also supports the keyboard&rsquo;s arrow keys, navigation keys <code>PageUp</code> and <code>PageDown</code> and touchpad. What it does is it adds an animation and friction into the mouse scroll. SmoothScroll&rsquo;s settings is customizable, so you can set how smooth you would want it to scroll, in MyWay Light&rsquo;s case this is the settings.</p>
+
+<p>```javascript
+(function(){</p>
+
+<p>// Scroll Variables (tweakable)
+var defaultOptions = {</p>
+
+<pre><code>// Scrolling Core
+frameRate        : 150, // [Hz]
+animationTime    : 700, // [px]
+stepSize         : 40, // [px]
+
+// Pulse (less tweakable)
+// ratio of "tail" to "acceleration"
+pulseAlgorithm   : true,
+pulseScale       : 8,
+pulseNormalize   : 1,
+
+// Acceleration
+accelerationDelta : 20,  // 20
+accelerationMax   : 1,   // 1
+
+// Keyboard Settings
+keyboardSupport   : true,  // option
+arrowScroll       : 50,     // [px]
+
+// Other
+touchpadSupport   : true,
+fixedBackground   : true, 
+excluded          : ""    
+</code></pre>
+
+<p>};
+```</p>
+
+<hr />
+
+<h3><strong>FontAwesome</strong></h3>
+
+<p>FontAwesome is not necessarily a plug-in but a CSS Framework that has a library of SVG Icon Fonts. Checkout my JSfiddle sample.</p>
+
+<p><iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/d4qCS/embedded/result,html,css/light/"></iframe></p>
+
+<p>The user only needs to include the class prefixes of the icon of their choice on HTML inline elements like <code>&lt;i&gt;&lt;/i&gt;</code> and <code>&lt;span&gt;&lt;/span&gt;</code>. They can have it spinning or customize it with CSS.</p>
+
+<hr />
+
+<h3><strong>Skrollr</strong></h3>
+
+<p>I used two features of Skrollr which is the <strong>Parallax</strong> and <strong>Color Transforms</strong> but Skrollr has more uses. Skrollr is an independent JavaScript plug-in it is not made with jQuery. Skrollr automatically injects its class prefixes to HTML tags that contain <code>data-</code> attribute. Skrollr will read the values contained in <code>data-</code> and animate or transform that object based on the values.</p>
+
+<p><iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/bXT2y/embedded/result,html,css,js/light/"></iframe></p>
+
+<p>I used Color Transforms on the Navigation Bar, and Parallax on the intro background and the section headers.</p>
+
+<hr />
+
+<h2>Bootstrap 3 Lightbox (Ekko-lightbox)</h2>
+
+<p>Bootstrap 3 Lightbox is a lightbox module built around Bootstrap&rsquo;s modal plug-in for viewing images, YouTube videos and galleries. For me, the best thing about this plug-in is that it&rsquo;s style is CSS and fully customizable. This plug is used in this part of the website, <a href="http://patzmatias.github.io/myway-light/#gallery-top" title="MyWay Light Gallery">MyWay Light Gallery</a>.</p>
+
+<h3><strong>jQuery gMap Plug-in</strong></h3>
+
+<p><strong>gMap</strong> A lightweight, flexible, highly customizable jQuery plug-in for embedding <strong>Google Maps</strong> that works with the <strong>Google Map API v3</strong>. With gMap the user has the option to remove or include, the Google Map UI, set custom markers, zoom level, and the maptype. <a href="http://patzmatias.github.io/myway-light/#contact-top" title="MyWay Light Contact Section">MyWay Light Contact</a></p>
+
+<h3><strong>FlowUp Labels</strong></h3>
+
+<p>This is the plug-in that gives MyWay Light&rsquo;s contact form labels floating effect when you click it. The plug-in&rsquo;s style is fully customizable in CSS. Check out their demo here <a href="http://enfos.com/FlowupLabels.js/demo/" title="FlowUpLabels Demo">ENFO&rsquo;s FlowUpLabels Demo</a>.</p>
+
+<hr />
+
+<h3><strong>jQuery Form Plugin</strong></h3>
+
+<p><img class="img-responsive" src="/images/form.png"></p>
+
+<p>Form is a plug-in that allows the user to upgrades HTML to use AJAX. It provides several methods to easily manage the form data and form submission. This plug-in was used in the theme to make the success and the failure notifications be thrown at the HTML page instead of a dialog box. Implementing the plug-in is easy, just bind the form through IDs or classes in the script.</p>
+
+<p>```js</p>
+
+<script> 
+    // wait for the DOM to be loaded 
+    $(document).ready(function() { 
+        // bind 'myForm' and provide a simple callback function 
+        $('#myForm').ajaxForm(function() { 
+            alert("Thank you for your comment!"); 
+        }); 
+    }); 
+</script>
+
+
+<p>```</p>
+
+<hr />
+
+<p>I also used Bootstrap in MyWay Light but I made a different post for it, see it  <a href="http://patzmatias.github.io/blog/2014/06/04/bootstrap/" title="http://patzmatias.github.io/blog/2014/06/04/bootstrap/">here</a>.</p>
+
+<p>Thanks for reading! :) I&rsquo;ll be posting about CSS3 Transitions/Animation next time, please keep on reading! :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Bootstrap]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/06/04/bootstrap/"/>
+    <updated>2014-06-04T15:14:34+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/06/04/bootstrap</id>
+    <content type="html"><![CDATA[<p>Previously, I&rsquo;ve used Bootstrap on one of my previous exercises and it is a powerful tool. <a href="http://getbootstrap.com" title="Bootstrap's">Bootstrap</a> is one of the world&rsquo;s most popular front-end framework for responsive web design. It is originally created by a designer and developer in <a href="http://www.twitter.com" title="Twitter">Twitter</a>. This framework is packed with many CSS and JavaScript Components to ease the user&rsquo;s coding and to help the user create a responsive design that is compatible with most browsers. I&rsquo;ll discuss these components that I&rsquo;ve used in my project:</p>
+
+<pre><code>*  Grid System
+*  Navbar
+*  Carousel
+*  Buttons
+*  Responsive Image Class
+</code></pre>
+
+<!--more-->
+
+
+<hr />
+
+<h3><strong>Grid System</strong></h3>
+
+<p>The grid system is a powerful toot for creating a responsive-ready web design. Bootstrap uses these media queries to create the key breakpoints in their grid system:</p>
+
+<pre><code>/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) { ... }
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) { ... }
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) { ... }
+
+(Media queries determine the viewport size of a device or a browser and loads the CSS properties contained in it.)
+</code></pre>
+
+<p>To implement the grid system, the user must use Bootstrap&rsquo;s class prefixes for the containers. This is how would the HTML code for its implementation would look like and you can check the demo to see how it works:</p>
+
+<p><iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/g5PYn/embedded/html,result/light/"></iframe></p>
+
+<p>The class &ldquo;container-fluid&rdquo; is required by the &ldquo;row&rdquo; class for proper alignment and padding. The class &ldquo;row&rdquo; is used to group the columns which must be the immediate children of class &ldquo;row&rdquo;. The maximum number of columns that each &ldquo;row&rdquo; can contain is <strong>12</strong>. The class prefix for columns are written this way <code>col-screensize-columnsize</code>. There are four available screen sizes:</p>
+
+<pre><code>* Screen Sizes:
+  ** Extra-small = 'xs'
+  ** Small = 's'
+  ** Medium = 'm'
+  ** Large = 'lg'
+</code></pre>
+
+<p>The column size can be any number between 1 to 12. If the &ldquo;row&rdquo; meets the maximum number of columns, the next column will be appended to the next row.  That&rsquo;s mostly it for the grid system.</p>
+
+<hr />
+
+<h3><strong>Navbar</strong></h3>
+
+<p>Bootstrap provides an easy set-up for a navigation bar that is customizable and also responsive. Let&rsquo;s take a look on their example from the website:</p>
+
+<p><iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/8pzKG/embedded/result,html/light/"></iframe></p>
+
+<p>You can see from our example that the user can add a lot of things in the Navbar. The site title is there <code>&lt;a class="navbar-brand" href="#"&gt;Brand&lt;/a&gt;</code>, a dropdown-menu, and a search-box form. In addition, the user can quickly assign your links to the left or right side of the bar just by adding the class <code>navbar-left</code> or <code>navbar-right</code>. Also, the bar can be a regular static sidebar by using the <code>navbar-default</code> class or fix it to top by adding the class <code>navbar-fixed-top</code>. The <code>navbar-header</code> contains the button with the class <code>navbar-toggle</code>, these button shows-up when the viewport reaches the size of a mobile-display presenting a mobile-friendly menu.</p>
+
+<hr />
+
+<h3><strong>Carousel</strong></h3>
+
+<p>Bootstrap&rsquo;s built-in carousel allows user to easily add a carousel without writing long-lines of JavaScript codes. Bootstrap uses jQuery on its JavaScript components to make it a plug-in. In our example below you can see all of the class prefixes that can be used for the caarousel.</p>
+
+<p>  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"></p>
+
+<pre><code>&lt;ol class="carousel-indicators"&gt;
+  &lt;li data-target="#carousel-example-generic" data-slide-to="0" class="active"&gt;&lt;/li&gt;
+  &lt;li data-target="#carousel-example-generic" data-slide-to="1"&gt;&lt;/li&gt;
+  &lt;li data-target="#carousel-example-generic" data-slide-to="2"&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- Wrapper for slides --&gt;
+&lt;div class="carousel-inner"&gt;
+  &lt;div class="item active"&gt;
+    &lt;img src="..." alt="..."&gt;
+    &lt;div class="carousel-caption"&gt;
+      ...
+    &lt;/div&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;
+&lt;!-- Controls --&gt;
+&lt;a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"&gt;
+  &lt;span class="glyphicon glyphicon-chevron-left"&gt;&lt;/span&gt;
+&lt;/a&gt;
+&lt;a class="right carousel-control" href="#carousel-example-generic" data-slide="next"&gt;
+  &lt;span class="glyphicon glyphicon-chevron-right"&gt;&lt;/span&gt;
+&lt;/a&gt;
+</code></pre>
+
+<p>  </div></p>
+
+<p>After that code you should call the plug-in and use the id as selector, in this case the id is <code>carousel-example-generic</code>:</p>
+
+<p><code>js
+  $('#carousel-example-generic').carousel({
+  interval: 2000
+  pause: hover
+  });
+</code></p>
+
+<p>See it in this demo:</p>
+
+<p><iframe style="width: 100%; height: 400px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/jf3sU/embedded/result,html,js,css/light/"></iframe></p>
+
+<p>Bootstrap&rsquo;s carousel plug-in allows the user to optionally add indicators and captions. The user also doesn&rsquo;t need to code on Javascript for the controls.</p>
+
+<hr />
+
+<h3><strong>Buttons</strong></h3>
+
+<p>Adding style to buttons is a lot easier with Bootstrap, just use their class-prefixes and it would automatically add a style preset. Bootstrap has a total of 6 preset styles. Just add the following class prefixes to use them:</p>
+
+<ul>
+<li><code>btn-default</code></li>
+<li><code>btn-primary</code></li>
+<li><code>btn-warning</code></li>
+<li><code>btn-info</code></li>
+<li><code>btn-success</code></li>
+<li><code>btn-danger</code></li>
+</ul>
+
+
+<p>Checkout this demo:</p>
+
+<p><iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/tZec7/embedded/result,html/light/"></iframe></p>
+
+<hr />
+
+<h3><strong>Responsive Image Class</strong></h3>
+
+<p>Bootstrap&rsquo;s responsive image class can be used by adding the class prefix <code>img-responsive</code> to the <code>&lt;img&gt;</code> tag. These class adds the following properties to the object that makes it responsive.</p>
+
+<p>```</p>
+
+<pre><code>.img-responsive{
+    max-width: 100%;
+    height: auto;
+}
+</code></pre>
+
+<p>```</p>
+
+<p><iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/xXsQ7/embedded/result,html/light/"></iframe></p>
+
+<p><iframe style="width: 50; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/xXsQ7/embedded/result/light/"></iframe></p>
+
+<p>The image will always fit itself to the width of the container and still maintain its aspect ratio because its height is in auto. You can try it out at this jsfiddle <a href="http://jsfiddle.net/xXsQ7">demo</a> and resize the result container.</p>
+
+<p>These are just 6 of Bootstrap&rsquo;s components and you can see more at their website at <a href="http://getbootstrap.com" title="Bootstrap">getbootstrap.com</a></p>
+
+<p>That&rsquo;s it. Thanks for reading! :)
+Next, I&rsquo;ll be writing about the plug-ins I used in my previous project and will be followed by a blog about CSS3 Transitions/Animations. So stay tuned. :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SASS and Compass]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/05/27/sass-and-compass/"/>
+    <updated>2014-05-27T16:01:19+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/05/27/sass-and-compass</id>
+    <content type="html"><![CDATA[<p>We know how CSS style sheets can get all long and unorganized during development specially when doing large projects but luckily this isn&rsquo;t a problem now. I&rsquo;ve been using SASS and Compass in my training for quite a while now and I&rsquo;m getting fond of it.</p>
+
+<!--more-->
+
+
+<h3><strong>SASS (Synthetically Awesome Stylesheet)</strong></h3>
+
+<p><strong>SASS</strong> is an extension of CSS which allows the user to add <strong>variables</strong>, <strong>nested rules</strong>, <strong>mixins</strong>, <strong>imports,</strong> <strong>partials</strong>, <strong>extended property sharing</strong> and more. It uses a fully CSS-compatible syntax and helps keep style sheets well-organized.</p>
+
+<p>SASS has two type of syntax for coding. The first version which is based on <strong>Haml</strong> is SASS, it doesn&rsquo;t use curly braces <code>{}</code> and semi-colon <code>;</code> and has a strict indentation syntax. The second version is the SCSS which syntax is a lot more similar to CSS, and this is the one I am using.</p>
+
+<p>Here is an example of a normal CSS stylesheet:
+<code>``SASS
+</code>Regular CSS stylesheet`</p>
+
+<p>@font-face {</p>
+
+<pre><code>font-family: 'Tisa Pro';
+src: url('/fonts/TisaPro.otf');
+font-weight: normal;
+font-style: normal;
+</code></pre>
+
+<p>}</p>
+
+<p>@font-face {</p>
+
+<pre><code>font-family: 'Tisa Pro Italic';
+src: url('/fonts/TisaPro-Ita.otf');
+font-weight: normal;
+font-style: normal;
+</code></pre>
+
+<p>}</p>
+
+<p>@font-face {</p>
+
+<pre><code>font-family: 'Tisa Pro Bold';
+src: url('/fonts/TisaPro-Bold.otf');
+font-weight: normal;
+font-style: normal;
+</code></pre>
+
+<p>}</p>
+
+<pre><code>div{
+ color: #333;
+ background-color: #fff;
+ -webkit-box-shadow: 3px 3px 5px #000;
+     -moz-box-shadow: 3px 3px 5px #000;
+        -o-box-shadow: 3px 3px 5px #000;
+            box-shadow: 3px 3px 5px #000;
+}
+
+div:hover{
+ color: #fff;
+ background-color: #333;
+}
+
+div p{
+ text-align: justify;
+ color: #fff;
+ background-color: #333;
+}
+
+div h3{
+ text-align: center;
+ color: #fff;
+ background-color: #333;
+}
+</code></pre>
+
+<p>```</p>
+
+<p>And this is a SASS stylesheet (SCSS syntax format):</p>
+
+<p>```SASS</p>
+
+<pre><code>`main.scss`
+
+@import "typography"; //imports declaration
+
+$light: #fff; //VARIABLES
+$dark: #333; //VARIABLES
+
+@mixin box-shadow($shadow) { //mixins declaration
+ -webkit-box-shadow: $shadow;
+     -moz-box-shadow: $shadow;
+         -o-box-shadow: $shadow;
+                box-shadow: $shadow;
+}
+
+div{  //ENHANCED NESTING
+    color: $dark;
+    background-color: $light;
+    @include box-shadow(3px 3px 5px $dark); //mixins implementation
+    &amp;:hover{                       
+        color: $light;
+        background-color: $dark;  
+    }
+    p{
+        font-family: 'Tisa Pro'
+        text-align: justify;
+        color: $light; //extended property
+        background-color: $dark; //extended property
+    }
+    h3{
+        @extend p;          //@extend (EXTENDED PROPERTY SHARING)
+        text-align: center;
+    }
+}
+</code></pre>
+
+<p><code>
+</code>SASS</p>
+
+<pre><code>`_typography.scss`//partials 
+
+@font-face {
+    font-family: 'Tisa Pro';
+    src: url('/fonts/TisaPro.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tisa Pro Italic';
+    src: url('/fonts/TisaPro-Ita.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tisa Pro Bold';
+    src: url('/fonts/TisaPro-Bold.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+</code></pre>
+
+<p>```</p>
+
+<p><strong>Variables</strong></p>
+
+<p>With SASS a user will be capable of declaring variables. We all know that a variable is an essential part of most programming languages which is usually used to hold data.</p>
+
+<p>Now how is this useful in a language used for styling? Sometimes during development there are situations were we have to use similar property attributes.</p>
+
+<p>Notice how many times color attribute #fff and #333 was used. Let us say that we wanted to change these colors, that means we have to go back on all these attributes and edit it one by one. This is where SASS Variables will be valuable to users.</p>
+
+<p>With variables the user only needs to edit the value contained in the variable and every property that uses it will have the style and it would be easier to re-use the attribute to other properties.</p>
+
+<p><strong>Nested rules/Nesting</strong></p>
+
+<p>SASS enables the user to use nesting similar to nesting that is used in application programming. In the previous example we have called the <code>p</code> and <code>h3</code> of the object <code>div</code>, and called it again for its hover state. If <code>div</code> contains more child then we would have to call it again to access the child. Nesting will make it easier for the user to style an object and its childs.</p>
+
+<p>SASS Nested rules follow the same visual hierarchy of the HTML so it would be easier to see which objects belongs to what object.</p>
+
+<p><strong>@extend (Extended property sharing)</strong></p>
+
+<p><code>@extend</code> is very useful when we come to situations where we use the same property and attributes on some objects. In the CSS example, <code>p</code> and <code>h3</code> contains the same <code>color</code> and <code>background-color</code> property. The code would look cleaner if the property of <code>p</code> would be extended to <code>h3</code> and override then just <code>text-align</code> attribute.</p>
+
+<p><strong>@mixins</strong></p>
+
+<p>Style sheets gets longer specially when we want the styles compatible to many browsers. On some properties like <code>box-shadow</code> and <code>border-radius</code>, we use vendor prefixes to make sure that the styles would be displayed correctly in a certain browser and it gets tedious to write. But mixins can shorten it like a function or method in a programming language. We create it by writing <code>@mixins</code> and giving it a name and use a variable to pass on the attribute of the properties, then use it by declaring in the CSS an &lsquo;@include&rsquo; followed by the name of the mixin.</p>
+
+<p>SASS also uses <strong>operators</strong>, <strong>control directives and expressions</strong> like <code>if()</code>. I&rsquo;ll update this section once I learned how and when to use this three.</p>
+
+<p><strong>@import and Partials</strong></p>
+
+<p>Coding style sheets can be more organized with SASS' <code>@imports</code> and partials capability. Partials and <code>@import</code> allows the user to create parts of the style sheet and import it to your main style sheet. When it is generated those parts will be generated in a single CSS style sheet.</p>
+
+<p>To create a partial file its name must be prefixed with an underscore <code>_</code> like <code>_typography.scss</code>. The partial files are imported this way <code>@import "typography";</code>. The underscore prefix are removed to prevent SASS on generating an individual style sheet for the partial file, because we want SASS to import the styles to the main style sheet.</p>
+
+<h3><strong>Compass</strong></h3>
+
+<p>While SASS enhances the coding experience for CSS,  <strong>Compass</strong> eases the creation of the projects folder that is SASS ready and the use of SASS terminal commands. Here is some example:</p>
+
+<p>SASS terminal commands:</p>
+
+<pre><code>sass input.scss output.css //SASS command for producing a CSS style sheet from the SCSS file
+
+sass --watch input.scss:output.css //Command for producing a CSS style sheet from the SCSS file and                                                    watch it for changes for reproduction
+
+sass --watch app/sass:public/stylesheets //Command for watching an entire directory for changes in SCSS                                                         files and and automatic CSS file production
+</code></pre>
+
+<p>Compass terminal commands:</p>
+
+<pre><code>compass compile //to convert SCSS files to CSS style sheets
+
+compass watch // to watch the entire directory of SASS and automatic CSS style sheet production
+
+compass create projectname or /path/and/projectname/ // to create a project folder that is SASS ready
+
+compass validate //Compass is also capable of validating the CSS style sheets
+</code></pre>
+
+<p>Compass made SCSS to CSS file conversion easier by making the command much simpler. Compass also has its core utilities that can help the user to layout and style his website.</p>
+
+<p>That&rsquo;s all for now! I&rsquo;ll be doing a post about Bootstrap next time so keep posted. Thanks for reading. :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Another Slider Test]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/05/13/another-slider-test/"/>
+    <updated>2014-05-13T16:18:44+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/05/13/another-slider-test</id>
+    <content type="html"><![CDATA[<p><img class="img-responsive" src="/images/exercise2site.png" title="&lsquo;CAROUSEL VCARD Website&rsquo;" ></p>
+
+<p><a href="http://www.html-themes.com/themes/carousel_vcard/">Link to website</a></p>
+
+<p>It is amazing to know how creative we can get in web development. My second project showed me how sliders can be utilized in a more functional way. <!--more-->The website our trainer gave us to study is a one-page portfolio website where it used a complex slider that expand and collapse to display the contents.</p>
+
+<p>This project thought me how important it is to refactor our codes. Codes should be simple and short as long as possible so it can be easily maintained and to minimize the use of resources (storage and memory).</p>
+
+<p>```js
+$(&lsquo;.contentWrap&rsquo;).click(function(){</p>
+
+<pre><code>var currentBox = $(this).parents($(".contentWrap"));
+$('.itemBox').not(currentBox).css({"display":"none"});
+expand();
+</code></pre>
+
+<p>});
+```</p>
+
+<p>The code above is the refactored version of the first version of my code. I noticed while I&rsquo;m writing the code that the lines I&rsquo;m writing is already getting longer and its not normal anymore. If I didn&rsquo;t refactor I may have abused the <code>if-else</code> and class selectors just to arrive with the same function of the code above. Now I know that I should always think of a way to keep my codes short, clean, and simple.</p>
+]]></content>
+  </entry>
+  
+</feed>

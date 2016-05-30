@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: SASS | Patrick A. Matias]]></title>
+  <link href="http://PatzMatias.github.io/blog/categories/sass/atom.xml" rel="self"/>
+  <link href="http://PatzMatias.github.io/"/>
+  <updated>2016-05-30T17:49:08+08:00</updated>
+  <id>http://PatzMatias.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick A. Matias]]></name>
+    <email><![CDATA[patzmatias@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[SASS and Compass]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/05/27/sass-and-compass/"/>
+    <updated>2014-05-27T16:01:19+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/05/27/sass-and-compass</id>
+    <content type="html"><![CDATA[<p>We know how CSS style sheets can get all long and unorganized during development specially when doing large projects but luckily this isn&rsquo;t a problem now. I&rsquo;ve been using SASS and Compass in my training for quite a while now and I&rsquo;m getting fond of it.</p>
+
+<!--more-->
+
+
+<h3><strong>SASS (Synthetically Awesome Stylesheet)</strong></h3>
+
+<p><strong>SASS</strong> is an extension of CSS which allows the user to add <strong>variables</strong>, <strong>nested rules</strong>, <strong>mixins</strong>, <strong>imports,</strong> <strong>partials</strong>, <strong>extended property sharing</strong> and more. It uses a fully CSS-compatible syntax and helps keep style sheets well-organized.</p>
+
+<p>SASS has two type of syntax for coding. The first version which is based on <strong>Haml</strong> is SASS, it doesn&rsquo;t use curly braces <code>{}</code> and semi-colon <code>;</code> and has a strict indentation syntax. The second version is the SCSS which syntax is a lot more similar to CSS, and this is the one I am using.</p>
+
+<p>Here is an example of a normal CSS stylesheet:
+<code>``SASS
+</code>Regular CSS stylesheet`</p>
+
+<p>@font-face {</p>
+
+<pre><code>font-family: 'Tisa Pro';
+src: url('/fonts/TisaPro.otf');
+font-weight: normal;
+font-style: normal;
+</code></pre>
+
+<p>}</p>
+
+<p>@font-face {</p>
+
+<pre><code>font-family: 'Tisa Pro Italic';
+src: url('/fonts/TisaPro-Ita.otf');
+font-weight: normal;
+font-style: normal;
+</code></pre>
+
+<p>}</p>
+
+<p>@font-face {</p>
+
+<pre><code>font-family: 'Tisa Pro Bold';
+src: url('/fonts/TisaPro-Bold.otf');
+font-weight: normal;
+font-style: normal;
+</code></pre>
+
+<p>}</p>
+
+<pre><code>div{
+ color: #333;
+ background-color: #fff;
+ -webkit-box-shadow: 3px 3px 5px #000;
+     -moz-box-shadow: 3px 3px 5px #000;
+        -o-box-shadow: 3px 3px 5px #000;
+            box-shadow: 3px 3px 5px #000;
+}
+
+div:hover{
+ color: #fff;
+ background-color: #333;
+}
+
+div p{
+ text-align: justify;
+ color: #fff;
+ background-color: #333;
+}
+
+div h3{
+ text-align: center;
+ color: #fff;
+ background-color: #333;
+}
+</code></pre>
+
+<p>```</p>
+
+<p>And this is a SASS stylesheet (SCSS syntax format):</p>
+
+<p>```SASS</p>
+
+<pre><code>`main.scss`
+
+@import "typography"; //imports declaration
+
+$light: #fff; //VARIABLES
+$dark: #333; //VARIABLES
+
+@mixin box-shadow($shadow) { //mixins declaration
+ -webkit-box-shadow: $shadow;
+     -moz-box-shadow: $shadow;
+         -o-box-shadow: $shadow;
+                box-shadow: $shadow;
+}
+
+div{  //ENHANCED NESTING
+    color: $dark;
+    background-color: $light;
+    @include box-shadow(3px 3px 5px $dark); //mixins implementation
+    &amp;:hover{                       
+        color: $light;
+        background-color: $dark;  
+    }
+    p{
+        font-family: 'Tisa Pro'
+        text-align: justify;
+        color: $light; //extended property
+        background-color: $dark; //extended property
+    }
+    h3{
+        @extend p;          //@extend (EXTENDED PROPERTY SHARING)
+        text-align: center;
+    }
+}
+</code></pre>
+
+<p><code>
+</code>SASS</p>
+
+<pre><code>`_typography.scss`//partials 
+
+@font-face {
+    font-family: 'Tisa Pro';
+    src: url('/fonts/TisaPro.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tisa Pro Italic';
+    src: url('/fonts/TisaPro-Ita.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tisa Pro Bold';
+    src: url('/fonts/TisaPro-Bold.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+</code></pre>
+
+<p>```</p>
+
+<p><strong>Variables</strong></p>
+
+<p>With SASS a user will be capable of declaring variables. We all know that a variable is an essential part of most programming languages which is usually used to hold data.</p>
+
+<p>Now how is this useful in a language used for styling? Sometimes during development there are situations were we have to use similar property attributes.</p>
+
+<p>Notice how many times color attribute #fff and #333 was used. Let us say that we wanted to change these colors, that means we have to go back on all these attributes and edit it one by one. This is where SASS Variables will be valuable to users.</p>
+
+<p>With variables the user only needs to edit the value contained in the variable and every property that uses it will have the style and it would be easier to re-use the attribute to other properties.</p>
+
+<p><strong>Nested rules/Nesting</strong></p>
+
+<p>SASS enables the user to use nesting similar to nesting that is used in application programming. In the previous example we have called the <code>p</code> and <code>h3</code> of the object <code>div</code>, and called it again for its hover state. If <code>div</code> contains more child then we would have to call it again to access the child. Nesting will make it easier for the user to style an object and its childs.</p>
+
+<p>SASS Nested rules follow the same visual hierarchy of the HTML so it would be easier to see which objects belongs to what object.</p>
+
+<p><strong>@extend (Extended property sharing)</strong></p>
+
+<p><code>@extend</code> is very useful when we come to situations where we use the same property and attributes on some objects. In the CSS example, <code>p</code> and <code>h3</code> contains the same <code>color</code> and <code>background-color</code> property. The code would look cleaner if the property of <code>p</code> would be extended to <code>h3</code> and override then just <code>text-align</code> attribute.</p>
+
+<p><strong>@mixins</strong></p>
+
+<p>Style sheets gets longer specially when we want the styles compatible to many browsers. On some properties like <code>box-shadow</code> and <code>border-radius</code>, we use vendor prefixes to make sure that the styles would be displayed correctly in a certain browser and it gets tedious to write. But mixins can shorten it like a function or method in a programming language. We create it by writing <code>@mixins</code> and giving it a name and use a variable to pass on the attribute of the properties, then use it by declaring in the CSS an &lsquo;@include&rsquo; followed by the name of the mixin.</p>
+
+<p>SASS also uses <strong>operators</strong>, <strong>control directives and expressions</strong> like <code>if()</code>. I&rsquo;ll update this section once I learned how and when to use this three.</p>
+
+<p><strong>@import and Partials</strong></p>
+
+<p>Coding style sheets can be more organized with SASS' <code>@imports</code> and partials capability. Partials and <code>@import</code> allows the user to create parts of the style sheet and import it to your main style sheet. When it is generated those parts will be generated in a single CSS style sheet.</p>
+
+<p>To create a partial file its name must be prefixed with an underscore <code>_</code> like <code>_typography.scss</code>. The partial files are imported this way <code>@import "typography";</code>. The underscore prefix are removed to prevent SASS on generating an individual style sheet for the partial file, because we want SASS to import the styles to the main style sheet.</p>
+
+<h3><strong>Compass</strong></h3>
+
+<p>While SASS enhances the coding experience for CSS,  <strong>Compass</strong> eases the creation of the projects folder that is SASS ready and the use of SASS terminal commands. Here is some example:</p>
+
+<p>SASS terminal commands:</p>
+
+<pre><code>sass input.scss output.css //SASS command for producing a CSS style sheet from the SCSS file
+
+sass --watch input.scss:output.css //Command for producing a CSS style sheet from the SCSS file and                                                    watch it for changes for reproduction
+
+sass --watch app/sass:public/stylesheets //Command for watching an entire directory for changes in SCSS                                                         files and and automatic CSS file production
+</code></pre>
+
+<p>Compass terminal commands:</p>
+
+<pre><code>compass compile //to convert SCSS files to CSS style sheets
+
+compass watch // to watch the entire directory of SASS and automatic CSS style sheet production
+
+compass create projectname or /path/and/projectname/ // to create a project folder that is SASS ready
+
+compass validate //Compass is also capable of validating the CSS style sheets
+</code></pre>
+
+<p>Compass made SCSS to CSS file conversion easier by making the command much simpler. Compass also has its core utilities that can help the user to layout and style his website.</p>
+
+<p>That&rsquo;s all for now! I&rsquo;ll be doing a post about Bootstrap next time so keep posted. Thanks for reading. :)</p>
+]]></content>
+  </entry>
+  
+</feed>

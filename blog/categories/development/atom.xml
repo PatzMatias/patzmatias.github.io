@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Development, | Patrick A. Matias]]></title>
+  <link href="http://PatzMatias.github.io/blog/categories/development/atom.xml" rel="self"/>
+  <link href="http://PatzMatias.github.io/"/>
+  <updated>2016-05-30T17:49:08+08:00</updated>
+  <id>http://PatzMatias.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick A. Matias]]></name>
+    <email><![CDATA[patzmatias@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Learning Ruby and Rails]]></title>
+    <link href="http://PatzMatias.github.io/blog/2015/06/02/learning-ruby-and-rails/"/>
+    <updated>2015-06-02T18:01:23+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2015/06/02/learning-ruby-and-rails</id>
+    <content type="html"><![CDATA[<p>It has been a few weeks since my last project, so I decided to dive-in to Ruby and Ruby and Rails during my downtime and learn simple coding. Here is what I&rsquo;ve learned so far.</p>
+
+<h2><strong>Ruby</strong></h2>
+
+<h3>Facts</h3>
+
+<p>Before digging into Ruby code I&rsquo;ve read some facts about it first. Ruby was designed and developed in the mid-1990s by Yukihiro &ldquo;Matz&rdquo; atsumoto in Japan. It is a dynamic, reflective, object-oriented, general-purpose programming language. Ruby&rsquo;s syntax is influenced by Perl and Python. Ruby has a library of plug-ins that can improve development workflow and experience called RubyGems (<a href="https://rubygems.org/">https://rubygems.org/</a>). Ruby is one of the most popular programming languages of today.</p>
+
+<!--more-->
+
+
+<h3>Coding</h3>
+
+<p>To learn Ruby code, I went to codecademy and used their free learning course for Ruby. This is the first time I&rsquo;ve encountered a programming language that doesn&rsquo;t use terminator symbols <code>;</code> and not much of curly braces &lsquo;{}&rsquo; to define the scope of a method or a loop. Compared to other languages I&rsquo;ve worked with before like PHP, Java, and Javascript, Ruby has a cleaner syntax and a higher readability.</p>
+
+<p> Here is what I&rsquo;ve learned.</p>
+
+<p><strong>Printing a string.</strong></p>
+
+<pre><code>puts "Hello World!"
+</code></pre>
+
+<p><strong>Some built-in methods of Ruby</strong></p>
+
+<pre><code>-199.abs                                # =&gt; 199 / Absolute Values
+"Hello World".length                    # =&gt; 11 / Getting string length
+"Hello World.".index("r")               # =&gt; 9 / Finding index of a character
+"Hello World".downcase                  # =&gt; "hello world" / Lowercasing string
+"Hello World".upcase                    # =&gt; "HELLO WORLD" / Uppercasing string
+"Hello World!".uniq                     # =&gt; "Helo Wrd" / Transforming repeating characters into one 
+"Hello World!".split("")                # =&gt; ["Hello","World"] / Splits the string from the given character
+["Hello","World"].join                  # =&gt; "HelloWorld" / Combines the string of arrays
+</code></pre>
+
+<p><strong>Control Structure</strong></p>
+
+<p>Like other programming languages Ruby has the if, else, elsif, case, and, short-if expression but Ruby has a control structure called <code>unless</code>, which works like an if statement but will only execute if the expression is false. Ruby also has a reverse <code>if</code> and <code>unless</code> syntax.</p>
+
+<pre><code># Unless
+x = 5
+
+unless x &gt; 10
+    x = 10
+end
+
+puts x
+
+# Output: 10 
+
+# reverse if/unless syntax
+
+puts "Hey!" if a &lt; 5
+
+puts "Oi!" unless a &gt; 5
+</code></pre>
+
+<p><strong>Looping</strong></p>
+
+<p>Ruby also uses <code>while</code> to loop but it also has an inverted <code>while</code> called &lsquo;until&rsquo; which executes until the expression evaluates to false. <code>while</code> and <code>until</code> can also be written in reverse syntax. Ruby also has a simple loop method called <code>times</code> which repeats itself based on the number defined on call.</p>
+
+<pre><code># Until
+x = 8
+
+until x &lt; 10
+    puts "+1"
+    x=x+1
+end
+
+# Output: 
+# +1 
+# +1
+
+
+#reverse while/until
+
+puts "Hey!" while a &lt; 5
+
+puts "Oi!" until a &gt; 5
+
+
+# Times sample
+10.times do
+    puts 'Will do this 10 times'
+end
+</code></pre>
+
+<p><strong>Iterators</strong></p>
+
+<p>Ruby iterates arrays by using the <code>each</code> iterator. <code>each</code> simple loops to all of the data in an array and execute the block of statements inside it.</p>
+
+<pre><code># each sample
+array = [1,2,3,4,5]
+array.each do |i|
+   puts i
+end
+</code></pre>
+
+<p>Another iterator is called <code>collect</code>. This iterator returns all the elements of a collection. A collection is usually an array or a hash.</p>
+
+<pre><code># collect sample 1
+
+x = [1,2,3,4,5]
+y = Array.new
+y = a.collect # collects all data in x and store it to y
+puts y
+
+# Output:
+# 1
+# 2
+# 3
+# 4
+# 5
+
+# collect sample 2
+g = [1,2,3,4,5]
+h = g.collect{|x| x*5} # collects all data in g multiply it by 5 and store it to h
+puts h
+
+# Output:
+# 5
+# 10
+# 15
+# 20
+# 25
+</code></pre>
+
+<p><strong>Hash</strong></p>
+
+<p>A hash or an associative array is a dictionary-like collection of unique keys and their value.</p>
+
+<pre><code>#hash
+
+hash = Hash.new # equivalent to hash = {}
+hash = { :cotton =&gt; 'soft', :stone =&gt; 'hard' }
+
+puts hash[:stone] # prints 'hard'
+
+#iterating over a hash
+
+hash.each do |key, value|
+    puts "A #{key} is #{value}"
+end
+
+#deleting an key pair in hash
+
+hash.delete :stone                            # deletes the pair :stone =&gt; 'hard' and returns "hard"
+hash.delete_if {|key,value| value == 'soft'}   # deletes the pair :cotton =&gt; 'soft' and returns {}
+</code></pre>
+
+<p><strong>Block, Procs and Lambda</strong></p>
+
+<p>Blocks, Procs, and Lambda works similarly but have different behaviors. Look at the samples below.</p>
+
+<p><strong>Blocks</strong> pertains to a block of codes inside or outside a method. Lets just use <code>collect</code> iterator as a simple example for blocks.</p>
+
+<pre><code># Blocks
+array = [1, 2, 3, 4]
+
+array.collect! do |n| # everything inside this method is block
+    num = n ** 2
+    puts num
+end
+
+#if these code gets wrapped inside a method then everything written above will be a block.
+</code></pre>
+
+<p><strong>Procs</strong> are also known as procedures which means this blocks of codes are reusable.</p>
+
+<pre><code># Procs
+# This procs simply rounds off the array of floats
+floats = [1.2, 3.45, 0.91, 7.727, 11.42, 482.911]
+
+round_down = Proc.new {|x| x.floor}
+
+ints = floats.collect(&amp;round_down)
+</code></pre>
+
+<p><strong>Lambdas</strong> are identical to procs with some exception in a bit of syntax and behavior.</p>
+
+<pre><code># Lamda example
+def lambda_demo(a_lambda)
+  puts "I'm the method!"
+  a_lambda.call
+end
+
+my_lambda = lambda { puts "I'm the lambda!" }
+
+lambda_demo(my_lambda)
+</code></pre>
+
+<p>One difference between Lambdas and Procs behavior is that when Procs ends execution it returns outside the method and because of this Procs can overtake methods execution. Lambdas however return to the method instead. Here is an example of what I mean.</p>
+
+<pre><code># Procs and Lambda behavior difference
+def proc_sample
+  Proc.new { return "I'm a proc."}.call
+  return "proc_sample method finished"
+end
+
+def lambda_sample
+  lambda { return "I'm a Lambda" }.call
+  return "lambda_sample method finished"
+end
+
+puts proc_sample # returns "I'm a proc."
+puts lambda_sample # returns "lambda_sample method finished."
+</code></pre>
+
+<p><strong>Classes</strong></p>
+
+<p>Creating a class in Ruby always starts with the keyword class followed by the class name and terminate it with the keyword <code>end</code>. Ruby classes has four types of variables, a global variable, class variable, instance variable, and a local variable. Here is a snippet for an example.</p>
+
+<pre><code>$global_var = "I'm a global variable. I always start with a ($) sign" # available all across classes and the program
+
+class MyClass
+
+@@class_var = "I'm a class variable. I always start with two (@) symbols" # only available to the objects inside the class.
+
+def initialize
+  @foo = 28 # Instance variable (Always starts with an @ symbol. Available across methods for any particular instance or object.
+  puts local_var
+end
+
+def print_num
+    local_var = 56 # A local variable defined in a method. A local variable is not available outside the method.
+    puts local_var
+end
+
+def foo
+  return @foo
+end
+
+def foo=(value)
+  @foo = value.round
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  # calling the methods in the classes
+  instance = MyClass.new #calling new instance of a class
+  puts instance.foo
+  instance.foo = 496.2
+  instance.print_num
+  puts instance.foo #=> 496</p>
+
+<h4><strong>Conclusion</strong></h4>
+
+<p>That sums up all of what I&rsquo;ve learned about Ruby. I&rsquo;ve enjoyed coding with it when I did the Ruby course in codecademy. Although Ruby is not that easy to learn for beginners like me, I like how clean and simple Ruby&rsquo;s syntax look. Next time, I&rsquo;ll be studying how to create my own gems with Ruby.</p>
+
+<hr />
+
+<h3><strong>Rails</strong></h3>
+
+<p><strong>Ruby on Rails</strong> or just <strong>Rails</strong> is a web application framework gem. Rails was created in 2003 by David Heinemeier Hansson. Rails has an MVC (Model-View-Controller) architecture. Here are some of parts of the Rails that programmers loved.</p>
+
+<ul>
+<li><p><strong>Generators/Scaffolding</strong> – Rails will generate the general template and code needed to start coding in application. After this the developer will only need to include the code that his app needs instead of working on it from top to bottom.</p></li>
+<li><p><strong>Gems/Plugins</strong> – it uses RubyGems that can improve the development experience of the programmer.</p></li>
+<li><p><strong>Active Record ORM</strong> – Active Record is the M in MVC &ndash; the model &ndash; which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.</p></li>
+<li><p><strong>Integrated testing tools</strong> – Ruby has built-in transformable testers to test their application&rsquo;s code is working correctly.</p></li>
+</ul>
+
+
+<p>Rails looked great for me but I&rsquo;m having a kind of difficult time understanding the framework maybe because I got used to developing in vanilla PHP. But I&rsquo;m sure I just need to use it more to grasp Rails more. What I liked about Rails is how easy it is to call on the data from the database and feed them on the html template although I do not completely understand how to form the controllers and model by myself yet. The thing about Rails that I didn&rsquo;t like is how much dependency it has on multiple gems which is coded by different developers. In the mini-project I was doing, for a tutorial I&rsquo;m following, I&rsquo;ve encountered a lot of gem dependencies and some incompatibility issues. There was this part that I was not able to create an apache passenger because I wanted to make mock a production server in my local computer. The latest rails depended on a none official version of Apache2. I need to do some more research about this and hopefully continue working with the mini-project and adding my own ideas on that mini-project.</p>
+
+<p>And that finishes this post. Thanks for reading :)</p>
+]]></content>
+  </entry>
+  
+</feed>

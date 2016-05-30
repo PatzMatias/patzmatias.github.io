@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Wordpress | Patrick A. Matias]]></title>
+  <link href="http://PatzMatias.github.io/blog/categories/wordpress/atom.xml" rel="self"/>
+  <link href="http://PatzMatias.github.io/"/>
+  <updated>2016-05-30T17:49:08+08:00</updated>
+  <id>http://PatzMatias.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick A. Matias]]></name>
+    <email><![CDATA[patzmatias@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Wordpress Shortcodes]]></title>
+    <link href="http://PatzMatias.github.io/blog/2015/05/01/wordpress-shortcodes/"/>
+    <updated>2015-05-01T10:49:11+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2015/05/01/wordpress-shortcodes</id>
+    <content type="html"><![CDATA[<p>This feature has been integrated to WordPress in version 2.5.  <strong>WordPress Shortcodes</strong> are like customized html tags recognized by WordPress' system. Shortcode means shortcut, it can create objects, or embed files which would normally require a lot of code in just one line or tag. WordPress has built-in shortcode tags for its internal functions for gallery, embedded videos and audios, and more.</p>
+
+<!--more-->
+
+
+<p>(<em>For a list of built-in shortcodes just visit this link: <a href="https://en.support.wordpress.com/shortcodes/">https://en.support.wordpress.com/shortcodes/</a>)</em></p>
+
+<h3><strong>Custom Shortcodes</strong></h3>
+
+<p>WordPress allow users to create a custom shortcode which opens of new options for entering content like controlling the layout of the content in the site, and pulling other custom contents or objects from the WYSIWYG Editor.</p>
+
+<h4><strong><em>Creating and Adding Shortcode to the WordPress System</em></strong></h4>
+
+<ol>
+<li>First, the <code>function(){}</code> for the shortcode must be created. This is where all the codes for the shortcode will be created. Here are some examples of how it can be created and used:</li>
+</ol>
+
+
+<h4><strong>Simple text:</strong></h4>
+
+<pre><code>// A simple shortcode that returns a text.
+    function shortcode_function( ) {
+        return '&lt;h1&gt;I am a shortcode.&lt;/h1&gt;';
+    }
+</code></pre>
+
+<h3><strong>Using <code>$atts</code> and <code>$content</code></strong></h3>
+
+<p><code>$atts</code> will allow the shortcode to have attributes similar to an html tag and <code>$content</code> contains the text between the shortcode tags.</p>
+
+<pre><code>// A shortcode that utilizes $atts and $content, to display text add a custom class for the tag and add a background-color
+function shortcode_function( $atts, $content ) {
+    extract(shortcode_atts(array(
+            'background_color'=&gt;'#000',
+            'custom_class'=&gt;'',
+            'title'=&gt;'',
+    ));
+    return '&lt;div class="'. $custom_class. '" style="background-color: ' . $background_color . ';"&gt;&lt;h1&gt;'.$title.'&lt;/h1&gt;&lt;p&gt;'.do_shortcode($content).'&lt;/p&gt;&lt;/div&gt;';
+}
+</code></pre>
+
+<h3><strong> Using <code>$tags</code> </strong></h3>
+
+<p><code>$tags</code> allows one shortcode function to be called in different tag names.</p>
+
+<pre><code>// A shortcode that utilizes $tag and other parameters,
+function shortcode_function( $atts, $content,$tag ) {
+    switch ($tag) {
+        case 'simple_text':
+            return '&lt;h1&gt;I am a shortcode.&lt;/h1&gt;';
+            break;
+        case 'custom_text_tags':
+            extract(shortcode_atts(array(
+                    'background_color'=&gt;'#000',
+                    'custom_class'=&gt;'',
+                    'title'=&gt;'',
+            ));
+        $display = '&lt;div class="'. $custom_class. '" style="background-color: ' . $background_color . ';"&gt;&lt;h1&gt;'.$title.'&lt;/h1&gt;&lt;p&gt;'.do_shortcode($content).'&lt;/p&gt;&lt;/div&gt;';
+        return display;
+            break;
+        default:
+            return '&lt;h1&gt;I am a shortcode.&lt;/h1&gt;';
+    }
+}
+</code></pre>
+
+<h3><strong>Pulling posts or a custom post type</strong></h3>
+
+<p>This is an actual code that I used for a project to pull posts from a custom post type and add it to a carousel.</p>
+
+<pre><code>function($atts, $content=null){
+     ob_start();
+       $args = array(
+        'posts_per_page' =&gt; -1,
+       'post_type' =&gt;'carousel_post_type',
+       'order'=&gt;'ASC'
+      );
+
+    $items = get_posts($args);
+    $count = count($items);
+      echo '&lt;div id="carousel" class="carousel slide" data-ride="carousel"&gt;';
+        echo '&lt;ol class="carousel-indicators"&gt;';
+        for($i = 0; $i&lt;$count; $i++) : 
+          $index = ($i==0)? 'active' : '';
+          echo '&lt;li data-target="#resources-carousel" data-slide-to="' . $i . '" class="'. $index .'"&gt;&lt;/li&gt;';
+        endfor;
+        echo '&lt;div class="carousel-inner" role="listbox"&gt;';
+        foreach($resources as $key =&gt; $resource) :
+              $heading = get_field('heading',$resource-&gt;ID);
+              $link = get_field('resource_link',$resource-&gt;ID);
+              $content = $resource-&gt;post_content;
+              $key_index = ($key==0) ? 'active' : '';
+
+              echo '&lt;div class="item '.$key_index.'"&gt;';
+              echo '&lt;div class="resources"&gt;';
+                  echo '&lt;a href="'.$link.'"&gt;';
+                      echo '&lt;div class="res-heading"&gt;';
+                          echo '&lt;span class="fa fa-book fa-2x pull-left"&gt;&lt;/span&gt;';
+                          echo '&lt;h4 class="pull-left"&gt;'. $heading .'&lt;/h4&gt;';
+                          echo '&lt;/div&gt;'                         
+                      echo '&lt;div class="res-body"&gt;'.$content.'&lt;/div&gt;';
+                  echo '&lt;/a&gt;';
+               echo '&lt;/div&gt;';
+              echo '&lt;/div&gt;';
+        echo '&lt;/div&gt;';  
+      echo '&lt;/ol&gt;';
+      echo '&lt;/div&gt;';                
+    return ob_get_clean();
+}
+</code></pre>
+
+<ol>
+<li><p>The next step is to add the function to the WordPress.</p>
+
+<pre><code> add_shortcode('custom_shortcode_name','shortcode_function');
+</code></pre></li>
+</ol>
+
+
+<h3><strong>Using the Shortcode</strong></h3>
+
+<p>In the WYSIWYG Editor, we just need to enter the tag:</p>
+
+<pre><code>[custom_shortcode_name]
+</code></pre>
+
+<p>or if we utilized the <code>$tag</code> parameter we also just use it like the first example.</p>
+
+<pre><code>[simple_text]
+//or
+[custom_text_tags class="myclass" background_color="#000" title="My Shortcode"]My Shortcode content[/custom_text_tags]
+</code></pre>
+
+<p>That&rsquo;s all for shortcodes. Maybe you noticed that the shortcode gets longer if <code>$atts</code> is used. It can be solved by adding a custom button on the WYSIWYG editor and we will be exploring that on my next post. Keep on reading!</p>
+]]></content>
+  </entry>
+  
+</feed>

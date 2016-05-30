@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Making AngularJS and Wordpress Work Together - Patrick A. Matias</title>
+  <meta name="author" content="Patrick A. Matias">
+
+  
+  <meta name="description" content="Patrick A. Matias Blog Making AngularJS and Wordpress Work Together written Jun 10th, 2015 There has been articles around the web about AngularJS &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://PatzMatias.github.io/blog/2015/06/10/making-angularjs-and-wordpress-work-together">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Patrick A. Matias" type="application/atom+xml">
+  <!--FONTS-->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+  <!--FONTS-->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body id="top">
+  	<div class="preloader1"></div>
+  	<div class="nav-icons"> 
+	  	<div class="showslide" title="Menu">
+			<p><i class="fa fa-bars"></i></p>
+		</div>
+		<div class="home-icon" title="Home">
+		  	<a href="/">
+		      <img src="/images/home.png"/>
+		    </a>
+		</div>
+		<div class="blog" title="Blog">
+		  	<a href="/#blog">
+		      <p><i class="fa fa-edit"></i></p>
+		    </a>
+		</div>
+	</div>
+    <div class="back-to-top hidden-xs" data-0="opacity: 0;" data-1000="opacity: 1;">
+    	<a href="#top"><i class="fa fa-chevron-up"></i></a>
+    </div>
+	<div id="slide">
+	  <aside class="sidebar">
+	    
+	      <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/24/how-to-add-a-custom-ajax-url-to-woocommerce-ajax-urls/">How to Add a Custom AJAX URL to WooCommerce AJAX URLs</a>
+        <p class="date">2016-05-24 16:11:00 +0800</p>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/10/making-angularjs-and-wordpress-work-together/">Making AngularJS and Wordpress Work Together</a>
+        <p class="date">2015-06-10 22:17:56 +0800</p>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/02/learning-ruby-and-rails/">Learning Ruby and Rails</a>
+        <p class="date">2015-06-02 18:01:23 +0800</p>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos
+  
+  <a href="https://github.com/PatzMatias">@PatzMatias</a>
+  
+  </h1>
+  <ul id="gh_repos">
+    <li class="loading"><span>Status updating</span> &nbsp;<i class="fa fa-spinner fa-spin"></i></li>
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>Social</h1>
+  <ul>
+  	<li>
+	  	<i class="fa fa-google-plus-square"></i>
+	    <a class="social-links" href="https://plus.google.com/117521965885043360258?rel=author">
+	      @PatzMatias
+	    </a>
+	</li>
+	<li>
+		<i class="fa fa-facebook-square"></i>
+		<a class="social-links" href="https://www.facebook.com/patrick.matias">
+		fb.com/patrick.matias
+	 	</a>
+	</li>
+ </ul>
+</section>
+
+
+
+	    
+	  </aside>
+	</div>
+    <div class="post-header" id="post-header">
+    <div class="container-fluid">
+       <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h3 class="title">Patrick A. Matias</h3>
+          <div class="subtitle">Blog</div>
+        </div>
+     </div>
+    </div>
+</div>
+  
+
+</div>
+<article role="article" class="full-single-article">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 paper">
+        <h1>Making AngularJS and Wordpress Work Together</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-06-10T22:17:56+08:00" pubdate data-updated="true">Jun 10<span>th</span>, 2015</time>
+          
+
+
+        </div>
+        <p>There has been articles around the web about <strong>AngularJS</strong> and <strong>Wordpress</strong> working together that made me want to try this combination. In a short description, it&rsquo;s AngularJS utilizing the <strong>Wordpress AJAX</strong> service as an API. <!-- more --></p>
+
+<p>There are two ways to execute this combination. One, <strong>create the AngularJS app as a theme of Wordpress</strong> or two, <strong>work with AngularJS outside the Wordpress directory</strong>.</p>
+
+<p>The only difference between them is that the first method can cause routing problems because the app is riding the Wordpress&#8217; permalink structure; but it can be solved with creating some rewrite rules.</p>
+
+<p>I&rsquo;ve created an AngularJS for a simple Style Guide app that fetches the objects from the wordpress json api but my app is far from perfect &lsquo;cause I&rsquo;m still at a beginner&rsquo;s level at Angular. I&rsquo;ll tell some of the steps I&rsquo;ve did to create the simple app. By the way, I used the first method to do this.</p>
+
+<p>First, we&rsquo;ll need to setup Wordpress first then go to Wordpress&#8217; themes folder and create a new folder for our app there. The newly created folder should contain all the required files for it to be recognized as theme by Wordpress, the <code>index.php</code> file and the <code>style.css</code> file which contains the template info. After those steps, we should add AngularJS and other resources we need to the theme folder. In my case, I added <code>angular-route</code>,<code>angular-sanitize</code>, and <code>angular-bootstrap</code>. The file tree can look like the image below:</p>
+
+<p><img class="img-responsive" src="/images/themes.png" title="'File tree'" ></p>
+
+<p>After setting up the initial files, we can now start building the app. To begin, I started creating the custom fields and the custom post types I needed for the app which I&rsquo;ve done programmatically so the theme can be reused without depending on third-party plugins. Next to this step is writing the endpoint for the JSON API.</p>
+
+<p><img class="img-responsive" src="/images/php.png" title="'Sample Code Block'" ></p>
+
+<p>From these point on we&rsquo;ll just build the controllers, services, template, or directives and the views we need.</p>
+
+<pre><code>var app = angular.module(app,[]);
+
+//Service
+app.factory('Posts', ['$http', function($http){
+    return{
+        getPosts: function(){
+            var response = $http({
+                url: ajax_url,
+                method: 'GET',
+                params: {action: 'allposts'}
+            }).success( function( response ){
+                    return response.data;
+            });
+            return response;
+        }
+    }
+}]);
+
+//Controller
+app.controller('MainCtrl', ['$scope','Posts', function($scope, Posts){
+
+    Posts.getPosts.then(function(data){
+        $scope.posts = data.data;
+    });
+
+}]);
+
+//Template
+&lt;div ng-repeat="post in posts"&gt;
+    &lt;h1&gt;&lt;/h1&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>That&rsquo;s most of what you&rsquo;ll be doing with a AngularJS + Wordpress app. Right now my app is only able to fetch data but I&rsquo;ll be trying to add more features in this app in the future and continue learning the AngularJS framework.</p>
+
+<h3><strong>Summary</strong></h3>
+
+<p>AngularJS + Wordpress really works great together and creating the app is almost similar to working with an AngularJS app with a regular API. There may be a better solution for an API but Wordpress is good if you need a free API that you can modify yourself and its a good starting point for beginners on understanding how APIs work if you are used to being a Wordpress Developer.</p>
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        
+          <a class="pull-left" href="/blog/2015/06/02/learning-ruby-and-rails/" title="Previous Post: Learning Ruby and Rails">&laquo; Previous: Learning Ruby and Rails</a>
+        
+
+        
+          <a class="pull-right" href="/blog/2016/05/24/how-to-add-a-custom-ajax-url-to-woocommerce-ajax-urls/" title="Next Post: How to add a Custom AJAX URL to WooCommerce AJAX URLs">Next: How to add a Custom AJAX URL to WooCommerce AJAX URLs &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+  <a class="footer-text" href="/"><h4>Home</h4></a>
+</div>
+
+<div class="col-md-2">
+  <div class="social-icon-list">
+    
+
+    
+    <a href="https://github.com/PatzMatias"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a title="Google+" href="117521965885043360258"><img src="/images/glyphicons_social_02_google_plus.png"/></a>
+
+    
+    <a title="Facebook" href="https://facebook.com/patrick.matias"><img src="/images/glyphicons_social_30_facebook.png"/></a>
+
+    
+    <a href="mailto:patzmatias@gmail.com"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4 class="footer-text">Powered by <a href="http://octopress.org/">Octopress</a>
+</div>
+
+
+     	 <script src="/javascripts/main.js"></script>
+     	 <script src="/javascripts/github.js" type="text/javascript"> </script>
+      	 <script src="/javascripts/SmoothScroll.js"></script>
+         <script src="/javascripts/skrollr.min.js"></script>
+         <script type="text/javascript">
+          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+          var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+          console.log(w);
+
+          if(w>640)
+  	    	  var s = skrollr.init({forceHeight: false});
+          
+
+		    </script>
+         <script type="text/javascript">
+          if (!window.jXHR){
+              var jxhr = document.createElement('script');
+              jxhr.type = 'text/javascript';
+              jxhr.src = '/javascripts/libs/jXHR.js';
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(jxhr, s);
+          }
+
+          github.showRepos({
+              user: 'PatzMatias',
+              count: 3,
+              skip_forks: true,
+              target: '#gh_repos'
+          });
+    </script>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

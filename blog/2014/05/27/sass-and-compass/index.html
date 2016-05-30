@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>SASS and Compass - Patrick A. Matias</title>
+  <meta name="author" content="Patrick A. Matias">
+
+  
+  <meta name="description" content="Patrick A. Matias Blog SASS and Compass written May 27th, 2014 in CSS, SASS, Web Development We know how CSS style sheets can get all long and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://PatzMatias.github.io/blog/2014/05/27/sass-and-compass">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Patrick A. Matias" type="application/atom+xml">
+  <!--FONTS-->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+  <!--FONTS-->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body id="top">
+  	<div class="preloader1"></div>
+  	<div class="nav-icons"> 
+	  	<div class="showslide" title="Menu">
+			<p><i class="fa fa-bars"></i></p>
+		</div>
+		<div class="home-icon" title="Home">
+		  	<a href="/">
+		      <img src="/images/home.png"/>
+		    </a>
+		</div>
+		<div class="blog" title="Blog">
+		  	<a href="/#blog">
+		      <p><i class="fa fa-edit"></i></p>
+		    </a>
+		</div>
+	</div>
+    <div class="back-to-top hidden-xs" data-0="opacity: 0;" data-1000="opacity: 1;">
+    	<a href="#top"><i class="fa fa-chevron-up"></i></a>
+    </div>
+	<div id="slide">
+	  <aside class="sidebar">
+	    
+	      <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/24/how-to-add-a-custom-ajax-url-to-woocommerce-ajax-urls/">How to Add a Custom AJAX URL to WooCommerce AJAX URLs</a>
+        <p class="date">2016-05-24 16:11:00 +0800</p>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/10/making-angularjs-and-wordpress-work-together/">Making AngularJS and Wordpress Work Together</a>
+        <p class="date">2015-06-10 22:17:56 +0800</p>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/02/learning-ruby-and-rails/">Learning Ruby and Rails</a>
+        <p class="date">2015-06-02 18:01:23 +0800</p>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos
+  
+  <a href="https://github.com/PatzMatias">@PatzMatias</a>
+  
+  </h1>
+  <ul id="gh_repos">
+    <li class="loading"><span>Status updating</span> &nbsp;<i class="fa fa-spinner fa-spin"></i></li>
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>Social</h1>
+  <ul>
+  	<li>
+	  	<i class="fa fa-google-plus-square"></i>
+	    <a class="social-links" href="https://plus.google.com/117521965885043360258?rel=author">
+	      @PatzMatias
+	    </a>
+	</li>
+	<li>
+		<i class="fa fa-facebook-square"></i>
+		<a class="social-links" href="https://www.facebook.com/patrick.matias">
+		fb.com/patrick.matias
+	 	</a>
+	</li>
+ </ul>
+</section>
+
+
+
+	    
+	  </aside>
+	</div>
+    <div class="post-header" id="post-header">
+    <div class="container-fluid">
+       <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h3 class="title">Patrick A. Matias</h3>
+          <div class="subtitle">Blog</div>
+        </div>
+     </div>
+    </div>
+</div>
+  
+
+</div>
+<article role="article" class="full-single-article">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 paper">
+        <h1>SASS and Compass</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-05-27T16:01:19+08:00" pubdate data-updated="true">May 27<span>th</span>, 2014</time>
+          
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/css/'>CSS</a>, <a class='category' href='/blog/categories/sass/'>SASS</a>, <a class='category' href='/blog/categories/web-development/'>Web Development</a>
+  
+</span>
+
+
+        </div>
+        <p>We know how CSS style sheets can get all long and unorganized during development specially when doing large projects but luckily this isn&rsquo;t a problem now. I&rsquo;ve been using SASS and Compass in my training for quite a while now and I&rsquo;m getting fond of it.</p>
+
+<!--more-->
+
+
+<h3><strong>SASS (Synthetically Awesome Stylesheet)</strong></h3>
+
+<p><strong>SASS</strong> is an extension of CSS which allows the user to add <strong>variables</strong>, <strong>nested rules</strong>, <strong>mixins</strong>, <strong>imports,</strong> <strong>partials</strong>, <strong>extended property sharing</strong> and more. It uses a fully CSS-compatible syntax and helps keep style sheets well-organized.</p>
+
+<p>SASS has two type of syntax for coding. The first version which is based on <strong>Haml</strong> is SASS, it doesn&rsquo;t use curly braces <code>{}</code> and semi-colon <code>;</code> and has a strict indentation syntax. The second version is the SCSS which syntax is a lot more similar to CSS, and this is the one I am using.</p>
+
+<p>Here is an example of a normal CSS stylesheet:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">Regular</span> <span class="nt">CSS</span> <span class="nt">stylesheet</span><span class="err">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Italic&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Ita.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Bold&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Bold.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">div</span><span class="err">{</span>
+</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">-webkit-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
+</span><span class='line'>       <span class="na">-moz-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
+</span><span class='line'>          <span class="na">-o-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
+</span><span class='line'>              <span class="na">box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nt">div</span><span class="nd">:hover</span><span class="err">{</span>
+</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nt">div</span> <span class="nt">p</span><span class="err">{</span>
+</span><span class='line'>   <span class="na">text-align</span><span class="o">:</span> <span class="no">justify</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nt">div</span> <span class="nt">h3</span><span class="err">{</span>
+</span><span class='line'>   <span class="na">text-align</span><span class="o">:</span> <span class="no">center</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And this is a SASS stylesheet (SCSS syntax format):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">main</span><span class="nc">.scss</span><span class="err">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@import</span> <span class="s">&quot;typography&quot;;</span> <span class="s">//imports</span> <span class="s">declaration</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$light</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span> <span class="c1">//VARIABLES</span>
+</span><span class='line'><span class="nv">$dark</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span> <span class="c1">//VARIABLES</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@mixin</span><span class="nf"> box-shadow</span><span class="p">(</span><span class="nv">$shadow</span><span class="p">)</span> <span class="err">{</span> <span class="c1">//mixins declaration</span>
+</span><span class='line'> <span class="na">-webkit-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">-moz-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
+</span><span class='line'>       <span class="na">-o-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
+</span><span class='line'>              <span class="na">box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">div</span><span class="err">{</span>  <span class="o">//</span><span class="nt">ENHANCED</span> <span class="nt">NESTING</span>
+</span><span class='line'>    <span class="na">color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">background-color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span>
+</span><span class='line'>    <span class="k">@include</span><span class="nd"> box-shadow</span><span class="p">(</span><span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="nv">$dark</span><span class="p">)</span><span class="err">;</span> <span class="c1">//mixins implementation</span>
+</span><span class='line'>    <span class="k">&amp;</span><span class="nd">:hover</span><span class="err">{</span>
+</span><span class='line'>      <span class="na">color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span>
+</span><span class='line'>      <span class="na">background-color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span>
+</span><span class='line'>    <span class="err">}</span>
+</span><span class='line'>  <span class="nt">p</span><span class="err">{</span>
+</span><span class='line'>      <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span>
+</span><span class='line'>      <span class="na">text-align</span><span class="o">:</span> <span class="no">justify</span><span class="err">;</span>
+</span><span class='line'>      <span class="na">color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span> <span class="c1">//extended property</span>
+</span><span class='line'>      <span class="na">background-color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span> <span class="c1">//extended property</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  <span class="nt">h3</span><span class="err">{</span>
+</span><span class='line'>      <span class="k">@extend</span> <span class="nt">p</span><span class="o">;</span>          <span class="o">//@</span><span class="nt">extend</span> <span class="o">(</span><span class="nt">EXTENDED</span> <span class="nt">PROPERTY</span> <span class="nt">SHARING</span><span class="o">)</span>
+</span><span class='line'>        <span class="na">text-align</span><span class="o">:</span> <span class="no">center</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'><span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">_typography</span><span class="nc">.scss</span><span class="err">`</span><span class="o">//</span><span class="nt">partials</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Italic&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Ita.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Bold&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Bold.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Variables</strong></p>
+
+<p>With SASS a user will be capable of declaring variables. We all know that a variable is an essential part of most programming languages which is usually used to hold data.</p>
+
+<p>Now how is this useful in a language used for styling? Sometimes during development there are situations were we have to use similar property attributes.</p>
+
+<p>Notice how many times color attribute #fff and #333 was used. Let us say that we wanted to change these colors, that means we have to go back on all these attributes and edit it one by one. This is where SASS Variables will be valuable to users.</p>
+
+<p>With variables the user only needs to edit the value contained in the variable and every property that uses it will have the style and it would be easier to re-use the attribute to other properties.</p>
+
+<p><strong>Nested rules/Nesting</strong></p>
+
+<p>SASS enables the user to use nesting similar to nesting that is used in application programming. In the previous example we have called the <code>p</code> and <code>h3</code> of the object <code>div</code>, and called it again for its hover state. If <code>div</code> contains more child then we would have to call it again to access the child. Nesting will make it easier for the user to style an object and its childs.</p>
+
+<p>SASS Nested rules follow the same visual hierarchy of the HTML so it would be easier to see which objects belongs to what object.</p>
+
+<p><strong>@extend (Extended property sharing)</strong></p>
+
+<p><code>@extend</code> is very useful when we come to situations where we use the same property and attributes on some objects. In the CSS example, <code>p</code> and <code>h3</code> contains the same <code>color</code> and <code>background-color</code> property. The code would look cleaner if the property of <code>p</code> would be extended to <code>h3</code> and override then just <code>text-align</code> attribute.</p>
+
+<p><strong>@mixins</strong></p>
+
+<p>Style sheets gets longer specially when we want the styles compatible to many browsers. On some properties like <code>box-shadow</code> and <code>border-radius</code>, we use vendor prefixes to make sure that the styles would be displayed correctly in a certain browser and it gets tedious to write. But mixins can shorten it like a function or method in a programming language. We create it by writing <code>@mixins</code> and giving it a name and use a variable to pass on the attribute of the properties, then use it by declaring in the CSS an &lsquo;@include&rsquo; followed by the name of the mixin.</p>
+
+<p>SASS also uses <strong>operators</strong>, <strong>control directives and expressions</strong> like <code>if()</code>. I&rsquo;ll update this section once I learned how and when to use this three.</p>
+
+<p><strong>@import and Partials</strong></p>
+
+<p>Coding style sheets can be more organized with SASS&#8217; <code>@imports</code> and partials capability. Partials and <code>@import</code> allows the user to create parts of the style sheet and import it to your main style sheet. When it is generated those parts will be generated in a single CSS style sheet.</p>
+
+<p>To create a partial file its name must be prefixed with an underscore <code>_</code> like <code>_typography.scss</code>. The partial files are imported this way <code>@import "typography";</code>. The underscore prefix are removed to prevent SASS on generating an individual style sheet for the partial file, because we want SASS to import the styles to the main style sheet.</p>
+
+<h3><strong>Compass</strong></h3>
+
+<p>While SASS enhances the coding experience for CSS,  <strong>Compass</strong> eases the creation of the projects folder that is SASS ready and the use of SASS terminal commands. Here is some example:</p>
+
+<p>SASS terminal commands:</p>
+
+<pre><code>sass input.scss output.css //SASS command for producing a CSS style sheet from the SCSS file
+
+sass --watch input.scss:output.css //Command for producing a CSS style sheet from the SCSS file and                                                    watch it for changes for reproduction
+
+sass --watch app/sass:public/stylesheets //Command for watching an entire directory for changes in SCSS                                                         files and and automatic CSS file production
+</code></pre>
+
+<p>Compass terminal commands:</p>
+
+<pre><code>compass compile //to convert SCSS files to CSS style sheets
+
+compass watch // to watch the entire directory of SASS and automatic CSS style sheet production
+
+compass create projectname or /path/and/projectname/ // to create a project folder that is SASS ready
+
+compass validate //Compass is also capable of validating the CSS style sheets
+</code></pre>
+
+<p>Compass made SCSS to CSS file conversion easier by making the command much simpler. Compass also has its core utilities that can help the user to layout and style his website.</p>
+
+<p>That&rsquo;s all for now! I&rsquo;ll be doing a post about Bootstrap next time so keep posted. Thanks for reading. :)</p>
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        
+          <a class="pull-left" href="/blog/2014/05/13/another-slider-test/" title="Previous Post: Another Slider Test">&laquo; Previous: Another Slider Test</a>
+        
+
+        
+          <a class="pull-right" href="/blog/2014/06/04/bootstrap/" title="Next Post: Bootstrap">Next: Bootstrap &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+  <a class="footer-text" href="/"><h4>Home</h4></a>
+</div>
+
+<div class="col-md-2">
+  <div class="social-icon-list">
+    
+
+    
+    <a href="https://github.com/PatzMatias"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a title="Google+" href="117521965885043360258"><img src="/images/glyphicons_social_02_google_plus.png"/></a>
+
+    
+    <a title="Facebook" href="https://facebook.com/patrick.matias"><img src="/images/glyphicons_social_30_facebook.png"/></a>
+
+    
+    <a href="mailto:patzmatias@gmail.com"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4 class="footer-text">Powered by <a href="http://octopress.org/">Octopress</a>
+</div>
+
+
+     	 <script src="/javascripts/main.js"></script>
+     	 <script src="/javascripts/github.js" type="text/javascript"> </script>
+      	 <script src="/javascripts/SmoothScroll.js"></script>
+         <script src="/javascripts/skrollr.min.js"></script>
+         <script type="text/javascript">
+          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+          var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+          console.log(w);
+
+          if(w>640)
+  	    	  var s = skrollr.init({forceHeight: false});
+          
+
+		    </script>
+         <script type="text/javascript">
+          if (!window.jXHR){
+              var jxhr = document.createElement('script');
+              jxhr.type = 'text/javascript';
+              jxhr.src = '/javascripts/libs/jXHR.js';
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(jxhr, s);
+          }
+
+          github.showRepos({
+              user: 'PatzMatias',
+              count: 3,
+              skip_forks: true,
+              target: '#gh_repos'
+          });
+    </script>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

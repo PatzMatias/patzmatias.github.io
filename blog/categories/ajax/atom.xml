@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: AJAX, | Patrick A. Matias]]></title>
+  <link href="http://PatzMatias.github.io/blog/categories/ajax/atom.xml" rel="self"/>
+  <link href="http://PatzMatias.github.io/"/>
+  <updated>2016-05-30T17:49:08+08:00</updated>
+  <id>http://PatzMatias.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick A. Matias]]></name>
+    <email><![CDATA[patzmatias@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to Add a Custom AJAX URL to WooCommerce AJAX URLs]]></title>
+    <link href="http://PatzMatias.github.io/blog/2016/05/24/how-to-add-a-custom-ajax-url-to-woocommerce-ajax-urls/"/>
+    <updated>2016-05-24T16:11:00+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2016/05/24/how-to-add-a-custom-ajax-url-to-woocommerce-ajax-urls</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve been having an awesome time working with the WooCommerce plugin lately and found many things I liked and didn&rsquo;t like about it. I wrote this article to tackle one thing that I didn&rsquo;t like about it and how we could improve it.</p>
+
+<p>If you&rsquo;ve used WooCommerce before you&rsquo;ll find parts of the system that uses AJAX and parts that do not, and which sometimes results into inconsistencies to it&rsquo;s UX. <!-- more -->For example, their mini-cart widget, when activated the users would see their cart contents in it. Upon pressing the <strong>Add to cart</strong> button in the shop page a product would be added in the mini-cart and it is processed via ajax. But when a user clicks the remove button from one of the items in the mini-cart the page refreshes just to update it&rsquo;s UI. Isn&rsquo;t that inconsistent with the UX of the carts process flow? And since I mentioned it, I&rsquo;ll tell you what I did to solve this dilemma.</p>
+
+<hr />
+
+<h3><strong>Step 1. Extending WC_AJAX class</strong></h3>
+
+<p> Initially, I searched through WooCommerce&rsquo;s plugin files for the function or class where I can attach my own ajax endpoints and I found this part of the WC_AJAX Class that could be seen in <code>woocommerce/includes/class-wc-ajax.php</code>.</p>
+
+<p>Source: <a href="https://github.com/woothemes/woocommerce/blob/master/includes/" title="https://github.com/woothemes/woocommerce/blob/master/includes/">https://github.com/woothemes/woocommerce/blob/master/includes/</a></p>
+
+<p>```</p>
+
+<!-- Starts at line 87 -->
+
+
+<p>/<em>*
+ + Hook in methods &ndash; uses WordPress ajax handlers (admin-ajax).
+ </em>/
+public static function add_ajax_events() {</p>
+
+<pre><code>// woocommerce_EVENT =&gt; nopriv
+$ajax_events = array(
+    'get_refreshed_fragments'                          =&gt; true,
+    'apply_coupon'                                     =&gt; true,
+    'remove_coupon'                                    =&gt; true,
+    'update_shipping_method'                           =&gt; true,
+    'get_cart_totals'                                  =&gt; true,
+    'update_order_review'                              =&gt; true,
+    'add_to_cart'                                      =&gt; true,
+    'checkout'                                         =&gt; true,
+    'get_variation'                                    =&gt; true,
+    'feature_product'                                  =&gt; false,
+    'mark_order_status'                                =&gt; false,
+    'add_attribute'                                    =&gt; false,
+    'add_new_attribute'                                =&gt; false,
+    'remove_variation'                                 =&gt; false,
+    'remove_variations'                                =&gt; false,
+    'save_attributes'                                  =&gt; false,
+    'add_variation'                                    =&gt; false,
+    'link_all_variations'                              =&gt; false,
+    'revoke_access_to_download'                        =&gt; false,
+    'grant_access_to_download'                         =&gt; false,
+    'get_customer_details'                             =&gt; false,
+    'add_order_item'                                   =&gt; false,
+    'add_order_fee'                                    =&gt; false,
+    'add_order_shipping'                               =&gt; false,
+    'add_order_tax'                                    =&gt; false,
+    'remove_order_item'                                =&gt; false,
+    'remove_order_tax'                                 =&gt; false,
+    'reduce_order_item_stock'                          =&gt; false,
+    'increase_order_item_stock'                        =&gt; false,
+    'add_order_item_meta'                              =&gt; false,
+    'remove_order_item_meta'                           =&gt; false,
+    'calc_line_taxes'                                  =&gt; false,
+    'save_order_items'                                 =&gt; false,
+    'load_order_items'                                 =&gt; false,
+    'add_order_note'                                   =&gt; false,
+    'delete_order_note'                                =&gt; false,
+    'json_search_products'                             =&gt; false,
+    'json_search_products_and_variations'              =&gt; false,
+    'json_search_grouped_products'                     =&gt; false,
+    'json_search_downloadable_products_and_variations' =&gt; false,
+    'json_search_customers'                            =&gt; false,
+    'term_ordering'                                    =&gt; false,
+    'product_ordering'                                 =&gt; false,
+    'refund_line_items'                                =&gt; false,
+    'delete_refund'                                    =&gt; false,
+    'rated'                                            =&gt; false,
+    'update_api_key'                                   =&gt; false,
+    'get_customer_location'                            =&gt; true,
+    'load_variations'                                  =&gt; false,
+    'save_variations'                                  =&gt; false,
+    'bulk_edit_variations'                             =&gt; false,
+    'tax_rates_save_changes'                           =&gt; false,
+    'shipping_zones_save_changes'                      =&gt; false,
+    'shipping_zone_add_method'                         =&gt; false,
+    'shipping_zone_methods_save_changes'               =&gt; false,
+    'shipping_zone_methods_save_settings'              =&gt; false,
+    'shipping_classes_save_changes'                    =&gt; false,
+);
+foreach ( $ajax_events as $ajax_event =&gt; $nopriv ) {
+    add_action( 'wp_ajax_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+    if ( $nopriv ) {
+        add_action( 'wp_ajax_nopriv_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+        // WC AJAX can be used for frontend ajax requests
+        add_action( 'wc_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+    }
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>We wouldn&rsquo;t want to edit the plugin itself to add the custom endpoint and functions to the class because our code would be erased when the plugin updates itself. To avoid losing our code, a better way to add our codes is to extend the class. We could add it as a plugin or put just include it in the themes <code>functions.php</code>.</p>
+
+<p>In my case, I created a separate file just for this class then used <code>include_once()</code> to load it through my themes <code>functions.php</code>.</p>
+
+<pre><code>class Custom_WC_AJAX extends WC_AJAX {
+
+    /**
+     - Hook in ajax handlers.
+     */
+    public static function init() {
+        add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
+        add_action( 'template_redirect', array( __CLASS__, 'do_wc_ajax' ), 0 );
+        self::add_ajax_events();
+    }
+
+    /**
+     - Get WC Ajax Endpoint.
+     - @param  string $request Optional
+     - @return string
+     */
+    public static function get_endpoint( $request = '' ) {
+        return esc_url_raw( add_query_arg( 'wc-ajax', $request, remove_query_arg( array( 'remove_item', 'add-to-cart', 'added-to-cart' ) ) ) );
+    }
+
+    /**
+     - Set WC AJAX constant and headers.
+     */
+    public static function define_ajax() {
+        if ( ! empty( $_GET['wc-ajax'] ) ) {
+            if ( ! defined( 'DOING_AJAX' ) ) {
+                define( 'DOING_AJAX', true );
+            }
+            if ( ! defined( 'WC_DOING_AJAX' ) ) {
+                define( 'WC_DOING_AJAX', true );
+            }
+            // Turn off display_errors during AJAX events to prevent malformed JSON
+            if ( ! WP_DEBUG || ( WP_DEBUG &amp;&amp; ! WP_DEBUG_DISPLAY ) ) {
+                @ini_set( 'display_errors', 0 );
+            }
+            $GLOBALS['wpdb']-&gt;hide_errors();
+        }
+    }
+
+    /**
+     - Send headers for WC Ajax Requests
+     - @since 2.5.0
+     */
+    private static function wc_ajax_headers() {
+        send_origin_headers();
+        @header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
+        @header( 'X-Robots-Tag: noindex' );
+        send_nosniff_header();
+        nocache_headers();
+        status_header( 200 );
+    }
+
+    /**
+     - Check for WC Ajax request and fire action.
+     */
+    public static function do_wc_ajax() {
+        global $wp_query;
+        if ( ! empty( $_GET['wc-ajax'] ) ) {
+            $wp_query-&gt;set( 'wc-ajax', sanitize_text_field( $_GET['wc-ajax'] ) );
+        }
+        if ( $action = $wp_query-&gt;get( 'wc-ajax' ) ) {
+            self::wc_ajax_headers();
+            do_action( 'wc_ajax_' . sanitize_text_field( $action ) );
+            die();
+        }
+    }
+
+    /**
+     - Add custom ajax events here
+     */
+    public static function add_ajax_events() {
+        // woocommerce_EVENT =&gt; nopriv
+        $ajax_events = array(
+            'minicart_remove_item' =&gt; true,
+        );
+        foreach ( $ajax_events as $ajax_event =&gt; $nopriv ) {
+            add_action( 'wp_ajax_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+            if ( $nopriv ) {
+                add_action( 'wp_ajax_nopriv_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+                // WC AJAX can be used for frontend ajax requests
+                add_action( 'wc_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+            }
+        }
+    }
+
+    /**
+     - Get a refreshed cart fragment. 
+     - 
+     - Copied from WC_AJAX but changed how data is returned. 
+     - You can add fragments (DOM Objects loaded via AJAX) by adding them
+     - through the 'add_to_cart_fragments'. 
+     - It's better to do it this way so you don't have to create the DOM via
+     - javascript because WooCommerce have a general javascript code that will
+     - automatically change the DOM Object for all the fragments loaded
+     - through here. I will give more info about this later.
+     */
+    public static function get_refreshed_fragments_raw() {
+        // Get mini cart
+        ob_start();
+        woocommerce_mini_cart();
+        $mini_cart = ob_get_clean();
+        // Fragments and mini cart are returned
+        $data = array(
+            'fragments' =&gt; 
+                apply_filters( 
+                'woocommerce_add_to_cart_fragments', 
+                array(
+                    'div.widget_shopping_cart_content' =&gt; '&lt;div class="widget_shopping_cart_content"&gt;' . $mini_cart . '&lt;/div&gt;'
+                )
+            ),
+            'cart_hash' =&gt; 
+            apply_filters( 
+                'woocommerce_add_to_cart_hash', 
+                WC()-&gt;cart-&gt;get_cart_for_session() ? md5( json_encode( WC()-&gt;cart-&gt;get_cart_for_session() ) ) : '', 
+                WC()-&gt;cart-&gt;get_cart_for_session() )
+             );
+        /**
+         - Used 'return' here instead of 'wp_send_json()';
+         */
+        return ( $data ); 
+    }
+    /**
+     - Removes item from the cart then returns a new fragment
+     */
+    public static function minicart_remove_item() {
+        $cart_key = $_POST['cart_key'];
+        if(!empty($cart_key)) {
+            if( WC()-&gt;cart-&gt;remove_cart_item( $cart_key ) ){
+                // Response
+                $new_fragments = self::get_refreshed_fragments_raw();
+                die(json_encode($new_fragments));
+            }
+        }
+        die("error!!!!");
+    }
+}
+
+$custom_wc_ajax = new Custom_WC_AJAX();
+$custom_wc_ajax-&gt;init();
+</code></pre>
+
+<p>In the code sample above, I copied ix(6) functions from the parent class WC_AJAX that is needed to make the extend work. Then at the last part I just added my functions for the</p>
+
+<ul>
+<li><code>init()</code>,</li>
+<li><code>get_endpoint</code>,</li>
+<li><code>define_ajax*()</code>,</li>
+<li><code>do_wc_ajax()</code>,</li>
+<li><code>add_ajax_events()</code>,</li>
+<li>and <code>get_refreshed_fragments</code> &ndash;> which I renamed to <code>get_refreshed_fragments_raw()</code></li>
+</ul>
+
+
+<p>The first 4 functions are only needed to initiate the class and we only need to edit <code>add_ajax_events()</code> and <code>get_refreshed_fragments()</code>. I had to rename <code>get_refreshed_fragments()</code> to <code>get_refreshed_fragments_raw()</code> because I needed it to return the data to the functions, not the browser.</p>
+
+<h3><strong>Step 2. Adding your custom AJAX events</strong></h3>
+
+<p>To add a custom event you just have to create a function within the class and and add the function name in <code>$ajax_events</code> array inside the <code>add_ajax_events()</code> function.</p>
+
+<p>```</p>
+
+<pre><code>/**
+ * Add custom ajax events here
+ */
+public static function add_ajax_events() {
+    // woocommerce_EVENT =&gt; nopriv
+    $ajax_events = array(
+        'minicart_remove_item' =&gt; true,
+    );
+    foreach ( $ajax_events as $ajax_event =&gt; $nopriv ) {
+        add_action( 'wp_ajax_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+        if ( $nopriv ) {
+            add_action( 'wp_ajax_nopriv_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+            // WC AJAX can be used for frontend ajax requests
+            add_action( 'wc_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+        }
+    }
+}  
+
+public static function minicart_remove_item() {
+
+    if(isset($_POST['cart_item_key'])) die("error!!!!");
+
+    $cart_item_key = $_POST['cart_item_key'];
+    if(!empty($cart_item_key)) {
+        if( WC()-&gt;cart-&gt;remove_cart_item( $cart_item_key ) ){
+            // Response
+            $new_fragments = self::get_refreshed_fragments_raw();
+            die(json_encode($new_fragments));
+        }
+    }
+
+}
+</code></pre>
+
+<p>```</p>
+
+<p>In the problem I&rsquo;m trying to solve we need to remove a cart item from the minicart without reloading the page. When I inspected the code for their remove button, it has the endpoint url to cart argument <code>remove_item</code> with the value <code>cart_item_key</code>. I created a new endpoint for it and then pass the <code>cart_item_key</code> via post method and used <code>WC()-&gt;cart-&gt;remove_cart_item( $cart_item_key )</code> to remove the item from the cart and return the new fragments for the mini-cart. Fragments are bits of html code that woocommerce uses as a template to attach new information to the UI. Custom fragments can be attached to the <code>add_to_fragments</code> filter. In this case, we don&rsquo;t have to create custom fragments. But I&rsquo;ll discuss it on another topic.</p>
+
+<h3><strong>Step 3. Editing the mini-cart.php</strong></h3>
+
+<p>In the default <code>mini-cart.php</code>, this is how the remove link is generated.</p>
+
+<p>Source: <a href="https://github.com/woothemes/woocommerce/blob/master/templates/cart/mini-cart.php," title="https://github.com/woothemes/woocommerce/blob/master/templates/cart/mini-cart.php">https://github.com/woothemes/woocommerce/blob/master/templates/cart/mini-cart.php</a></p>
+
+<pre><code>&lt;?php
+echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
+    '&lt;a href="%s" class="remove" title="%s" data-product_id="%s" data-product_sku="%s"&gt;&amp;times;&lt;/a&gt;',
+    esc_url( WC()-&gt;cart-&gt;get_remove_url( $cart_item_key ) ),
+    __( 'Remove this item', 'woocommerce' ),
+    esc_attr( $product_id ),
+    esc_attr( $_product-&gt;get_sku() )
+), $cart_item_key );
+?&gt;
+</code></pre>
+
+<p>These are lines 45-53. I had to tweak this a bit to make it work with the behavior I want. In this sample code, you&rsquo;ll see that I changed <code>href</code> to a hash and added a <code>data-key</code> equal to the <code>$cart_item_key</code>. On line 48 instead of using <code>esc_url( WC()-&gt;cart-&gt;get_remove_url( $cart_item_key )</code>, I just used <code>esc_attr($cart_item_key)</code> to make it print just the <code>$cart_item_key</code>.</p>
+
+<pre><code>&lt;?php
+echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
+    '&lt;a href="#" data-key="%s" class="remove" title="%s" data-product_id="%s" data-product_sku="%s"&gt;&amp;times;&lt;/a&gt;',
+    esc_attr( $cart_item_key ),
+    __( 'Remove this item', 'woocommerce' ),
+    esc_attr( $product_id ),
+    esc_attr( $_product-&gt;get_sku() )
+), $cart_item_key );
+?&gt;
+</code></pre>
+
+<h3><strong>Step 4. Write JS to send post data to our custom endpoint.</strong></h3>
+
+<p>Since the remove button has been modified, we&rsquo;ll now move on to writing the javascript code for it. I wanted to follow the standard of WooCommerce on their coding so I just copied the <code>add_to_cart.js</code> and modified it to my needs. Everything under the <code>$post()</code> refreshes the information from the fragments received in the <code>response</code> data, so it won&rsquo;t just remove the cart item but also attach the new data to the UI.</p>
+
+<pre><code>jQuery( function( $ ) {
+
+    /* global jQuery, wc_add_to_cart_params */
+    if ( typeof wc_add_to_cart_params === 'undefined' ) {
+        return false;
+    }
+    // Ajax remove cart item
+    $( document ).on( 'click', 'a.remove', function(e) { // Remove button selector
+        e.preventDefault();
+        // AJAX add to cart request
+        var $thisbutton = $( this );
+        if ( $thisbutton.is( '.remove' ) ) {
+            //Check if the button has a product ID
+            if ( ! $thisbutton.attr( 'data-product_id' ) ) { 
+                return true;
+            }
+
+            // Get Cart Key
+            var key = $thisbutton.data('key');
+
+            // Create Post Data
+            var data = {cart_key: key};
+
+            // Ajax action
+            //passed`minicart_remove_item` endpoint and post dta
+            $.post( 
+                wc_add_to_cart_params.wc_ajax_url.toString().replace( '%%endpoint%%', 'minicart_remove_item' ), 
+                data, 
+                function( response ) {
+                if ( ! response ) {
+                    return;
+                }
+                    var this_page = window.location.toString();
+                    $thisbutton.removeClass( 'loading' );
+                    var fragments = response.fragments;
+                    var cart_hash = response.cart_hash;
+                    // Block fragments class
+                    if ( fragments ) {
+                        $.each( fragments, function( key ) {
+                            $( key ).addClass( 'updating' );
+                        });
+                    }
+                    // Block widgets and fragments
+                    $( '.shop_table.cart, .updating, .cart_totals' ).fadeTo( '400', '0.6' ).block({
+                        message: null,
+                        overlayCSS: {
+                            opacity: 0.6
+                        }
+                    });
+                    // Replace fragments
+                    if ( fragments ) {
+                        $.each( fragments, function( key, value ) {
+                            $( key ).replaceWith( value );
+                        });
+                    }
+                    // Unblock
+                    $( '.widget_shopping_cart, .updating' ).stop( true ).css( 'opacity', '1' ).unblock();
+                    // Cart page elements
+                    $( '.shop_table.cart' ).load( this_page + ' .shop_table.cart:eq(0) &gt; *', function() {
+                        $( '.shop_table.cart' ).stop( true ).css( 'opacity', '1' ).unblock();
+                        $( document.body ).trigger( 'cart_page_refreshed' );
+                    });
+                    $( '.cart_totals' ).load( this_page + ' .cart_totals:eq(0) &gt; *', function() {
+                        $( '.cart_totals' ).stop( true ).css( 'opacity', '1' ).unblock();
+                    });
+                    // Trigger event so themes can refresh other areas
+                    $( document.body ).trigger( 'added_to_cart', [ fragments, cart_hash, $thisbutton ] );
+            },
+            'json');
+            e.preventDefault();
+            return false;
+        }
+        return false;
+        // return true;
+    });
+});
+</code></pre>
+
+<hr />
+
+<p>Upon testing this modification, for me, the mini-cart behavior became better. You can also add a quantity input field there and modify the quantity of each cart item without refreshing the page.</p>
+
+<p>So that&rsquo;s it for now. I&rsquo;ll do another post about <code>fragments</code> in my next post. Thanks!</p>
+]]></content>
+  </entry>
+  
+</feed>
