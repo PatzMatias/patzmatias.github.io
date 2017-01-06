@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JavaScript and jQuery - Patrick A. Matias</title>
+  <meta name="author" content="Patrick A. Matias">
+
+  
+  <meta name="description" content="Patrick A. Matias Blog JavaScript and jQuery written Apr 16th, 2014 in JavaScript, Web Development, jQuery My first exercise in the training was to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://PatzMatias.github.io/blog/2014/04/16/javascript-and-jquery">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Patrick A. Matias" type="application/atom+xml">
+  <!--FONTS-->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+  <!--FONTS-->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body id="top">
+  	<div class="preloader1"></div>
+  	<div class="nav-icons"> 
+	  	<div class="showslide" title="Menu">
+			<p><i class="fa fa-bars"></i></p>
+		</div>
+		<div class="home-icon" title="Home">
+		  	<a href="/">
+		      <img src="/images/home.png"/>
+		    </a>
+		</div>
+		<div class="blog" title="Blog">
+		  	<a href="/#blog">
+		      <p><i class="fa fa-edit"></i></p>
+		    </a>
+		</div>
+	</div>
+    <div class="back-to-top hidden-xs" data-0="opacity: 0;" data-1000="opacity: 1;">
+    	<a href="#top"><i class="fa fa-chevron-up"></i></a>
+    </div>
+	<div id="slide">
+	  <aside class="sidebar">
+	    
+	      <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/24/how-to-add-a-custom-ajax-url-to-woocommerce-ajax-urls/">How to Add a Custom AJAX URL to WooCommerce AJAX URLs</a>
+        <p class="date">2016-05-24 16:11:00 +0800</p>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/10/making-angularjs-and-wordpress-work-together/">Making AngularJS and Wordpress Work Together</a>
+        <p class="date">2015-06-10 22:17:56 +0800</p>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/02/learning-ruby-and-rails/">Learning Ruby and Rails</a>
+        <p class="date">2015-06-02 18:01:23 +0800</p>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos
+  
+  <a href="https://github.com/PatzMatias">@PatzMatias</a>
+  
+  </h1>
+  <ul id="gh_repos">
+    <li class="loading"><span>Status updating</span> &nbsp;<i class="fa fa-spinner fa-spin"></i></li>
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>Social</h1>
+  <ul>
+  	<li>
+	  	<i class="fa fa-google-plus-square"></i>
+	    <a class="social-links" href="https://plus.google.com/117521965885043360258?rel=author">
+	      @PatzMatias
+	    </a>
+	</li>
+	<li>
+		<i class="fa fa-facebook-square"></i>
+		<a class="social-links" href="https://www.facebook.com/patrick.matias">
+		fb.com/patrick.matias
+	 	</a>
+	</li>
+ </ul>
+</section>
+
+
+
+	    
+	  </aside>
+	</div>
+    <div class="post-header" id="post-header">
+    <div class="container-fluid">
+       <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h3 class="title">Patrick A. Matias</h3>
+          <div class="subtitle">Blog</div>
+        </div>
+     </div>
+    </div>
+</div>
+  
+
+</div>
+<article role="article" class="full-single-article">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 paper">
+        <h1>JavaScript and jQuery</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-04-16T11:40:06+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2014</time>
+          
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/web-development/'>Web Development</a>, <a class='category' href='/blog/categories/jquery/'>jQuery</a>
+  
+</span>
+
+
+        </div>
+        <p>My first exercise in the training was to reproduce a website and copy it as close as possible:</p>
+
+<p><img class="img-responsive" src="/images/exercise1.png" title="'First Exercise'" ></p>
+
+<p>It is a 960px wide website that is centered on the browser. It was a simple website so I had no problems doing the layout and design.</p>
+
+<!--more-->
+
+
+<p>What made this exercise difficult for me was I needed to create the website&rsquo;s image slider script from scratch, and I&rsquo;m not allowed to use third-party plugins. First, I tried it writing the script with <em>JavaScript</em>. I was at least able to make the images move by hitting the buttons and change every 3 seconds. If I really wanted to make the image slider from raw JavaScript it would be impossible for a beginner like me.</p>
+
+<p>Given the circumstances, I decided to move on to <strong>jQuery</strong>. jQuery is a plugin made from JavaScript. jQuery made it easier for web developers to include effects to their websites and it is widely used today. Just by using <code>.fadeIn()</code>, <code>.fadeOut()</code>, and <code>.animate()</code> method you can have a simple animation effect. If you want more options for animation effects you&rsquo;ll have to add another plugin called <strong>jQueryUI</strong>.</p>
+
+<p>What I liked about jQuery was it is simpler to call an object through <strong>CSS</strong> selectors. In JavaScript you have to use <code>getElementById()</code> or <code>getElementByClass()</code> to call the object. jQuery only requires you to use <code>$('')</code> and write the id and the class name in between the quotation just like how you call it in the CSS stylesheet, like <code>$('#idname')</code> or <code>$('.classname')</code> for example. Using <code>.animate()</code> method is uncomplicated, this line <code>$('.idname').animate({"width":"400px"},"slow");</code> would animate the object slowly by swinging before it gets the 400px width. I learned jQuery through the <a href="http://api.jquery.com/" title="jQuery API Documentation">jQuery API Documentation</a> and there is still more to learn for me. Here is my code for the simple slider.</p>
+
+<figure class='code'><figcaption><span>jQuery Simple Image Slider</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">jQuery</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">){</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">slideWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.banner&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">contWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">clicks</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">startSlider</span><span class="p">();</span> <span class="c1">//starts the animation of the slider</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// start move images to left and right</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#prev&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="p">();</span>      <span class="p">});</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#next&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="p">();</span> <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">left</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;+=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="nx">pre</span><span class="p">());</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">counter</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span><span class="p">{</span>
+</span><span class='line'>      <span class="nx">counter</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">left</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">right</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="nx">app</span><span class="p">());</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span><span class="p">{</span>
+</span><span class='line'>      <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">right</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// end move images to left and right</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//prepend last child of ul before the first child </span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">pre</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:last-child&#39;</span><span class="p">).</span><span class="nx">prependTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:first&#39;</span><span class="p">));</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-693px&quot;</span><span class="p">});</span>
+</span><span class='line'>       <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//append first child of ul after the last child</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">app</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//start:code for automatic slide</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">startSlider</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/pause.png&#39;)&quot;</span><span class="p">});</span>
+</span><span class='line'>      <span class="nx">loop</span><span class="o">=</span><span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">){</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>              <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>          <span class="k">else</span><span class="p">{</span>
+</span><span class='line'>              <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">},</span> <span class="mi">3000</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">//end:code for automatic slide</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//start: stops the animation of the slider</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">stopSlider</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/play.png&#39;)&quot;</span><span class="p">});</span>
+</span><span class='line'>      <span class="nx">clicks</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>      <span class="nb">window</span><span class="p">.</span><span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">loop</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">//end: stops the animation of the slider</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//start: play/pause function</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">clicks</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/play.png&#39;)&quot;</span><span class="p">});</span>
+</span><span class='line'>          <span class="nx">clicks</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">clicks</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/pause.png&#39;)&quot;</span><span class="p">});</span>
+</span><span class='line'>          <span class="nx">clicks</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
+</span><span class='line'>          <span class="nx">startSlider</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>  <span class="c1">//end: play/pause function</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//start: hover function</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slidenav&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
+</span><span class='line'>          <span class="nx">startSlider</span><span class="p">();</span>   
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">);</span>
+</span><span class='line'>  <span class="c1">//stop: hover function</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I was really happy when I finished this exercise. Now I can make my own customized sliders without depending on third-party plugins. To end this post here is a screenshot of my output.</p>
+
+<p><img class="img-responsive" src="/images/myoutput.png" title="'My Output'" ></p>
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        
+          <a class="pull-left" href="/blog/2014/04/14/the-beginning/" title="Previous Post: The Beginning">&laquo; Previous: The Beginning</a>
+        
+
+        
+          <a class="pull-right" href="/blog/2014/05/13/another-slider-test/" title="Next Post: Another Slider Test">Next: Another Slider Test &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+  <a class="footer-text" href="/"><h4>Home</h4></a>
+</div>
+
+<div class="col-md-2">
+  <div class="social-icon-list">
+    
+
+    
+    <a href="https://github.com/PatzMatias"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a title="Google+" href="117521965885043360258"><img src="/images/glyphicons_social_02_google_plus.png"/></a>
+
+    
+    <a title="Facebook" href="https://facebook.com/patrick.matias"><img src="/images/glyphicons_social_30_facebook.png"/></a>
+
+    
+    <a href="mailto:patzmatias@gmail.com"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4 class="footer-text">Powered by <a href="http://octopress.org/">Octopress</a>
+</div>
+
+
+     	 <script src="/javascripts/main.js"></script>
+     	 <script src="/javascripts/github.js" type="text/javascript"> </script>
+      	 <script src="/javascripts/SmoothScroll.js"></script>
+         <script src="/javascripts/skrollr.min.js"></script>
+         <script type="text/javascript">
+          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+          var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+          console.log(w);
+
+          if(w>640)
+  	    	  var s = skrollr.init({forceHeight: false});
+          
+
+		    </script>
+         <script type="text/javascript">
+          if (!window.jXHR){
+              var jxhr = document.createElement('script');
+              jxhr.type = 'text/javascript';
+              jxhr.src = '/javascripts/libs/jXHR.js';
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(jxhr, s);
+          }
+
+          github.showRepos({
+              user: 'PatzMatias',
+              count: 3,
+              skip_forks: true,
+              target: '#gh_repos'
+          });
+    </script>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

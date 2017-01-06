@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: jQuery | Patrick A. Matias]]></title>
+  <link href="http://PatzMatias.github.io/blog/categories/jquery/atom.xml" rel="self"/>
+  <link href="http://PatzMatias.github.io/"/>
+  <updated>2016-05-30T17:49:08+08:00</updated>
+  <id>http://PatzMatias.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick A. Matias]]></name>
+    <email><![CDATA[patzmatias@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Another Slider Test]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/05/13/another-slider-test/"/>
+    <updated>2014-05-13T16:18:44+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/05/13/another-slider-test</id>
+    <content type="html"><![CDATA[<p><img class="img-responsive" src="/images/exercise2site.png" title="&lsquo;CAROUSEL VCARD Website&rsquo;" ></p>
+
+<p><a href="http://www.html-themes.com/themes/carousel_vcard/">Link to website</a></p>
+
+<p>It is amazing to know how creative we can get in web development. My second project showed me how sliders can be utilized in a more functional way. <!--more-->The website our trainer gave us to study is a one-page portfolio website where it used a complex slider that expand and collapse to display the contents.</p>
+
+<p>This project thought me how important it is to refactor our codes. Codes should be simple and short as long as possible so it can be easily maintained and to minimize the use of resources (storage and memory).</p>
+
+<p>```js
+$(&lsquo;.contentWrap&rsquo;).click(function(){</p>
+
+<pre><code>var currentBox = $(this).parents($(".contentWrap"));
+$('.itemBox').not(currentBox).css({"display":"none"});
+expand();
+</code></pre>
+
+<p>});
+```</p>
+
+<p>The code above is the refactored version of the first version of my code. I noticed while I&rsquo;m writing the code that the lines I&rsquo;m writing is already getting longer and its not normal anymore. If I didn&rsquo;t refactor I may have abused the <code>if-else</code> and class selectors just to arrive with the same function of the code above. Now I know that I should always think of a way to keep my codes short, clean, and simple.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript and jQuery]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/04/16/javascript-and-jquery/"/>
+    <updated>2014-04-16T11:40:06+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/04/16/javascript-and-jquery</id>
+    <content type="html"><![CDATA[<p>My first exercise in the training was to reproduce a website and copy it as close as possible:</p>
+
+<p><img class="img-responsive" src="/images/exercise1.png" title="&lsquo;First Exercise&rsquo;" ></p>
+
+<p>It is a 960px wide website that is centered on the browser. It was a simple website so I had no problems doing the layout and design.</p>
+
+<!--more-->
+
+
+<p>What made this exercise difficult for me was I needed to create the website&rsquo;s image slider script from scratch, and I&rsquo;m not allowed to use third-party plugins. First, I tried it writing the script with <em>JavaScript</em>. I was at least able to make the images move by hitting the buttons and change every 3 seconds. If I really wanted to make the image slider from raw JavaScript it would be impossible for a beginner like me.</p>
+
+<p>Given the circumstances, I decided to move on to <strong>jQuery</strong>. jQuery is a plugin made from JavaScript. jQuery made it easier for web developers to include effects to their websites and it is widely used today. Just by using <code>.fadeIn()</code>, <code>.fadeOut()</code>, and <code>.animate()</code> method you can have a simple animation effect. If you want more options for animation effects you&rsquo;ll have to add another plugin called <strong>jQueryUI</strong>.</p>
+
+<p>What I liked about jQuery was it is simpler to call an object through <strong>CSS</strong> selectors. In JavaScript you have to use <code>getElementById()</code> or <code>getElementByClass()</code> to call the object. jQuery only requires you to use <code>$('')</code> and write the id and the class name in between the quotation just like how you call it in the CSS stylesheet, like <code>$('#idname')</code> or <code>$('.classname')</code> for example. Using <code>.animate()</code> method is uncomplicated, this line <code>$('.idname').animate({"width":"400px"},"slow");</code> would animate the object slowly by swinging before it gets the 400px width. I learned jQuery through the <a href="http://api.jquery.com/" title="jQuery API Documentation">jQuery API Documentation</a> and there is still more to learn for me. Here is my code for the simple slider.</p>
+
+<p>```js jQuery Simple Image Slider
+jQuery(document).ready(function($){
+var slideWidth = $(&lsquo;.banner&rsquo;).width();
+var contWidth = $(&lsquo;#slidecontent&rsquo;).width();
+var counter=1;
+var clicks=1;</p>
+
+<p>startSlider(); //starts the animation of the slider</p>
+
+<pre><code>// start move images to left and right
+$('#prev').click(function(){left();     });
+$('#next').click(function(){right();    });
+
+function left(){
+    if(counter&gt;0){
+    $('#slidecontent').animate({"margin-left":"+=693px"},700, pre());
+    $('#slidecount p').text(counter+" / 3");
+    counter--;
+    }
+    else{
+    counter=3;
+    left();
+    }
+}
+
+function right(){
+    if(counter&lt;=3){
+    $('#slidecontent').animate({"margin-left":"-=693px"},700, app());
+    $('#slidecount p').text(counter+" / 3");
+    counter++;
+    }
+    else{
+    counter=1;
+    right();
+    }
+}
+// end move images to left and right
+
+//prepend last child of ul before the first child 
+function pre(){
+        $('.slides ul &gt; li:last-child').prependTo($('.slides ul:first'));
+        $('#slidecontent').css({"margin-left":"-693px"});
+     }
+
+//append first child of ul after the last child
+function app(){
+        $('.slides ul &gt; li:first').appendTo($('.slides ul:last'));
+        $('#slidecontent').css({"margin-left":"0px"});
+}
+
+//start:code for automatic slide
+function startSlider(){
+    $('#plause').css({"background-image":"url('resources/pause.png')"});
+    loop=setInterval(function(){ 
+
+        if(counter&lt;3){
+            $('#slidecontent').animate({"margin-left":"-=693px"},700, function(){
+            $('.slides ul &gt; li:first').appendTo($('.slides ul:last'));
+            $('#slidecontent').css({"margin-left":"0px"});
+            $('#slidecount p').text(counter+" / 3");
+            });
+            counter++;
+        }
+        else{
+            counter=1;
+            $('#slidecontent').animate({"margin-left":"-=693px"},700, function(){
+            $('.slides ul &gt; li:first').appendTo($('.slides ul:last'));
+            $('#slidecontent').css({"margin-left":"0px"});
+            $('#slidecount p').text(counter+" / 3");
+            });
+        }
+    }, 3000);
+}
+//end:code for automatic slide
+
+//start: stops the animation of the slider
+function stopSlider(){
+    $('#plause').css({"background-image":"url('resources/play.png')"});
+    clicks=2;
+    window.clearTimeout(loop);
+}
+//end: stops the animation of the slider
+
+//start: play/pause function
+$('#plause').click(function(){
+    if(clicks==1){
+        $('#plause').css({"background-image":"url('resources/play.png')"});
+        clicks++;
+        stopSlider();
+    }
+    else if(clicks==2){
+        $('#plause').css({"background-image":"url('resources/pause.png')"});
+        clicks--;
+        stopSlider();
+        startSlider();
+    }
+});
+//end: play/pause function
+
+//start: hover function
+$('.slidenav').hover(
+    function(){
+        stopSlider();
+    },
+    function(){
+        stopSlider();
+        startSlider();  
+    }
+);
+//stop: hover function
+</code></pre>
+
+<p>});
+```</p>
+
+<p>I was really happy when I finished this exercise. Now I can make my own customized sliders without depending on third-party plugins. To end this post here is a screenshot of my output.</p>
+
+<p><img class="img-responsive" src="/images/myoutput.png" title="&lsquo;My Output&rsquo;" ></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,2112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Patrick A. Matias]]></title>
+  <link href="http://PatzMatias.github.io/atom.xml" rel="self"/>
+  <link href="http://PatzMatias.github.io/"/>
+  <updated>2016-05-30T17:49:08+08:00</updated>
+  <id>http://PatzMatias.github.io/</id>
+  <author>
+    <name><![CDATA[Patrick A. Matias]]></name>
+    <email><![CDATA[patzmatias@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to Add a Custom AJAX URL to WooCommerce AJAX URLs]]></title>
+    <link href="http://PatzMatias.github.io/blog/2016/05/24/how-to-add-a-custom-ajax-url-to-woocommerce-ajax-urls/"/>
+    <updated>2016-05-24T16:11:00+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2016/05/24/how-to-add-a-custom-ajax-url-to-woocommerce-ajax-urls</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve been having an awesome time working with the WooCommerce plugin lately and found many things I liked and didn&rsquo;t like about it. I wrote this article to tackle one thing that I didn&rsquo;t like about it and how we could improve it.</p>
+
+<p>If you&rsquo;ve used WooCommerce before you&rsquo;ll find parts of the system that uses AJAX and parts that do not, and which sometimes results into inconsistencies to it&rsquo;s UX. <!-- more -->For example, their mini-cart widget, when activated the users would see their cart contents in it. Upon pressing the <strong>Add to cart</strong> button in the shop page a product would be added in the mini-cart and it is processed via ajax. But when a user clicks the remove button from one of the items in the mini-cart the page refreshes just to update it&rsquo;s UI. Isn&rsquo;t that inconsistent with the UX of the carts process flow? And since I mentioned it, I&rsquo;ll tell you what I did to solve this dilemma.</p>
+
+<hr />
+
+<h3><strong>Step 1. Extending WC_AJAX class</strong></h3>
+
+<p> Initially, I searched through WooCommerce&rsquo;s plugin files for the function or class where I can attach my own ajax endpoints and I found this part of the WC_AJAX Class that could be seen in <code>woocommerce/includes/class-wc-ajax.php</code>.</p>
+
+<p>Source: <a href="https://github.com/woothemes/woocommerce/blob/master/includes/" title="https://github.com/woothemes/woocommerce/blob/master/includes/">https://github.com/woothemes/woocommerce/blob/master/includes/</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!-- Starts at line 87 --&gt;
+</span><span class='line'>/**
+</span><span class='line'> + Hook in methods - uses WordPress ajax handlers (admin-ajax).
+</span><span class='line'> */
+</span><span class='line'>public static function add_ajax_events() {
+</span><span class='line'>    // woocommerce_EVENT =&gt; nopriv
+</span><span class='line'>    $ajax_events = array(
+</span><span class='line'>        'get_refreshed_fragments'                          =&gt; true,
+</span><span class='line'>        'apply_coupon'                                     =&gt; true,
+</span><span class='line'>        'remove_coupon'                                    =&gt; true,
+</span><span class='line'>        'update_shipping_method'                           =&gt; true,
+</span><span class='line'>        'get_cart_totals'                                  =&gt; true,
+</span><span class='line'>        'update_order_review'                              =&gt; true,
+</span><span class='line'>        'add_to_cart'                                      =&gt; true,
+</span><span class='line'>        'checkout'                                         =&gt; true,
+</span><span class='line'>        'get_variation'                                    =&gt; true,
+</span><span class='line'>        'feature_product'                                  =&gt; false,
+</span><span class='line'>        'mark_order_status'                                =&gt; false,
+</span><span class='line'>        'add_attribute'                                    =&gt; false,
+</span><span class='line'>        'add_new_attribute'                                =&gt; false,
+</span><span class='line'>        'remove_variation'                                 =&gt; false,
+</span><span class='line'>        'remove_variations'                                =&gt; false,
+</span><span class='line'>        'save_attributes'                                  =&gt; false,
+</span><span class='line'>        'add_variation'                                    =&gt; false,
+</span><span class='line'>        'link_all_variations'                              =&gt; false,
+</span><span class='line'>        'revoke_access_to_download'                        =&gt; false,
+</span><span class='line'>        'grant_access_to_download'                         =&gt; false,
+</span><span class='line'>        'get_customer_details'                             =&gt; false,
+</span><span class='line'>        'add_order_item'                                   =&gt; false,
+</span><span class='line'>        'add_order_fee'                                    =&gt; false,
+</span><span class='line'>        'add_order_shipping'                               =&gt; false,
+</span><span class='line'>        'add_order_tax'                                    =&gt; false,
+</span><span class='line'>        'remove_order_item'                                =&gt; false,
+</span><span class='line'>        'remove_order_tax'                                 =&gt; false,
+</span><span class='line'>        'reduce_order_item_stock'                          =&gt; false,
+</span><span class='line'>        'increase_order_item_stock'                        =&gt; false,
+</span><span class='line'>        'add_order_item_meta'                              =&gt; false,
+</span><span class='line'>        'remove_order_item_meta'                           =&gt; false,
+</span><span class='line'>        'calc_line_taxes'                                  =&gt; false,
+</span><span class='line'>        'save_order_items'                                 =&gt; false,
+</span><span class='line'>        'load_order_items'                                 =&gt; false,
+</span><span class='line'>        'add_order_note'                                   =&gt; false,
+</span><span class='line'>        'delete_order_note'                                =&gt; false,
+</span><span class='line'>        'json_search_products'                             =&gt; false,
+</span><span class='line'>        'json_search_products_and_variations'              =&gt; false,
+</span><span class='line'>        'json_search_grouped_products'                     =&gt; false,
+</span><span class='line'>        'json_search_downloadable_products_and_variations' =&gt; false,
+</span><span class='line'>        'json_search_customers'                            =&gt; false,
+</span><span class='line'>        'term_ordering'                                    =&gt; false,
+</span><span class='line'>        'product_ordering'                                 =&gt; false,
+</span><span class='line'>        'refund_line_items'                                =&gt; false,
+</span><span class='line'>        'delete_refund'                                    =&gt; false,
+</span><span class='line'>        'rated'                                            =&gt; false,
+</span><span class='line'>        'update_api_key'                                   =&gt; false,
+</span><span class='line'>        'get_customer_location'                            =&gt; true,
+</span><span class='line'>        'load_variations'                                  =&gt; false,
+</span><span class='line'>        'save_variations'                                  =&gt; false,
+</span><span class='line'>        'bulk_edit_variations'                             =&gt; false,
+</span><span class='line'>        'tax_rates_save_changes'                           =&gt; false,
+</span><span class='line'>        'shipping_zones_save_changes'                      =&gt; false,
+</span><span class='line'>        'shipping_zone_add_method'                         =&gt; false,
+</span><span class='line'>        'shipping_zone_methods_save_changes'               =&gt; false,
+</span><span class='line'>        'shipping_zone_methods_save_settings'              =&gt; false,
+</span><span class='line'>        'shipping_classes_save_changes'                    =&gt; false,
+</span><span class='line'>    );
+</span><span class='line'>    foreach ( $ajax_events as $ajax_event =&gt; $nopriv ) {
+</span><span class='line'>        add_action( 'wp_ajax_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+</span><span class='line'>        if ( $nopriv ) {
+</span><span class='line'>            add_action( 'wp_ajax_nopriv_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+</span><span class='line'>            // WC AJAX can be used for frontend ajax requests
+</span><span class='line'>            add_action( 'wc_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We wouldn&rsquo;t want to edit the plugin itself to add the custom endpoint and functions to the class because our code would be erased when the plugin updates itself. To avoid losing our code, a better way to add our codes is to extend the class. We could add it as a plugin or put just include it in the themes <code>functions.php</code>.</p>
+
+<p>In my case, I created a separate file just for this class then used <code>include_once()</code> to load it through my themes <code>functions.php</code>.</p>
+
+<pre><code>class Custom_WC_AJAX extends WC_AJAX {
+
+    /**
+     - Hook in ajax handlers.
+     */
+    public static function init() {
+        add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
+        add_action( 'template_redirect', array( __CLASS__, 'do_wc_ajax' ), 0 );
+        self::add_ajax_events();
+    }
+
+    /**
+     - Get WC Ajax Endpoint.
+     - @param  string $request Optional
+     - @return string
+     */
+    public static function get_endpoint( $request = '' ) {
+        return esc_url_raw( add_query_arg( 'wc-ajax', $request, remove_query_arg( array( 'remove_item', 'add-to-cart', 'added-to-cart' ) ) ) );
+    }
+
+    /**
+     - Set WC AJAX constant and headers.
+     */
+    public static function define_ajax() {
+        if ( ! empty( $_GET['wc-ajax'] ) ) {
+            if ( ! defined( 'DOING_AJAX' ) ) {
+                define( 'DOING_AJAX', true );
+            }
+            if ( ! defined( 'WC_DOING_AJAX' ) ) {
+                define( 'WC_DOING_AJAX', true );
+            }
+            // Turn off display_errors during AJAX events to prevent malformed JSON
+            if ( ! WP_DEBUG || ( WP_DEBUG &amp;&amp; ! WP_DEBUG_DISPLAY ) ) {
+                @ini_set( 'display_errors', 0 );
+            }
+            $GLOBALS['wpdb']-&gt;hide_errors();
+        }
+    }
+
+    /**
+     - Send headers for WC Ajax Requests
+     - @since 2.5.0
+     */
+    private static function wc_ajax_headers() {
+        send_origin_headers();
+        @header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
+        @header( 'X-Robots-Tag: noindex' );
+        send_nosniff_header();
+        nocache_headers();
+        status_header( 200 );
+    }
+
+    /**
+     - Check for WC Ajax request and fire action.
+     */
+    public static function do_wc_ajax() {
+        global $wp_query;
+        if ( ! empty( $_GET['wc-ajax'] ) ) {
+            $wp_query-&gt;set( 'wc-ajax', sanitize_text_field( $_GET['wc-ajax'] ) );
+        }
+        if ( $action = $wp_query-&gt;get( 'wc-ajax' ) ) {
+            self::wc_ajax_headers();
+            do_action( 'wc_ajax_' . sanitize_text_field( $action ) );
+            die();
+        }
+    }
+
+    /**
+     - Add custom ajax events here
+     */
+    public static function add_ajax_events() {
+        // woocommerce_EVENT =&gt; nopriv
+        $ajax_events = array(
+            'minicart_remove_item' =&gt; true,
+        );
+        foreach ( $ajax_events as $ajax_event =&gt; $nopriv ) {
+            add_action( 'wp_ajax_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+            if ( $nopriv ) {
+                add_action( 'wp_ajax_nopriv_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+                // WC AJAX can be used for frontend ajax requests
+                add_action( 'wc_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+            }
+        }
+    }
+
+    /**
+     - Get a refreshed cart fragment. 
+     - 
+     - Copied from WC_AJAX but changed how data is returned. 
+     - You can add fragments (DOM Objects loaded via AJAX) by adding them
+     - through the 'add_to_cart_fragments'. 
+     - It's better to do it this way so you don't have to create the DOM via
+     - javascript because WooCommerce have a general javascript code that will
+     - automatically change the DOM Object for all the fragments loaded
+     - through here. I will give more info about this later.
+     */
+    public static function get_refreshed_fragments_raw() {
+        // Get mini cart
+        ob_start();
+        woocommerce_mini_cart();
+        $mini_cart = ob_get_clean();
+        // Fragments and mini cart are returned
+        $data = array(
+            'fragments' =&gt; 
+                apply_filters( 
+                'woocommerce_add_to_cart_fragments', 
+                array(
+                    'div.widget_shopping_cart_content' =&gt; '&lt;div class="widget_shopping_cart_content"&gt;' . $mini_cart . '&lt;/div&gt;'
+                )
+            ),
+            'cart_hash' =&gt; 
+            apply_filters( 
+                'woocommerce_add_to_cart_hash', 
+                WC()-&gt;cart-&gt;get_cart_for_session() ? md5( json_encode( WC()-&gt;cart-&gt;get_cart_for_session() ) ) : '', 
+                WC()-&gt;cart-&gt;get_cart_for_session() )
+             );
+        /**
+         - Used 'return' here instead of 'wp_send_json()';
+         */
+        return ( $data ); 
+    }
+    /**
+     - Removes item from the cart then returns a new fragment
+     */
+    public static function minicart_remove_item() {
+        $cart_key = $_POST['cart_key'];
+        if(!empty($cart_key)) {
+            if( WC()-&gt;cart-&gt;remove_cart_item( $cart_key ) ){
+                // Response
+                $new_fragments = self::get_refreshed_fragments_raw();
+                die(json_encode($new_fragments));
+            }
+        }
+        die("error!!!!");
+    }
+}
+
+$custom_wc_ajax = new Custom_WC_AJAX();
+$custom_wc_ajax-&gt;init();
+</code></pre>
+
+<p>In the code sample above, I copied ix(6) functions from the parent class WC_AJAX that is needed to make the extend work. Then at the last part I just added my functions for the</p>
+
+<ul>
+<li><code>init()</code>,</li>
+<li><code>get_endpoint</code>,</li>
+<li><code>define_ajax*()</code>,</li>
+<li><code>do_wc_ajax()</code>,</li>
+<li><code>add_ajax_events()</code>,</li>
+<li>and <code>get_refreshed_fragments</code> &ndash;> which I renamed to <code>get_refreshed_fragments_raw()</code></li>
+</ul>
+
+
+<p>The first 4 functions are only needed to initiate the class and we only need to edit <code>add_ajax_events()</code> and <code>get_refreshed_fragments()</code>. I had to rename <code>get_refreshed_fragments()</code> to <code>get_refreshed_fragments_raw()</code> because I needed it to return the data to the functions, not the browser.</p>
+
+<h3><strong>Step 2. Adding your custom AJAX events</strong></h3>
+
+<p>To add a custom event you just have to create a function within the class and and add the function name in <code>$ajax_events</code> array inside the <code>add_ajax_events()</code> function.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/**
+</span><span class='line'> * Add custom ajax events here
+</span><span class='line'> */
+</span><span class='line'>public static function add_ajax_events() {
+</span><span class='line'>    // woocommerce_EVENT =&gt; nopriv
+</span><span class='line'>    $ajax_events = array(
+</span><span class='line'>        'minicart_remove_item' =&gt; true,
+</span><span class='line'>    );
+</span><span class='line'>    foreach ( $ajax_events as $ajax_event =&gt; $nopriv ) {
+</span><span class='line'>        add_action( 'wp_ajax_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+</span><span class='line'>        if ( $nopriv ) {
+</span><span class='line'>            add_action( 'wp_ajax_nopriv_woocommerce_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+</span><span class='line'>            // WC AJAX can be used for frontend ajax requests
+</span><span class='line'>            add_action( 'wc_ajax_' . $ajax_event, array( __CLASS__, $ajax_event ) );
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}  
+</span><span class='line'>
+</span><span class='line'>public static function minicart_remove_item() {
+</span><span class='line'>    
+</span><span class='line'>    if(isset($_POST['cart_item_key'])) die("error!!!!");
+</span><span class='line'>
+</span><span class='line'>    $cart_item_key = $_POST['cart_item_key'];
+</span><span class='line'>    if(!empty($cart_item_key)) {
+</span><span class='line'>        if( WC()-&gt;cart-&gt;remove_cart_item( $cart_item_key ) ){
+</span><span class='line'>            // Response
+</span><span class='line'>            $new_fragments = self::get_refreshed_fragments_raw();
+</span><span class='line'>            die(json_encode($new_fragments));
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the problem I&rsquo;m trying to solve we need to remove a cart item from the minicart without reloading the page. When I inspected the code for their remove button, it has the endpoint url to cart argument <code>remove_item</code> with the value <code>cart_item_key</code>. I created a new endpoint for it and then pass the <code>cart_item_key</code> via post method and used <code>WC()-&gt;cart-&gt;remove_cart_item( $cart_item_key )</code> to remove the item from the cart and return the new fragments for the mini-cart. Fragments are bits of html code that woocommerce uses as a template to attach new information to the UI. Custom fragments can be attached to the <code>add_to_fragments</code> filter. In this case, we don&rsquo;t have to create custom fragments. But I&rsquo;ll discuss it on another topic.</p>
+
+<h3><strong>Step 3. Editing the mini-cart.php</strong></h3>
+
+<p>In the default <code>mini-cart.php</code>, this is how the remove link is generated.</p>
+
+<p>Source: <a href="https://github.com/woothemes/woocommerce/blob/master/templates/cart/mini-cart.php," title="https://github.com/woothemes/woocommerce/blob/master/templates/cart/mini-cart.php">https://github.com/woothemes/woocommerce/blob/master/templates/cart/mini-cart.php</a></p>
+
+<pre><code>&lt;?php
+echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
+    '&lt;a href="%s" class="remove" title="%s" data-product_id="%s" data-product_sku="%s"&gt;&amp;times;&lt;/a&gt;',
+    esc_url( WC()-&gt;cart-&gt;get_remove_url( $cart_item_key ) ),
+    __( 'Remove this item', 'woocommerce' ),
+    esc_attr( $product_id ),
+    esc_attr( $_product-&gt;get_sku() )
+), $cart_item_key );
+?&gt;
+</code></pre>
+
+<p>These are lines 45-53. I had to tweak this a bit to make it work with the behavior I want. In this sample code, you&rsquo;ll see that I changed <code>href</code> to a hash and added a <code>data-key</code> equal to the <code>$cart_item_key</code>. On line 48 instead of using <code>esc_url( WC()-&gt;cart-&gt;get_remove_url( $cart_item_key )</code>, I just used <code>esc_attr($cart_item_key)</code> to make it print just the <code>$cart_item_key</code>.</p>
+
+<pre><code>&lt;?php
+echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
+    '&lt;a href="#" data-key="%s" class="remove" title="%s" data-product_id="%s" data-product_sku="%s"&gt;&amp;times;&lt;/a&gt;',
+    esc_attr( $cart_item_key ),
+    __( 'Remove this item', 'woocommerce' ),
+    esc_attr( $product_id ),
+    esc_attr( $_product-&gt;get_sku() )
+), $cart_item_key );
+?&gt;
+</code></pre>
+
+<h3><strong>Step 4. Write JS to send post data to our custom endpoint.</strong></h3>
+
+<p>Since the remove button has been modified, we&rsquo;ll now move on to writing the javascript code for it. I wanted to follow the standard of WooCommerce on their coding so I just copied the <code>add_to_cart.js</code> and modified it to my needs. Everything under the <code>$post()</code> refreshes the information from the fragments received in the <code>response</code> data, so it won&rsquo;t just remove the cart item but also attach the new data to the UI.</p>
+
+<pre><code>jQuery( function( $ ) {
+
+    /* global jQuery, wc_add_to_cart_params */
+    if ( typeof wc_add_to_cart_params === 'undefined' ) {
+        return false;
+    }
+    // Ajax remove cart item
+    $( document ).on( 'click', 'a.remove', function(e) { // Remove button selector
+        e.preventDefault();
+        // AJAX add to cart request
+        var $thisbutton = $( this );
+        if ( $thisbutton.is( '.remove' ) ) {
+            //Check if the button has a product ID
+            if ( ! $thisbutton.attr( 'data-product_id' ) ) { 
+                return true;
+            }
+
+            // Get Cart Key
+            var key = $thisbutton.data('key');
+
+            // Create Post Data
+            var data = {cart_key: key};
+
+            // Ajax action
+            //passed`minicart_remove_item` endpoint and post dta
+            $.post( 
+                wc_add_to_cart_params.wc_ajax_url.toString().replace( '%%endpoint%%', 'minicart_remove_item' ), 
+                data, 
+                function( response ) {
+                if ( ! response ) {
+                    return;
+                }
+                    var this_page = window.location.toString();
+                    $thisbutton.removeClass( 'loading' );
+                    var fragments = response.fragments;
+                    var cart_hash = response.cart_hash;
+                    // Block fragments class
+                    if ( fragments ) {
+                        $.each( fragments, function( key ) {
+                            $( key ).addClass( 'updating' );
+                        });
+                    }
+                    // Block widgets and fragments
+                    $( '.shop_table.cart, .updating, .cart_totals' ).fadeTo( '400', '0.6' ).block({
+                        message: null,
+                        overlayCSS: {
+                            opacity: 0.6
+                        }
+                    });
+                    // Replace fragments
+                    if ( fragments ) {
+                        $.each( fragments, function( key, value ) {
+                            $( key ).replaceWith( value );
+                        });
+                    }
+                    // Unblock
+                    $( '.widget_shopping_cart, .updating' ).stop( true ).css( 'opacity', '1' ).unblock();
+                    // Cart page elements
+                    $( '.shop_table.cart' ).load( this_page + ' .shop_table.cart:eq(0) &gt; *', function() {
+                        $( '.shop_table.cart' ).stop( true ).css( 'opacity', '1' ).unblock();
+                        $( document.body ).trigger( 'cart_page_refreshed' );
+                    });
+                    $( '.cart_totals' ).load( this_page + ' .cart_totals:eq(0) &gt; *', function() {
+                        $( '.cart_totals' ).stop( true ).css( 'opacity', '1' ).unblock();
+                    });
+                    // Trigger event so themes can refresh other areas
+                    $( document.body ).trigger( 'added_to_cart', [ fragments, cart_hash, $thisbutton ] );
+            },
+            'json');
+            e.preventDefault();
+            return false;
+        }
+        return false;
+        // return true;
+    });
+});
+</code></pre>
+
+<hr />
+
+<p>Upon testing this modification, for me, the mini-cart behavior became better. You can also add a quantity input field there and modify the quantity of each cart item without refreshing the page.</p>
+
+<p>So that&rsquo;s it for now. I&rsquo;ll do another post about <code>fragments</code> in my next post. Thanks!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Making AngularJS and Wordpress Work Together]]></title>
+    <link href="http://PatzMatias.github.io/blog/2015/06/10/making-angularjs-and-wordpress-work-together/"/>
+    <updated>2015-06-10T22:17:56+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2015/06/10/making-angularjs-and-wordpress-work-together</id>
+    <content type="html"><![CDATA[<p>There has been articles around the web about <strong>AngularJS</strong> and <strong>Wordpress</strong> working together that made me want to try this combination. In a short description, it&rsquo;s AngularJS utilizing the <strong>Wordpress AJAX</strong> service as an API. <!-- more --></p>
+
+<p>There are two ways to execute this combination. One, <strong>create the AngularJS app as a theme of Wordpress</strong> or two, <strong>work with AngularJS outside the Wordpress directory</strong>.</p>
+
+<p>The only difference between them is that the first method can cause routing problems because the app is riding the Wordpress&#8217; permalink structure; but it can be solved with creating some rewrite rules.</p>
+
+<p>I&rsquo;ve created an AngularJS for a simple Style Guide app that fetches the objects from the wordpress json api but my app is far from perfect &lsquo;cause I&rsquo;m still at a beginner&rsquo;s level at Angular. I&rsquo;ll tell some of the steps I&rsquo;ve did to create the simple app. By the way, I used the first method to do this.</p>
+
+<p>First, we&rsquo;ll need to setup Wordpress first then go to Wordpress&#8217; themes folder and create a new folder for our app there. The newly created folder should contain all the required files for it to be recognized as theme by Wordpress, the <code>index.php</code> file and the <code>style.css</code> file which contains the template info. After those steps, we should add AngularJS and other resources we need to the theme folder. In my case, I added <code>angular-route</code>,<code>angular-sanitize</code>, and <code>angular-bootstrap</code>. The file tree can look like the image below:</p>
+
+<p><img class="img-responsive" src="http://PatzMatias.github.io/images/themes.png" title="'File tree'" ></p>
+
+<p>After setting up the initial files, we can now start building the app. To begin, I started creating the custom fields and the custom post types I needed for the app which I&rsquo;ve done programmatically so the theme can be reused without depending on third-party plugins. Next to this step is writing the endpoint for the JSON API.</p>
+
+<p><img class="img-responsive" src="http://PatzMatias.github.io/images/php.png" title="'Sample Code Block'" ></p>
+
+<p>From these point on we&rsquo;ll just build the controllers, services, template, or directives and the views we need.</p>
+
+<pre><code>var app = angular.module(app,[]);
+
+//Service
+app.factory('Posts', ['$http', function($http){
+    return{
+        getPosts: function(){
+            var response = $http({
+                url: ajax_url,
+                method: 'GET',
+                params: {action: 'allposts'}
+            }).success( function( response ){
+                    return response.data;
+            });
+            return response;
+        }
+    }
+}]);
+
+//Controller
+app.controller('MainCtrl', ['$scope','Posts', function($scope, Posts){
+
+    Posts.getPosts.then(function(data){
+        $scope.posts = data.data;
+    });
+
+}]);
+
+//Template
+&lt;div ng-repeat="post in posts"&gt;
+    &lt;h1&gt;&lt;/h1&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>That&rsquo;s most of what you&rsquo;ll be doing with a AngularJS + Wordpress app. Right now my app is only able to fetch data but I&rsquo;ll be trying to add more features in this app in the future and continue learning the AngularJS framework.</p>
+
+<h3><strong>Summary</strong></h3>
+
+<p>AngularJS + Wordpress really works great together and creating the app is almost similar to working with an AngularJS app with a regular API. There may be a better solution for an API but Wordpress is good if you need a free API that you can modify yourself and its a good starting point for beginners on understanding how APIs work if you are used to being a Wordpress Developer.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Learning Ruby and Rails]]></title>
+    <link href="http://PatzMatias.github.io/blog/2015/06/02/learning-ruby-and-rails/"/>
+    <updated>2015-06-02T18:01:23+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2015/06/02/learning-ruby-and-rails</id>
+    <content type="html"><![CDATA[<p>It has been a few weeks since my last project, so I decided to dive-in to Ruby and Ruby and Rails during my downtime and learn simple coding. Here is what I&rsquo;ve learned so far.</p>
+
+<h2><strong>Ruby</strong></h2>
+
+<h3>Facts</h3>
+
+<p>Before digging into Ruby code I&rsquo;ve read some facts about it first. Ruby was designed and developed in the mid-1990s by Yukihiro &ldquo;Matz&rdquo; atsumoto in Japan. It is a dynamic, reflective, object-oriented, general-purpose programming language. Ruby&rsquo;s syntax is influenced by Perl and Python. Ruby has a library of plug-ins that can improve development workflow and experience called RubyGems (<a href="https://rubygems.org/">https://rubygems.org/</a>). Ruby is one of the most popular programming languages of today.</p>
+
+<!--more-->
+
+
+<h3>Coding</h3>
+
+<p>To learn Ruby code, I went to codecademy and used their free learning course for Ruby. This is the first time I&rsquo;ve encountered a programming language that doesn&rsquo;t use terminator symbols <code>;</code> and not much of curly braces &lsquo;{}&rsquo; to define the scope of a method or a loop. Compared to other languages I&rsquo;ve worked with before like PHP, Java, and Javascript, Ruby has a cleaner syntax and a higher readability.</p>
+
+<p> Here is what I&rsquo;ve learned.</p>
+
+<p><strong>Printing a string.</strong></p>
+
+<pre><code>puts "Hello World!"
+</code></pre>
+
+<p><strong>Some built-in methods of Ruby</strong></p>
+
+<pre><code>-199.abs                                # =&gt; 199 / Absolute Values
+"Hello World".length                    # =&gt; 11 / Getting string length
+"Hello World.".index("r")               # =&gt; 9 / Finding index of a character
+"Hello World".downcase                  # =&gt; "hello world" / Lowercasing string
+"Hello World".upcase                    # =&gt; "HELLO WORLD" / Uppercasing string
+"Hello World!".uniq                     # =&gt; "Helo Wrd" / Transforming repeating characters into one 
+"Hello World!".split("")                # =&gt; ["Hello","World"] / Splits the string from the given character
+["Hello","World"].join                  # =&gt; "HelloWorld" / Combines the string of arrays
+</code></pre>
+
+<p><strong>Control Structure</strong></p>
+
+<p>Like other programming languages Ruby has the if, else, elsif, case, and, short-if expression but Ruby has a control structure called <code>unless</code>, which works like an if statement but will only execute if the expression is false. Ruby also has a reverse <code>if</code> and <code>unless</code> syntax.</p>
+
+<pre><code># Unless
+x = 5
+
+unless x &gt; 10
+    x = 10
+end
+
+puts x
+
+# Output: 10 
+
+# reverse if/unless syntax
+
+puts "Hey!" if a &lt; 5
+
+puts "Oi!" unless a &gt; 5
+</code></pre>
+
+<p><strong>Looping</strong></p>
+
+<p>Ruby also uses <code>while</code> to loop but it also has an inverted <code>while</code> called &lsquo;until&rsquo; which executes until the expression evaluates to false. <code>while</code> and <code>until</code> can also be written in reverse syntax. Ruby also has a simple loop method called <code>times</code> which repeats itself based on the number defined on call.</p>
+
+<pre><code># Until
+x = 8
+
+until x &lt; 10
+    puts "+1"
+    x=x+1
+end
+
+# Output: 
+# +1 
+# +1
+
+
+#reverse while/until
+
+puts "Hey!" while a &lt; 5
+
+puts "Oi!" until a &gt; 5
+
+
+# Times sample
+10.times do
+    puts 'Will do this 10 times'
+end
+</code></pre>
+
+<p><strong>Iterators</strong></p>
+
+<p>Ruby iterates arrays by using the <code>each</code> iterator. <code>each</code> simple loops to all of the data in an array and execute the block of statements inside it.</p>
+
+<pre><code># each sample
+array = [1,2,3,4,5]
+array.each do |i|
+   puts i
+end
+</code></pre>
+
+<p>Another iterator is called <code>collect</code>. This iterator returns all the elements of a collection. A collection is usually an array or a hash.</p>
+
+<pre><code># collect sample 1
+
+x = [1,2,3,4,5]
+y = Array.new
+y = a.collect # collects all data in x and store it to y
+puts y
+
+# Output:
+# 1
+# 2
+# 3
+# 4
+# 5
+
+# collect sample 2
+g = [1,2,3,4,5]
+h = g.collect{|x| x*5} # collects all data in g multiply it by 5 and store it to h
+puts h
+
+# Output:
+# 5
+# 10
+# 15
+# 20
+# 25
+</code></pre>
+
+<p><strong>Hash</strong></p>
+
+<p>A hash or an associative array is a dictionary-like collection of unique keys and their value.</p>
+
+<pre><code>#hash
+
+hash = Hash.new # equivalent to hash = {}
+hash = { :cotton =&gt; 'soft', :stone =&gt; 'hard' }
+
+puts hash[:stone] # prints 'hard'
+
+#iterating over a hash
+
+hash.each do |key, value|
+    puts "A #{key} is #{value}"
+end
+
+#deleting an key pair in hash
+
+hash.delete :stone                            # deletes the pair :stone =&gt; 'hard' and returns "hard"
+hash.delete_if {|key,value| value == 'soft'}   # deletes the pair :cotton =&gt; 'soft' and returns {}
+</code></pre>
+
+<p><strong>Block, Procs and Lambda</strong></p>
+
+<p>Blocks, Procs, and Lambda works similarly but have different behaviors. Look at the samples below.</p>
+
+<p><strong>Blocks</strong> pertains to a block of codes inside or outside a method. Lets just use <code>collect</code> iterator as a simple example for blocks.</p>
+
+<pre><code># Blocks
+array = [1, 2, 3, 4]
+
+array.collect! do |n| # everything inside this method is block
+    num = n ** 2
+    puts num
+end
+
+#if these code gets wrapped inside a method then everything written above will be a block.
+</code></pre>
+
+<p><strong>Procs</strong> are also known as procedures which means this blocks of codes are reusable.</p>
+
+<pre><code># Procs
+# This procs simply rounds off the array of floats
+floats = [1.2, 3.45, 0.91, 7.727, 11.42, 482.911]
+
+round_down = Proc.new {|x| x.floor}
+
+ints = floats.collect(&amp;round_down)
+</code></pre>
+
+<p><strong>Lambdas</strong> are identical to procs with some exception in a bit of syntax and behavior.</p>
+
+<pre><code># Lamda example
+def lambda_demo(a_lambda)
+  puts "I'm the method!"
+  a_lambda.call
+end
+
+my_lambda = lambda { puts "I'm the lambda!" }
+
+lambda_demo(my_lambda)
+</code></pre>
+
+<p>One difference between Lambdas and Procs behavior is that when Procs ends execution it returns outside the method and because of this Procs can overtake methods execution. Lambdas however return to the method instead. Here is an example of what I mean.</p>
+
+<pre><code># Procs and Lambda behavior difference
+def proc_sample
+  Proc.new { return "I'm a proc."}.call
+  return "proc_sample method finished"
+end
+
+def lambda_sample
+  lambda { return "I'm a Lambda" }.call
+  return "lambda_sample method finished"
+end
+
+puts proc_sample # returns "I'm a proc."
+puts lambda_sample # returns "lambda_sample method finished."
+</code></pre>
+
+<p><strong>Classes</strong></p>
+
+<p>Creating a class in Ruby always starts with the keyword class followed by the class name and terminate it with the keyword <code>end</code>. Ruby classes has four types of variables, a global variable, class variable, instance variable, and a local variable. Here is a snippet for an example.</p>
+
+<pre><code>$global_var = "I'm a global variable. I always start with a ($) sign" # available all across classes and the program
+
+class MyClass
+
+@@class_var = "I'm a class variable. I always start with two (@) symbols" # only available to the objects inside the class.
+
+def initialize
+  @foo = 28 # Instance variable (Always starts with an @ symbol. Available across methods for any particular instance or object.
+  puts local_var
+end
+
+def print_num
+    local_var = 56 # A local variable defined in a method. A local variable is not available outside the method.
+    puts local_var
+end
+
+def foo
+  return @foo
+end
+
+def foo=(value)
+  @foo = value.round
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  # calling the methods in the classes
+  instance = MyClass.new #calling new instance of a class
+  puts instance.foo
+  instance.foo = 496.2
+  instance.print_num
+  puts instance.foo #=> 496</p>
+
+<h4><strong>Conclusion</strong></h4>
+
+<p>That sums up all of what I&rsquo;ve learned about Ruby. I&rsquo;ve enjoyed coding with it when I did the Ruby course in codecademy. Although Ruby is not that easy to learn for beginners like me, I like how clean and simple Ruby&rsquo;s syntax look. Next time, I&rsquo;ll be studying how to create my own gems with Ruby.</p>
+
+<hr />
+
+<h3><strong>Rails</strong></h3>
+
+<p><strong>Ruby on Rails</strong> or just <strong>Rails</strong> is a web application framework gem. Rails was created in 2003 by David Heinemeier Hansson. Rails has an MVC (Model-View-Controller) architecture. Here are some of parts of the Rails that programmers loved.</p>
+
+<ul>
+<li><p><strong>Generators/Scaffolding</strong> – Rails will generate the general template and code needed to start coding in application. After this the developer will only need to include the code that his app needs instead of working on it from top to bottom.</p></li>
+<li><p><strong>Gems/Plugins</strong> – it uses RubyGems that can improve the development experience of the programmer.</p></li>
+<li><p><strong>Active Record ORM</strong> – Active Record is the M in MVC &ndash; the model &ndash; which is the layer of the system responsible for representing business data and logic. Active Record facilitates the creation and use of business objects whose data requires persistent storage to a database. It is an implementation of the Active Record pattern which itself is a description of an Object Relational Mapping system.</p></li>
+<li><p><strong>Integrated testing tools</strong> – Ruby has built-in transformable testers to test their application&rsquo;s code is working correctly.</p></li>
+</ul>
+
+
+<p>Rails looked great for me but I&rsquo;m having a kind of difficult time understanding the framework maybe because I got used to developing in vanilla PHP. But I&rsquo;m sure I just need to use it more to grasp Rails more. What I liked about Rails is how easy it is to call on the data from the database and feed them on the html template although I do not completely understand how to form the controllers and model by myself yet. The thing about Rails that I didn&rsquo;t like is how much dependency it has on multiple gems which is coded by different developers. In the mini-project I was doing, for a tutorial I&rsquo;m following, I&rsquo;ve encountered a lot of gem dependencies and some incompatibility issues. There was this part that I was not able to create an apache passenger because I wanted to make mock a production server in my local computer. The latest rails depended on a none official version of Apache2. I need to do some more research about this and hopefully continue working with the mini-project and adding my own ideas on that mini-project.</p>
+
+<p>And that finishes this post. Thanks for reading :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Wordpress Custom WYSIWYG Editor Buttons]]></title>
+    <link href="http://PatzMatias.github.io/blog/2015/05/05/wordpress-custom-wysiwyg-editor-buttons/"/>
+    <updated>2015-05-05T13:16:57+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2015/05/05/wordpress-custom-wysiwyg-editor-buttons</id>
+    <content type="html"><![CDATA[<p>This is a continuation of the post about <strong><a href="http://patzmatias.github.io/blog/2015/05/01/wordpress-shortcodes/">Wordpress Shortcodes</a></strong> and this time we&rsquo;re going to add a button for the shortcode and other purposes like a set of html tags, or a preformatted text.</p>
+
+<!--more-->
+
+
+<ol>
+<li><p>First, we create a script file that contains the label, an optional custom icon and the button functionality that adds the content. Store this file in your theme folder.</p>
+
+<pre><code> (function() {
+     tinymce.PluginManager.add('my_shortcode_button', function( editor, url ) {
+         editor.addButton('my_shortcode_button', {
+             text: 'My Label',//custom label
+             icon: false, //use a custom icon or not
+             onclick: function() { // the content to be inserted when the button is clicked.
+                 editor.insertContent('[custom_shortcode_name title=&amp;quot;&amp;quot; class=&amp;quot;&amp;quot;][/custom_shortcode');
+             }
+         });
+     });
+ })();
+</code></pre></li>
+<li><p>And the last step is adding the shortcode to Wordpress backend.</p>
+
+<pre><code> // Hook functions into the correct filters
+ function my_shortcode_button() {
+     // check user permissions
+     if ( !current_user_can( 'edit_posts' ) &amp;&amp; !current_user_can( 'edit_pages' ) ) {
+         return;
+     }
+     // check if WYSIWYG is enabled
+     if ( 'true' == get_user_option( 'rich_editing' ) ) {
+         add_filter( 'mce_external_plugins', 'my_shortcode_plugin' );
+         add_filter( 'mce_buttons', 'register_shortcode_button' );
+     }
+ }
+ add_action('admin_head', 'my_add_mce_button');
+
+ // Add the script we created earlier for the new button
+ function my_shortcode_plugin( $plugin_array ) {
+     $plugin_array['my_shortcode_button'] = get_template_directory_uri() .'/js/my_shortcode_plugin.js';
+     return $plugin_array;
+ }
+
+ // Register the button into the editor
+ function register_shortcode_button( $buttons ) {
+     array_push( $buttons, 'my_mce_button' );
+     return $buttons;
+ }
+</code></pre></li>
+</ol>
+
+
+<p>That is all we need to add a simple button for the shortcode. If the button gets click it will add the shortcode to the editor together with its attributes and the user can now just start adding the contents between the shortcode tags.</p>
+
+<p>If you want to learn more about button you can checkout these resources:</p>
+
+<ul>
+<li><a href="http://www.wpexplorer.com/wordpress-tinymce-tweaks/">WordPress 3.9+ TinyMCE 4 Tweaks: Adding Styles, Buttons, Fonts, Drop-downs &amp; Pop-Ups</a></li>
+<li><a href="http://www.1stwebdesigner.com/wordpress-tinymce-editor/">Twist That Code: How to Add Custom Buttons for WordPress TinyMCE Editor</a></li>
+<li><a href="https://codex.wordpress.org/TinyMCE_Custom_Buttons">Wordpress Codex: TinyMCE Custom Buttons</a></li>
+</ul>
+
+
+<p>Thanks for reading! :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Wordpress Shortcodes]]></title>
+    <link href="http://PatzMatias.github.io/blog/2015/05/01/wordpress-shortcodes/"/>
+    <updated>2015-05-01T10:49:11+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2015/05/01/wordpress-shortcodes</id>
+    <content type="html"><![CDATA[<p>This feature has been integrated to WordPress in version 2.5.  <strong>WordPress Shortcodes</strong> are like customized html tags recognized by WordPress&#8217; system. Shortcode means shortcut, it can create objects, or embed files which would normally require a lot of code in just one line or tag. WordPress has built-in shortcode tags for its internal functions for gallery, embedded videos and audios, and more.</p>
+
+<!--more-->
+
+
+<p>(<em>For a list of built-in shortcodes just visit this link: <a href="https://en.support.wordpress.com/shortcodes/">https://en.support.wordpress.com/shortcodes/</a>)</em></p>
+
+<h3><strong>Custom Shortcodes</strong></h3>
+
+<p>WordPress allow users to create a custom shortcode which opens of new options for entering content like controlling the layout of the content in the site, and pulling other custom contents or objects from the WYSIWYG Editor.</p>
+
+<h4><strong><em>Creating and Adding Shortcode to the WordPress System</em></strong></h4>
+
+<ol>
+<li>First, the <code>function(){}</code> for the shortcode must be created. This is where all the codes for the shortcode will be created. Here are some examples of how it can be created and used:</li>
+</ol>
+
+
+<h4><strong>Simple text:</strong></h4>
+
+<pre><code>// A simple shortcode that returns a text.
+    function shortcode_function( ) {
+        return '&lt;h1&gt;I am a shortcode.&lt;/h1&gt;';
+    }
+</code></pre>
+
+<h3><strong>Using <code>$atts</code> and <code>$content</code></strong></h3>
+
+<p><code>$atts</code> will allow the shortcode to have attributes similar to an html tag and <code>$content</code> contains the text between the shortcode tags.</p>
+
+<pre><code>// A shortcode that utilizes $atts and $content, to display text add a custom class for the tag and add a background-color
+function shortcode_function( $atts, $content ) {
+    extract(shortcode_atts(array(
+            'background_color'=&gt;'#000',
+            'custom_class'=&gt;'',
+            'title'=&gt;'',
+    ));
+    return '&lt;div class="'. $custom_class. '" style="background-color: ' . $background_color . ';"&gt;&lt;h1&gt;'.$title.'&lt;/h1&gt;&lt;p&gt;'.do_shortcode($content).'&lt;/p&gt;&lt;/div&gt;';
+}
+</code></pre>
+
+<h3><strong> Using <code>$tags</code> </strong></h3>
+
+<p><code>$tags</code> allows one shortcode function to be called in different tag names.</p>
+
+<pre><code>// A shortcode that utilizes $tag and other parameters,
+function shortcode_function( $atts, $content,$tag ) {
+    switch ($tag) {
+        case 'simple_text':
+            return '&lt;h1&gt;I am a shortcode.&lt;/h1&gt;';
+            break;
+        case 'custom_text_tags':
+            extract(shortcode_atts(array(
+                    'background_color'=&gt;'#000',
+                    'custom_class'=&gt;'',
+                    'title'=&gt;'',
+            ));
+        $display = '&lt;div class="'. $custom_class. '" style="background-color: ' . $background_color . ';"&gt;&lt;h1&gt;'.$title.'&lt;/h1&gt;&lt;p&gt;'.do_shortcode($content).'&lt;/p&gt;&lt;/div&gt;';
+        return display;
+            break;
+        default:
+            return '&lt;h1&gt;I am a shortcode.&lt;/h1&gt;';
+    }
+}
+</code></pre>
+
+<h3><strong>Pulling posts or a custom post type</strong></h3>
+
+<p>This is an actual code that I used for a project to pull posts from a custom post type and add it to a carousel.</p>
+
+<pre><code>function($atts, $content=null){
+     ob_start();
+       $args = array(
+        'posts_per_page' =&gt; -1,
+       'post_type' =&gt;'carousel_post_type',
+       'order'=&gt;'ASC'
+      );
+
+    $items = get_posts($args);
+    $count = count($items);
+      echo '&lt;div id="carousel" class="carousel slide" data-ride="carousel"&gt;';
+        echo '&lt;ol class="carousel-indicators"&gt;';
+        for($i = 0; $i&lt;$count; $i++) : 
+          $index = ($i==0)? 'active' : '';
+          echo '&lt;li data-target="#resources-carousel" data-slide-to="' . $i . '" class="'. $index .'"&gt;&lt;/li&gt;';
+        endfor;
+        echo '&lt;div class="carousel-inner" role="listbox"&gt;';
+        foreach($resources as $key =&gt; $resource) :
+              $heading = get_field('heading',$resource-&gt;ID);
+              $link = get_field('resource_link',$resource-&gt;ID);
+              $content = $resource-&gt;post_content;
+              $key_index = ($key==0) ? 'active' : '';
+
+              echo '&lt;div class="item '.$key_index.'"&gt;';
+              echo '&lt;div class="resources"&gt;';
+                  echo '&lt;a href="'.$link.'"&gt;';
+                      echo '&lt;div class="res-heading"&gt;';
+                          echo '&lt;span class="fa fa-book fa-2x pull-left"&gt;&lt;/span&gt;';
+                          echo '&lt;h4 class="pull-left"&gt;'. $heading .'&lt;/h4&gt;';
+                          echo '&lt;/div&gt;'                         
+                      echo '&lt;div class="res-body"&gt;'.$content.'&lt;/div&gt;';
+                  echo '&lt;/a&gt;';
+               echo '&lt;/div&gt;';
+              echo '&lt;/div&gt;';
+        echo '&lt;/div&gt;';  
+      echo '&lt;/ol&gt;';
+      echo '&lt;/div&gt;';                
+    return ob_get_clean();
+}
+</code></pre>
+
+<ol>
+<li><p>The next step is to add the function to the WordPress.</p>
+
+<pre><code> add_shortcode('custom_shortcode_name','shortcode_function');
+</code></pre></li>
+</ol>
+
+
+<h3><strong>Using the Shortcode</strong></h3>
+
+<p>In the WYSIWYG Editor, we just need to enter the tag:</p>
+
+<pre><code>[custom_shortcode_name]
+</code></pre>
+
+<p>or if we utilized the <code>$tag</code> parameter we also just use it like the first example.</p>
+
+<pre><code>[simple_text]
+//or
+[custom_text_tags class="myclass" background_color="#000" title="My Shortcode"]My Shortcode content[/custom_text_tags]
+</code></pre>
+
+<p>That&rsquo;s all for shortcodes. Maybe you noticed that the shortcode gets longer if <code>$atts</code> is used. It can be solved by adding a custom button on the WYSIWYG editor and we will be exploring that on my next post. Keep on reading!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CSS3 Transitions, Transforms, and Animations]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/06/19/css3-transitions-transforms-and-animations/"/>
+    <updated>2014-06-19T13:16:03+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/06/19/css3-transitions-transforms-and-animations</id>
+    <content type="html"><![CDATA[<p>This post is about the simple CSS3 animation and effects on some of the objects inside my previous exercise called <a href="http://patzmatias.github.io/myway-light">MyWay Light</a>. We are going to try to understand how this CSS3 properties work. With CSS3, a user can now do more than just adding colors, styling, and layouts. It now allows us to add movement or other special effects without using FLASH or GIFs. It may require us to write more lines depending on what we want to achieve but it is all worth it, because it can reduce the resources that are being loaded in your website.</p>
+
+<!-- more -->
+
+
+<hr />
+
+<h3><strong>Loading Screen</strong></h3>
+
+<p>I&rsquo;ll begin with MyWay Light&rsquo;s loading screen. Checkout this demo:</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/2B5bD/embedded/result,html,css/light/"></iframe>
+
+
+<p>The object&rsquo;s above are using CSS3&rsquo;s <code>animation</code> property, <code>@keyframes</code> rule, and <code>transform</code> property.</p>
+
+<pre><code>transform: translate(X,Y); /*positions an object in the container depending on the values of the X-axis and Y-axis. This was used on the container of the circles. (See .preloader .spinner selector on the CSS tab of the demo above)*/
+
+animation: bouncedelay 1.4s infinite ease-in-out; 
+/* This is the overall effect used in the circles. Here it is the description of the attributes as followed: 
+(animation: animation-name duration iteration easing;)
+- bouncedelay is a keyframe animation-name/property declared by the user. It works pretty much like a method from a programming language. It contains the properties for the animation.*/
+
+@keyframes animation-name {
+/* You can use 'from' and 'to' for a simple task*/
+from{... } //properties at the beginning of the animation's duration
+to{...} //properties in-between and to the end animation's duration
+
+/* If you don't want to use 'from' and 'to' and you want more control over the animation use the one below*/
+
+0%{...} //properties at 0% of the animation's duration
+50%{...} //properties at 50% of the animation's durationduration
+100%{...} //properties at 100% of the animation's duration
+
+/*You can specify properties for any amount between 0% and 100% depending on what part of the animation you would like for it to take effect.*/
+}
+</code></pre>
+
+<p>The part that gave the circles the bouncing effect was the <code>transform: scale(XY)</code> property. It begins the scale at 0 and at 40% it will reach its full scale or 1 and go back to 0 before going to 80% and 100%.</p>
+
+<hr />
+
+<h3><strong>Flowing Dot</strong></h3>
+
+<p>Next up is the flowing dot. Look at this demo:</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/Uv9Re/embedded/result,html,css/light/"></iframe>
+
+
+<p>This one also used the <code>animation</code> property and <code>@keyframes</code> rule. If you look at the code the flowing dot effect was achieved by changing its top position continuously and changing the opacity between 0 and 1 when it reaches the end of the animation&rsquo;s duration. If you will maintain the dot&rsquo;s opacity at 1 you&rsquo;ll see a dot going back and forth on the top positions specified in the <code>@keyframes</code>.</p>
+
+<hr />
+
+<h3><strong>Disappearing Outline</strong></h3>
+
+<p>Compared to the first two examples this one is simpler. Go hover on the buttons that we have in the demo:</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/ED4e5/embedded/result,html,css/light/"></iframe>
+
+
+<p>The effects here are executed by <code>transition</code> property. Unlike <code>animation</code> property which can start without triggers, <code>transition</code> needs a trigger for it to begin. In our example it is triggered by hovering. The properties that gives it the effect of a dissappearing outline is the <code>outline</code> property which has an initial value of <code>1px</code> and a color <code>#2d2d2d</code>. When the button is hovered it will change the value of the outline to <code>10px</code> and the color to an rgba color with 0 alpha attribute. The easing gives it the animated effect in between the transition from <code>1px</code> to <code>10px</code>, without the easing it will just move from <code>1px</code> to <code>10px</code> with no transition effect. Here is the structure of the transition property used here:</p>
+
+<pre><code>transition: property duration easing;
+- property: it can be anything that you want to animate it can be the width, height or any css property. You can also specify `all` to put transition effect on everything.
+- duration: the time to complete the transition
+- easing: the easing can be the following: 'ease','ease-in', 'ease-out', 'ease-in-out', and `linear`;
+</code></pre>
+
+<hr />
+
+<h3><strong>Playing with SVG Icons</strong></h3>
+
+<p>This one also uses <code>transition</code> property on SVG icons which is applied to its <code>fill</code> and <code>stroke</code> properties. An SVG has its own shape depending on the file, unlike block objects which is usually just square. Transition property works out really well with SVGs. You can see the demo below, hover on the objects and see what it does.</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/4DKax/embedded/result,html,css/light/"></iframe>
+
+
+<hr />
+
+<p>That&rsquo;s it. If you are looking for other creative ways of using CSS3 transitions, transforms, and animations, you can check this <a href="http://css3.bradshawenterprises.com/transitions/" title="BradShaw Tutorials">tutorial</a>.</p>
+
+<p>Let&rsquo;s just keep practicing and get creative there is still more we can do with this. :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Plug-ins Used in MyWay Light]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/06/09/plug-ins-used-in-myway-light/"/>
+    <updated>2014-06-09T15:07:36+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/06/09/plug-ins-used-in-myway-light</id>
+    <content type="html"><![CDATA[<p>MyWay Light is one of the exercises I&rsquo;ve done recently, it is a one-page website theme for Wordpress that I&rsquo;ve tried to recreate as close as possible and to discover how its design and effects were executed. <!-- more --> If you want to see it go here > <a href="http://patzmatias.github.io/myway-light" title="MyWay Light Theme by Awerest">MyWay Light Demo</a>. On the process of reading its code I learned that it used these plug-ins:</p>
+
+<ul>
+<li><a href="https://gist.github.com/galambalazs/6477177/" title="gist.github.com/galambalazs/6477177/">SmoothScroll</a></li>
+<li><a href="http://fortawesome.github.io/Font-Awesome/" title="fortawesome.github.io/Font-Awesome/">Font-Awesome</a></li>
+<li><a href="https://github.com/Prinzhorn/skrollr" title="github.com/Prinzhorn/skrollr">Skrollr</a></li>
+<li><a href="https://github.com/ashleydw/lightbox" title="github.com/ashleydw/lightbox">Bootstrap 3 Lightbox (Ekko-lightbox)</a></li>
+<li><a href="https://github.com/marioestrada/jQuery-gMap" title="github.com/marioestrada/jQuery-gMap">jQuery gMap Plug-in</a></li>
+<li><a href="https://github.com/ENFOS/FlowupLabels.js" title="github.com/ENFOS/FlowupLabels.js">FlowUpLabels</a></li>
+<li><a href="http://malsup.com/jquery/form/" title="malsup.com/jquery/form/">jQuery Form Plug-in</a></li>
+</ul>
+
+
+<p>Reading unto each documentation of the plug-ins here is what I&rsquo;ve learned.</p>
+
+<hr />
+
+<h3><strong>SmoothScroll</strong></h3>
+
+<p>Looking into MyWay Light Demo you&rsquo;ll notice how smooth it moves when you use the mousewheel to scroll up and down the website. This plug-in&rsquo;s event is binded into the mousewheel, it also supports the keyboard&rsquo;s arrow keys, navigation keys <code>PageUp</code> and <code>PageDown</code> and touchpad. What it does is it adds an animation and friction into the mouse scroll. SmoothScroll&rsquo;s settings is customizable, so you can set how smooth you would want it to scroll, in MyWay Light&rsquo;s case this is the settings.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Scroll Variables (tweakable)</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">defaultOptions</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Scrolling Core</span>
+</span><span class='line'>    <span class="nx">frameRate</span>        <span class="o">:</span> <span class="mi">150</span><span class="p">,</span> <span class="c1">// [Hz]</span>
+</span><span class='line'>    <span class="nx">animationTime</span>    <span class="o">:</span> <span class="mi">700</span><span class="p">,</span> <span class="c1">// [px]</span>
+</span><span class='line'>    <span class="nx">stepSize</span>         <span class="o">:</span> <span class="mi">40</span><span class="p">,</span> <span class="c1">// [px]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Pulse (less tweakable)</span>
+</span><span class='line'>    <span class="c1">// ratio of &quot;tail&quot; to &quot;acceleration&quot;</span>
+</span><span class='line'>    <span class="nx">pulseAlgorithm</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">pulseScale</span>       <span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">pulseNormalize</span>   <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Acceleration</span>
+</span><span class='line'>    <span class="nx">accelerationDelta</span> <span class="o">:</span> <span class="mi">20</span><span class="p">,</span>  <span class="c1">// 20</span>
+</span><span class='line'>    <span class="nx">accelerationMax</span>   <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>   <span class="c1">// 1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Keyboard Settings</span>
+</span><span class='line'>    <span class="nx">keyboardSupport</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>  <span class="c1">// option</span>
+</span><span class='line'>    <span class="nx">arrowScroll</span>       <span class="o">:</span> <span class="mi">50</span><span class="p">,</span>     <span class="c1">// [px]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Other</span>
+</span><span class='line'>    <span class="nx">touchpadSupport</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">fixedBackground</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">excluded</span>          <span class="o">:</span> <span class="s2">&quot;&quot;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h3><strong>FontAwesome</strong></h3>
+
+<p>FontAwesome is not necessarily a plug-in but a CSS Framework that has a library of SVG Icon Fonts. Checkout my JSfiddle sample.</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/d4qCS/embedded/result,html,css/light/"></iframe>
+
+
+<p>The user only needs to include the class prefixes of the icon of their choice on HTML inline elements like <code>&lt;i&gt;&lt;/i&gt;</code> and <code>&lt;span&gt;&lt;/span&gt;</code>. They can have it spinning or customize it with CSS.</p>
+
+<hr />
+
+<h3><strong>Skrollr</strong></h3>
+
+<p>I used two features of Skrollr which is the <strong>Parallax</strong> and <strong>Color Transforms</strong> but Skrollr has more uses. Skrollr is an independent JavaScript plug-in it is not made with jQuery. Skrollr automatically injects its class prefixes to HTML tags that contain <code>data-</code> attribute. Skrollr will read the values contained in <code>data-</code> and animate or transform that object based on the values.</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/bXT2y/embedded/result,html,css,js/light/"></iframe>
+
+
+<p>I used Color Transforms on the Navigation Bar, and Parallax on the intro background and the section headers.</p>
+
+<hr />
+
+<h2>Bootstrap 3 Lightbox (Ekko-lightbox)</h2>
+
+<p>Bootstrap 3 Lightbox is a lightbox module built around Bootstrap&rsquo;s modal plug-in for viewing images, YouTube videos and galleries. For me, the best thing about this plug-in is that it&rsquo;s style is CSS and fully customizable. This plug is used in this part of the website, <a href="http://patzmatias.github.io/myway-light/#gallery-top" title="MyWay Light Gallery">MyWay Light Gallery</a>.</p>
+
+<h3><strong>jQuery gMap Plug-in</strong></h3>
+
+<p><strong>gMap</strong> A lightweight, flexible, highly customizable jQuery plug-in for embedding <strong>Google Maps</strong> that works with the <strong>Google Map API v3</strong>. With gMap the user has the option to remove or include, the Google Map UI, set custom markers, zoom level, and the maptype. <a href="http://patzmatias.github.io/myway-light/#contact-top" title="MyWay Light Contact Section">MyWay Light Contact</a></p>
+
+<h3><strong>FlowUp Labels</strong></h3>
+
+<p>This is the plug-in that gives MyWay Light&rsquo;s contact form labels floating effect when you click it. The plug-in&rsquo;s style is fully customizable in CSS. Check out their demo here <a href="http://enfos.com/FlowupLabels.js/demo/" title="FlowUpLabels Demo">ENFO&rsquo;s FlowUpLabels Demo</a>.</p>
+
+<hr />
+
+<h3><strong>jQuery Form Plugin</strong></h3>
+
+<p><img class="img-responsive" src="http://PatzMatias.github.io/images/form.png"></p>
+
+<p>Form is a plug-in that allows the user to upgrades HTML to use AJAX. It provides several methods to easily manage the form data and form submission. This plug-in was used in the theme to make the success and the failure notifications be thrown at the HTML page instead of a dialog box. Implementing the plug-in is easy, just bind the form through IDs or classes in the script.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="c1">// wait for the DOM to be loaded </span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// bind &#39;myForm&#39; and provide a simple callback function </span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#myForm&#39;</span><span class="p">).</span><span class="nx">ajaxForm</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Thank you for your comment!&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">});</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>I also used Bootstrap in MyWay Light but I made a different post for it, see it  <a href="http://patzmatias.github.io/blog/2014/06/04/bootstrap/" title="http://patzmatias.github.io/blog/2014/06/04/bootstrap/">here</a>.</p>
+
+<p>Thanks for reading! :) I&rsquo;ll be posting about CSS3 Transitions/Animation next time, please keep on reading! :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Bootstrap]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/06/04/bootstrap/"/>
+    <updated>2014-06-04T15:14:34+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/06/04/bootstrap</id>
+    <content type="html"><![CDATA[<p>Previously, I&rsquo;ve used Bootstrap on one of my previous exercises and it is a powerful tool. <a href="http://getbootstrap.com" title="Bootstrap's">Bootstrap</a> is one of the world&rsquo;s most popular front-end framework for responsive web design. It is originally created by a designer and developer in <a href="http://www.twitter.com" title="Twitter">Twitter</a>. This framework is packed with many CSS and JavaScript Components to ease the user&rsquo;s coding and to help the user create a responsive design that is compatible with most browsers. I&rsquo;ll discuss these components that I&rsquo;ve used in my project:</p>
+
+<pre><code>*  Grid System
+*  Navbar
+*  Carousel
+*  Buttons
+*  Responsive Image Class
+</code></pre>
+
+<!--more-->
+
+
+<hr />
+
+<h3><strong>Grid System</strong></h3>
+
+<p>The grid system is a powerful toot for creating a responsive-ready web design. Bootstrap uses these media queries to create the key breakpoints in their grid system:</p>
+
+<pre><code>/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) { ... }
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) { ... }
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) { ... }
+
+(Media queries determine the viewport size of a device or a browser and loads the CSS properties contained in it.)
+</code></pre>
+
+<p>To implement the grid system, the user must use Bootstrap&rsquo;s class prefixes for the containers. This is how would the HTML code for its implementation would look like and you can check the demo to see how it works:</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/g5PYn/embedded/html,result/light/"></iframe>
+
+
+<p>The class &ldquo;container-fluid&rdquo; is required by the &ldquo;row&rdquo; class for proper alignment and padding. The class &ldquo;row&rdquo; is used to group the columns which must be the immediate children of class &ldquo;row&rdquo;. The maximum number of columns that each &ldquo;row&rdquo; can contain is <strong>12</strong>. The class prefix for columns are written this way <code>col-screensize-columnsize</code>. There are four available screen sizes:</p>
+
+<pre><code>* Screen Sizes:
+  ** Extra-small = 'xs'
+  ** Small = 's'
+  ** Medium = 'm'
+  ** Large = 'lg'
+</code></pre>
+
+<p>The column size can be any number between 1 to 12. If the &ldquo;row&rdquo; meets the maximum number of columns, the next column will be appended to the next row.  That&rsquo;s mostly it for the grid system.</p>
+
+<hr />
+
+<h3><strong>Navbar</strong></h3>
+
+<p>Bootstrap provides an easy set-up for a navigation bar that is customizable and also responsive. Let&rsquo;s take a look on their example from the website:</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/8pzKG/embedded/result,html/light/"></iframe>
+
+
+<p>You can see from our example that the user can add a lot of things in the Navbar. The site title is there <code>&lt;a class="navbar-brand" href="#"&gt;Brand&lt;/a&gt;</code>, a dropdown-menu, and a search-box form. In addition, the user can quickly assign your links to the left or right side of the bar just by adding the class <code>navbar-left</code> or <code>navbar-right</code>. Also, the bar can be a regular static sidebar by using the <code>navbar-default</code> class or fix it to top by adding the class <code>navbar-fixed-top</code>. The <code>navbar-header</code> contains the button with the class <code>navbar-toggle</code>, these button shows-up when the viewport reaches the size of a mobile-display presenting a mobile-friendly menu.</p>
+
+<hr />
+
+<h3><strong>Carousel</strong></h3>
+
+<p>Bootstrap&rsquo;s built-in carousel allows user to easily add a carousel without writing long-lines of JavaScript codes. Bootstrap uses jQuery on its JavaScript components to make it a plug-in. In our example below you can see all of the class prefixes that can be used for the caarousel.</p>
+
+<p>  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"></p>
+
+<pre><code>&lt;ol class="carousel-indicators"&gt;
+  &lt;li data-target="#carousel-example-generic" data-slide-to="0" class="active"&gt;&lt;/li&gt;
+  &lt;li data-target="#carousel-example-generic" data-slide-to="1"&gt;&lt;/li&gt;
+  &lt;li data-target="#carousel-example-generic" data-slide-to="2"&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- Wrapper for slides --&gt;
+&lt;div class="carousel-inner"&gt;
+  &lt;div class="item active"&gt;
+    &lt;img src="..." alt="..."&gt;
+    &lt;div class="carousel-caption"&gt;
+      ...
+    &lt;/div&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;
+&lt;!-- Controls --&gt;
+&lt;a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"&gt;
+  &lt;span class="glyphicon glyphicon-chevron-left"&gt;&lt;/span&gt;
+&lt;/a&gt;
+&lt;a class="right carousel-control" href="#carousel-example-generic" data-slide="next"&gt;
+  &lt;span class="glyphicon glyphicon-chevron-right"&gt;&lt;/span&gt;
+&lt;/a&gt;
+</code></pre>
+
+<p>  </div></p>
+
+<p>After that code you should call the plug-in and use the id as selector, in this case the id is <code>carousel-example-generic</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#carousel-example-generic&#39;</span><span class="p">).</span><span class="nx">carousel</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">interval</span><span class="o">:</span> <span class="mi">2000</span>
+</span><span class='line'>  <span class="nx">pause</span><span class="o">:</span> <span class="nx">hover</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>See it in this demo:</p>
+
+<iframe style="width: 100%; height: 400px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/jf3sU/embedded/result,html,js,css/light/"></iframe>
+
+
+<p>Bootstrap&rsquo;s carousel plug-in allows the user to optionally add indicators and captions. The user also doesn&rsquo;t need to code on Javascript for the controls.</p>
+
+<hr />
+
+<h3><strong>Buttons</strong></h3>
+
+<p>Adding style to buttons is a lot easier with Bootstrap, just use their class-prefixes and it would automatically add a style preset. Bootstrap has a total of 6 preset styles. Just add the following class prefixes to use them:</p>
+
+<ul>
+<li><code>btn-default</code></li>
+<li><code>btn-primary</code></li>
+<li><code>btn-warning</code></li>
+<li><code>btn-info</code></li>
+<li><code>btn-success</code></li>
+<li><code>btn-danger</code></li>
+</ul>
+
+
+<p>Checkout this demo:</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/tZec7/embedded/result,html/light/"></iframe>
+
+
+<hr />
+
+<h3><strong>Responsive Image Class</strong></h3>
+
+<p>Bootstrap&rsquo;s responsive image class can be used by adding the class prefix <code>img-responsive</code> to the <code>&lt;img&gt;</code> tag. These class adds the following properties to the object that makes it responsive.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">.</span><span class="nx">img</span><span class="o">-</span><span class="nx">responsive</span><span class="p">{</span>
+</span><span class='line'>    <span class="nx">max</span><span class="o">-</span><span class="nx">width</span><span class="o">:</span> <span class="mi">100</span><span class="o">%</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">height</span><span class="o">:</span> <span class="nx">auto</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/xXsQ7/embedded/result,html/light/"></iframe>
+
+
+
+
+<iframe style="width: 50; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/xXsQ7/embedded/result/light/"></iframe>
+
+
+<p>The image will always fit itself to the width of the container and still maintain its aspect ratio because its height is in auto. You can try it out at this jsfiddle <a href="http://jsfiddle.net/xXsQ7">demo</a> and resize the result container.</p>
+
+<p>These are just 6 of Bootstrap&rsquo;s components and you can see more at their website at <a href="http://getbootstrap.com" title="Bootstrap">getbootstrap.com</a></p>
+
+<p>That&rsquo;s it. Thanks for reading! :)
+Next, I&rsquo;ll be writing about the plug-ins I used in my previous project and will be followed by a blog about CSS3 Transitions/Animations. So stay tuned. :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SASS and Compass]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/05/27/sass-and-compass/"/>
+    <updated>2014-05-27T16:01:19+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/05/27/sass-and-compass</id>
+    <content type="html"><![CDATA[<p>We know how CSS style sheets can get all long and unorganized during development specially when doing large projects but luckily this isn&rsquo;t a problem now. I&rsquo;ve been using SASS and Compass in my training for quite a while now and I&rsquo;m getting fond of it.</p>
+
+<!--more-->
+
+
+<h3><strong>SASS (Synthetically Awesome Stylesheet)</strong></h3>
+
+<p><strong>SASS</strong> is an extension of CSS which allows the user to add <strong>variables</strong>, <strong>nested rules</strong>, <strong>mixins</strong>, <strong>imports,</strong> <strong>partials</strong>, <strong>extended property sharing</strong> and more. It uses a fully CSS-compatible syntax and helps keep style sheets well-organized.</p>
+
+<p>SASS has two type of syntax for coding. The first version which is based on <strong>Haml</strong> is SASS, it doesn&rsquo;t use curly braces <code>{}</code> and semi-colon <code>;</code> and has a strict indentation syntax. The second version is the SCSS which syntax is a lot more similar to CSS, and this is the one I am using.</p>
+
+<p>Here is an example of a normal CSS stylesheet:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">Regular</span> <span class="nt">CSS</span> <span class="nt">stylesheet</span><span class="err">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Italic&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Ita.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Bold&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Bold.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">div</span><span class="err">{</span>
+</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">-webkit-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
+</span><span class='line'>       <span class="na">-moz-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
+</span><span class='line'>          <span class="na">-o-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
+</span><span class='line'>              <span class="na">box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nt">div</span><span class="nd">:hover</span><span class="err">{</span>
+</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nt">div</span> <span class="nt">p</span><span class="err">{</span>
+</span><span class='line'>   <span class="na">text-align</span><span class="o">:</span> <span class="no">justify</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nt">div</span> <span class="nt">h3</span><span class="err">{</span>
+</span><span class='line'>   <span class="na">text-align</span><span class="o">:</span> <span class="no">center</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And this is a SASS stylesheet (SCSS syntax format):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">main</span><span class="nc">.scss</span><span class="err">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@import</span> <span class="s">&quot;typography&quot;;</span> <span class="s">//imports</span> <span class="s">declaration</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$light</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span> <span class="c1">//VARIABLES</span>
+</span><span class='line'><span class="nv">$dark</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span> <span class="c1">//VARIABLES</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@mixin</span><span class="nf"> box-shadow</span><span class="p">(</span><span class="nv">$shadow</span><span class="p">)</span> <span class="err">{</span> <span class="c1">//mixins declaration</span>
+</span><span class='line'> <span class="na">-webkit-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
+</span><span class='line'>   <span class="na">-moz-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
+</span><span class='line'>       <span class="na">-o-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
+</span><span class='line'>              <span class="na">box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">div</span><span class="err">{</span>  <span class="o">//</span><span class="nt">ENHANCED</span> <span class="nt">NESTING</span>
+</span><span class='line'>    <span class="na">color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">background-color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span>
+</span><span class='line'>    <span class="k">@include</span><span class="nd"> box-shadow</span><span class="p">(</span><span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="nv">$dark</span><span class="p">)</span><span class="err">;</span> <span class="c1">//mixins implementation</span>
+</span><span class='line'>    <span class="k">&amp;</span><span class="nd">:hover</span><span class="err">{</span>
+</span><span class='line'>      <span class="na">color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span>
+</span><span class='line'>      <span class="na">background-color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span>
+</span><span class='line'>    <span class="err">}</span>
+</span><span class='line'>  <span class="nt">p</span><span class="err">{</span>
+</span><span class='line'>      <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span>
+</span><span class='line'>      <span class="na">text-align</span><span class="o">:</span> <span class="no">justify</span><span class="err">;</span>
+</span><span class='line'>      <span class="na">color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span> <span class="c1">//extended property</span>
+</span><span class='line'>      <span class="na">background-color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span> <span class="c1">//extended property</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  <span class="nt">h3</span><span class="err">{</span>
+</span><span class='line'>      <span class="k">@extend</span> <span class="nt">p</span><span class="o">;</span>          <span class="o">//@</span><span class="nt">extend</span> <span class="o">(</span><span class="nt">EXTENDED</span> <span class="nt">PROPERTY</span> <span class="nt">SHARING</span><span class="o">)</span>
+</span><span class='line'>        <span class="na">text-align</span><span class="o">:</span> <span class="no">center</span><span class="err">;</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'><span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">_typography</span><span class="nc">.scss</span><span class="err">`</span><span class="o">//</span><span class="nt">partials</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Italic&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Ita.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
+</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Bold&#39;</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Bold.otf&#39;)</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
+</span><span class='line'><span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Variables</strong></p>
+
+<p>With SASS a user will be capable of declaring variables. We all know that a variable is an essential part of most programming languages which is usually used to hold data.</p>
+
+<p>Now how is this useful in a language used for styling? Sometimes during development there are situations were we have to use similar property attributes.</p>
+
+<p>Notice how many times color attribute #fff and #333 was used. Let us say that we wanted to change these colors, that means we have to go back on all these attributes and edit it one by one. This is where SASS Variables will be valuable to users.</p>
+
+<p>With variables the user only needs to edit the value contained in the variable and every property that uses it will have the style and it would be easier to re-use the attribute to other properties.</p>
+
+<p><strong>Nested rules/Nesting</strong></p>
+
+<p>SASS enables the user to use nesting similar to nesting that is used in application programming. In the previous example we have called the <code>p</code> and <code>h3</code> of the object <code>div</code>, and called it again for its hover state. If <code>div</code> contains more child then we would have to call it again to access the child. Nesting will make it easier for the user to style an object and its childs.</p>
+
+<p>SASS Nested rules follow the same visual hierarchy of the HTML so it would be easier to see which objects belongs to what object.</p>
+
+<p><strong>@extend (Extended property sharing)</strong></p>
+
+<p><code>@extend</code> is very useful when we come to situations where we use the same property and attributes on some objects. In the CSS example, <code>p</code> and <code>h3</code> contains the same <code>color</code> and <code>background-color</code> property. The code would look cleaner if the property of <code>p</code> would be extended to <code>h3</code> and override then just <code>text-align</code> attribute.</p>
+
+<p><strong>@mixins</strong></p>
+
+<p>Style sheets gets longer specially when we want the styles compatible to many browsers. On some properties like <code>box-shadow</code> and <code>border-radius</code>, we use vendor prefixes to make sure that the styles would be displayed correctly in a certain browser and it gets tedious to write. But mixins can shorten it like a function or method in a programming language. We create it by writing <code>@mixins</code> and giving it a name and use a variable to pass on the attribute of the properties, then use it by declaring in the CSS an &lsquo;@include&rsquo; followed by the name of the mixin.</p>
+
+<p>SASS also uses <strong>operators</strong>, <strong>control directives and expressions</strong> like <code>if()</code>. I&rsquo;ll update this section once I learned how and when to use this three.</p>
+
+<p><strong>@import and Partials</strong></p>
+
+<p>Coding style sheets can be more organized with SASS&#8217; <code>@imports</code> and partials capability. Partials and <code>@import</code> allows the user to create parts of the style sheet and import it to your main style sheet. When it is generated those parts will be generated in a single CSS style sheet.</p>
+
+<p>To create a partial file its name must be prefixed with an underscore <code>_</code> like <code>_typography.scss</code>. The partial files are imported this way <code>@import "typography";</code>. The underscore prefix are removed to prevent SASS on generating an individual style sheet for the partial file, because we want SASS to import the styles to the main style sheet.</p>
+
+<h3><strong>Compass</strong></h3>
+
+<p>While SASS enhances the coding experience for CSS,  <strong>Compass</strong> eases the creation of the projects folder that is SASS ready and the use of SASS terminal commands. Here is some example:</p>
+
+<p>SASS terminal commands:</p>
+
+<pre><code>sass input.scss output.css //SASS command for producing a CSS style sheet from the SCSS file
+
+sass --watch input.scss:output.css //Command for producing a CSS style sheet from the SCSS file and                                                    watch it for changes for reproduction
+
+sass --watch app/sass:public/stylesheets //Command for watching an entire directory for changes in SCSS                                                         files and and automatic CSS file production
+</code></pre>
+
+<p>Compass terminal commands:</p>
+
+<pre><code>compass compile //to convert SCSS files to CSS style sheets
+
+compass watch // to watch the entire directory of SASS and automatic CSS style sheet production
+
+compass create projectname or /path/and/projectname/ // to create a project folder that is SASS ready
+
+compass validate //Compass is also capable of validating the CSS style sheets
+</code></pre>
+
+<p>Compass made SCSS to CSS file conversion easier by making the command much simpler. Compass also has its core utilities that can help the user to layout and style his website.</p>
+
+<p>That&rsquo;s all for now! I&rsquo;ll be doing a post about Bootstrap next time so keep posted. Thanks for reading. :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Another Slider Test]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/05/13/another-slider-test/"/>
+    <updated>2014-05-13T16:18:44+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/05/13/another-slider-test</id>
+    <content type="html"><![CDATA[<p><img class="img-responsive" src="http://PatzMatias.github.io/images/exercise2site.png" title="'CAROUSEL VCARD Website'" ></p>
+
+<p><a href="http://www.html-themes.com/themes/carousel_vcard/">Link to website</a></p>
+
+<p>It is amazing to know how creative we can get in web development. My second project showed me how sliders can be utilized in a more functional way. <!--more-->The website our trainer gave us to study is a one-page portfolio website where it used a complex slider that expand and collapse to display the contents.</p>
+
+<p>This project thought me how important it is to refactor our codes. Codes should be simple and short as long as possible so it can be easily maintained and to minimize the use of resources (storage and memory).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.contentWrap&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">currentBox</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">parents</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.contentWrap&quot;</span><span class="p">));</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.itemBox&#39;</span><span class="p">).</span><span class="nx">not</span><span class="p">(</span><span class="nx">currentBox</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;display&quot;</span><span class="o">:</span><span class="s2">&quot;none&quot;</span><span class="p">});</span>
+</span><span class='line'>  <span class="nx">expand</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code above is the refactored version of the first version of my code. I noticed while I&rsquo;m writing the code that the lines I&rsquo;m writing is already getting longer and its not normal anymore. If I didn&rsquo;t refactor I may have abused the <code>if-else</code> and class selectors just to arrive with the same function of the code above. Now I know that I should always think of a way to keep my codes short, clean, and simple.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript and jQuery]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/04/16/javascript-and-jquery/"/>
+    <updated>2014-04-16T11:40:06+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/04/16/javascript-and-jquery</id>
+    <content type="html"><![CDATA[<p>My first exercise in the training was to reproduce a website and copy it as close as possible:</p>
+
+<p><img class="img-responsive" src="http://PatzMatias.github.io/images/exercise1.png" title="'First Exercise'" ></p>
+
+<p>It is a 960px wide website that is centered on the browser. It was a simple website so I had no problems doing the layout and design.</p>
+
+<!--more-->
+
+
+<p>What made this exercise difficult for me was I needed to create the website&rsquo;s image slider script from scratch, and I&rsquo;m not allowed to use third-party plugins. First, I tried it writing the script with <em>JavaScript</em>. I was at least able to make the images move by hitting the buttons and change every 3 seconds. If I really wanted to make the image slider from raw JavaScript it would be impossible for a beginner like me.</p>
+
+<p>Given the circumstances, I decided to move on to <strong>jQuery</strong>. jQuery is a plugin made from JavaScript. jQuery made it easier for web developers to include effects to their websites and it is widely used today. Just by using <code>.fadeIn()</code>, <code>.fadeOut()</code>, and <code>.animate()</code> method you can have a simple animation effect. If you want more options for animation effects you&rsquo;ll have to add another plugin called <strong>jQueryUI</strong>.</p>
+
+<p>What I liked about jQuery was it is simpler to call an object through <strong>CSS</strong> selectors. In JavaScript you have to use <code>getElementById()</code> or <code>getElementByClass()</code> to call the object. jQuery only requires you to use <code>$('')</code> and write the id and the class name in between the quotation just like how you call it in the CSS stylesheet, like <code>$('#idname')</code> or <code>$('.classname')</code> for example. Using <code>.animate()</code> method is uncomplicated, this line <code>$('.idname').animate({"width":"400px"},"slow");</code> would animate the object slowly by swinging before it gets the 400px width. I learned jQuery through the <a href="http://api.jquery.com/" title="jQuery API Documentation">jQuery API Documentation</a> and there is still more to learn for me. Here is my code for the simple slider.</p>
+
+<figure class='code'><figcaption><span>jQuery Simple Image Slider</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">jQuery</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">){</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">slideWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.banner&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">contWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">clicks</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">startSlider</span><span class="p">();</span> <span class="c1">//starts the animation of the slider</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// start move images to left and right</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#prev&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="p">();</span>      <span class="p">});</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#next&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="p">();</span> <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">left</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;+=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="nx">pre</span><span class="p">());</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">counter</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span><span class="p">{</span>
+</span><span class='line'>      <span class="nx">counter</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">left</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">right</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="nx">app</span><span class="p">());</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span><span class="p">{</span>
+</span><span class='line'>      <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">right</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// end move images to left and right</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//prepend last child of ul before the first child </span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">pre</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:last-child&#39;</span><span class="p">).</span><span class="nx">prependTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:first&#39;</span><span class="p">));</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-693px&quot;</span><span class="p">});</span>
+</span><span class='line'>       <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//append first child of ul after the last child</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">app</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//start:code for automatic slide</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">startSlider</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/pause.png&#39;)&quot;</span><span class="p">});</span>
+</span><span class='line'>      <span class="nx">loop</span><span class="o">=</span><span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">){</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>              <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>          <span class="k">else</span><span class="p">{</span>
+</span><span class='line'>              <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
+</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">},</span> <span class="mi">3000</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">//end:code for automatic slide</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//start: stops the animation of the slider</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">stopSlider</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/play.png&#39;)&quot;</span><span class="p">});</span>
+</span><span class='line'>      <span class="nx">clicks</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>      <span class="nb">window</span><span class="p">.</span><span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">loop</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">//end: stops the animation of the slider</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//start: play/pause function</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">clicks</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/play.png&#39;)&quot;</span><span class="p">});</span>
+</span><span class='line'>          <span class="nx">clicks</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">clicks</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/pause.png&#39;)&quot;</span><span class="p">});</span>
+</span><span class='line'>          <span class="nx">clicks</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
+</span><span class='line'>          <span class="nx">startSlider</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>  <span class="c1">//end: play/pause function</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//start: hover function</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slidenav&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
+</span><span class='line'>          <span class="nx">startSlider</span><span class="p">();</span>   
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">);</span>
+</span><span class='line'>  <span class="c1">//stop: hover function</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I was really happy when I finished this exercise. Now I can make my own customized sliders without depending on third-party plugins. To end this post here is a screenshot of my output.</p>
+
+<p><img class="img-responsive" src="http://PatzMatias.github.io/images/myoutput.png" title="'My Output'" ></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Beginning]]></title>
+    <link href="http://PatzMatias.github.io/blog/2014/04/14/the-beginning/"/>
+    <updated>2014-04-14T09:19:51+08:00</updated>
+    <id>http://PatzMatias.github.io/blog/2014/04/14/the-beginning</id>
+    <content type="html"><![CDATA[<p>Hi! To start-off with this blog let me introduce myself.</p>
+
+<p>I am Patrick Arcangel Matias. I’m 24 years old and I live in Cabanatuan City. I studied at Nueva Ecija University of Science and Technology and I am now a graduate of Bachelor of Science In information Technology, with System Analysis and Design as my major. I am currently training for web development here at Favorite Medium with my colleagues from school.</p>
+
+<!--more-->
+
+
+<p>The reason I got into Information Technology was because of gaming. But as I go on with my studies it changed. I got interested in programming, multimedia, and web development. In my last year at school we’ve decided to make a research about making a museum website.  During the research I’m not really in the state where I can deliver the best website I can make because I still lack knowledge regarding designing and some web programming coding. But that was the essence of the research, to gain knowledge about things you’ve never known before. I’ve done research about JavaScript and HTML (Hypertext Markup Language) Document Type Standards, but I mostly studied CSS (Cascading Style Sheet) that time because it offers more properties and options for designing and layout than HTML alone. At the end, I was able to create a static website with a (pretty much) responsive design. However, I only used a premade or a readily available framework of the design or what is also called the Bootstrap. It is the research that got me interested to web development.</p>
+
+<p>We’ve also studied PHP (Hypertext Preprocessor) with MySQL integration during the last semester of our school year. PHP has characteristics, similar on some software programming language except only that it needs a server and a browser to run. I found it awesome so I tried to study more than what our professor has taught us. To enhance my knowledge on PHP I decided to renovate my museum website from a static website to a dynamic website. The outcome turned out to be better than my first attempt, I was really pleased, and it got me motivated to learn more.</p>
+
+<p>During my school years I’ve tried and studied many things so I can become a well-rounded IT Professional. I pursued graphics designing, photo-editing, audio mixing, video processing and other things that caught my interest. I’ve been exploring topics about the fields of the IT Industry to know where I would fit in and I think web development is the answer. I’m really looking forward to learning many things during this training, and I believe that with the guidance of our seniors here at Favorite Medium, they can bring the best out me and my potential as a web developer.</p>
+
+<p>Web development for me is an art. The colors and the shapes, the photographs we see in a frame, web development puts them all together to create a wonderful    work of art and modern technology, and to convey a message in the best medium of information today.</p>
+
+<p>Thanks for reading! That is all for now.</p>
+]]></content>
+  </entry>
+  
+</feed>

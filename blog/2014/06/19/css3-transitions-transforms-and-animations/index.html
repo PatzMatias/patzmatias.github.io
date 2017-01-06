@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>CSS3 Transitions, Transforms, and Animations - Patrick A. Matias</title>
+  <meta name="author" content="Patrick A. Matias">
+
+  
+  <meta name="description" content="Patrick A. Matias Blog CSS3 Transitions, Transforms, and Animations written Jun 19th, 2014 This post is about the simple CSS3 animation and effects &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://PatzMatias.github.io/blog/2014/06/19/css3-transitions-transforms-and-animations">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Patrick A. Matias" type="application/atom+xml">
+  <!--FONTS-->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+  <!--FONTS-->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body id="top">
+  	<div class="preloader1"></div>
+  	<div class="nav-icons"> 
+	  	<div class="showslide" title="Menu">
+			<p><i class="fa fa-bars"></i></p>
+		</div>
+		<div class="home-icon" title="Home">
+		  	<a href="/">
+		      <img src="/images/home.png"/>
+		    </a>
+		</div>
+		<div class="blog" title="Blog">
+		  	<a href="/#blog">
+		      <p><i class="fa fa-edit"></i></p>
+		    </a>
+		</div>
+	</div>
+    <div class="back-to-top hidden-xs" data-0="opacity: 0;" data-1000="opacity: 1;">
+    	<a href="#top"><i class="fa fa-chevron-up"></i></a>
+    </div>
+	<div id="slide">
+	  <aside class="sidebar">
+	    
+	      <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/24/how-to-add-a-custom-ajax-url-to-woocommerce-ajax-urls/">How to Add a Custom AJAX URL to WooCommerce AJAX URLs</a>
+        <p class="date">2016-05-24 16:11:00 +0800</p>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/10/making-angularjs-and-wordpress-work-together/">Making AngularJS and Wordpress Work Together</a>
+        <p class="date">2015-06-10 22:17:56 +0800</p>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/02/learning-ruby-and-rails/">Learning Ruby and Rails</a>
+        <p class="date">2015-06-02 18:01:23 +0800</p>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos
+  
+  <a href="https://github.com/PatzMatias">@PatzMatias</a>
+  
+  </h1>
+  <ul id="gh_repos">
+    <li class="loading"><span>Status updating</span> &nbsp;<i class="fa fa-spinner fa-spin"></i></li>
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>Social</h1>
+  <ul>
+  	<li>
+	  	<i class="fa fa-google-plus-square"></i>
+	    <a class="social-links" href="https://plus.google.com/117521965885043360258?rel=author">
+	      @PatzMatias
+	    </a>
+	</li>
+	<li>
+		<i class="fa fa-facebook-square"></i>
+		<a class="social-links" href="https://www.facebook.com/patrick.matias">
+		fb.com/patrick.matias
+	 	</a>
+	</li>
+ </ul>
+</section>
+
+
+
+	    
+	  </aside>
+	</div>
+    <div class="post-header" id="post-header">
+    <div class="container-fluid">
+       <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h3 class="title">Patrick A. Matias</h3>
+          <div class="subtitle">Blog</div>
+        </div>
+     </div>
+    </div>
+</div>
+  
+
+</div>
+<article role="article" class="full-single-article">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 paper">
+        <h1>CSS3 Transitions, Transforms, and Animations</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-19T13:16:03+08:00" pubdate data-updated="true">Jun 19<span>th</span>, 2014</time>
+          
+
+
+        </div>
+        <p>This post is about the simple CSS3 animation and effects on some of the objects inside my previous exercise called <a href="http://patzmatias.github.io/myway-light">MyWay Light</a>. We are going to try to understand how this CSS3 properties work. With CSS3, a user can now do more than just adding colors, styling, and layouts. It now allows us to add movement or other special effects without using FLASH or GIFs. It may require us to write more lines depending on what we want to achieve but it is all worth it, because it can reduce the resources that are being loaded in your website.</p>
+
+<!-- more -->
+
+
+<hr />
+
+<h3><strong>Loading Screen</strong></h3>
+
+<p>I&rsquo;ll begin with MyWay Light&rsquo;s loading screen. Checkout this demo:</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/2B5bD/embedded/result,html,css/light/"></iframe>
+
+
+<p>The object&rsquo;s above are using CSS3&rsquo;s <code>animation</code> property, <code>@keyframes</code> rule, and <code>transform</code> property.</p>
+
+<pre><code>transform: translate(X,Y); /*positions an object in the container depending on the values of the X-axis and Y-axis. This was used on the container of the circles. (See .preloader .spinner selector on the CSS tab of the demo above)*/
+
+animation: bouncedelay 1.4s infinite ease-in-out; 
+/* This is the overall effect used in the circles. Here it is the description of the attributes as followed: 
+(animation: animation-name duration iteration easing;)
+- bouncedelay is a keyframe animation-name/property declared by the user. It works pretty much like a method from a programming language. It contains the properties for the animation.*/
+
+@keyframes animation-name {
+/* You can use 'from' and 'to' for a simple task*/
+from{... } //properties at the beginning of the animation's duration
+to{...} //properties in-between and to the end animation's duration
+
+/* If you don't want to use 'from' and 'to' and you want more control over the animation use the one below*/
+
+0%{...} //properties at 0% of the animation's duration
+50%{...} //properties at 50% of the animation's durationduration
+100%{...} //properties at 100% of the animation's duration
+
+/*You can specify properties for any amount between 0% and 100% depending on what part of the animation you would like for it to take effect.*/
+}
+</code></pre>
+
+<p>The part that gave the circles the bouncing effect was the <code>transform: scale(XY)</code> property. It begins the scale at 0 and at 40% it will reach its full scale or 1 and go back to 0 before going to 80% and 100%.</p>
+
+<hr />
+
+<h3><strong>Flowing Dot</strong></h3>
+
+<p>Next up is the flowing dot. Look at this demo:</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/Uv9Re/embedded/result,html,css/light/"></iframe>
+
+
+<p>This one also used the <code>animation</code> property and <code>@keyframes</code> rule. If you look at the code the flowing dot effect was achieved by changing its top position continuously and changing the opacity between 0 and 1 when it reaches the end of the animation&rsquo;s duration. If you will maintain the dot&rsquo;s opacity at 1 you&rsquo;ll see a dot going back and forth on the top positions specified in the <code>@keyframes</code>.</p>
+
+<hr />
+
+<h3><strong>Disappearing Outline</strong></h3>
+
+<p>Compared to the first two examples this one is simpler. Go hover on the buttons that we have in the demo:</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/ED4e5/embedded/result,html,css/light/"></iframe>
+
+
+<p>The effects here are executed by <code>transition</code> property. Unlike <code>animation</code> property which can start without triggers, <code>transition</code> needs a trigger for it to begin. In our example it is triggered by hovering. The properties that gives it the effect of a dissappearing outline is the <code>outline</code> property which has an initial value of <code>1px</code> and a color <code>#2d2d2d</code>. When the button is hovered it will change the value of the outline to <code>10px</code> and the color to an rgba color with 0 alpha attribute. The easing gives it the animated effect in between the transition from <code>1px</code> to <code>10px</code>, without the easing it will just move from <code>1px</code> to <code>10px</code> with no transition effect. Here is the structure of the transition property used here:</p>
+
+<pre><code>transition: property duration easing;
+- property: it can be anything that you want to animate it can be the width, height or any css property. You can also specify `all` to put transition effect on everything.
+- duration: the time to complete the transition
+- easing: the easing can be the following: 'ease','ease-in', 'ease-out', 'ease-in-out', and `linear`;
+</code></pre>
+
+<hr />
+
+<h3><strong>Playing with SVG Icons</strong></h3>
+
+<p>This one also uses <code>transition</code> property on SVG icons which is applied to its <code>fill</code> and <code>stroke</code> properties. An SVG has its own shape depending on the file, unlike block objects which is usually just square. Transition property works out really well with SVGs. You can see the demo below, hover on the objects and see what it does.</p>
+
+<iframe style="width: 100%; height: 300px" frameborder="0" seamless="seamless" src="http://jsfiddle.net/4DKax/embedded/result,html,css/light/"></iframe>
+
+
+<hr />
+
+<p>That&rsquo;s it. If you are looking for other creative ways of using CSS3 transitions, transforms, and animations, you can check this <a href="http://css3.bradshawenterprises.com/transitions/" title="BradShaw Tutorials">tutorial</a>.</p>
+
+<p>Let&rsquo;s just keep practicing and get creative there is still more we can do with this. :)</p>
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        
+          <a class="pull-left" href="/blog/2014/06/09/plug-ins-used-in-myway-light/" title="Previous Post: Plug-ins used in MyWay Light">&laquo; Previous: Plug-ins used in MyWay Light</a>
+        
+
+        
+          <a class="pull-right" href="/blog/2015/05/01/wordpress-shortcodes/" title="Next Post: Wordpress Shortcodes">Next: Wordpress Shortcodes &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+  <a class="footer-text" href="/"><h4>Home</h4></a>
+</div>
+
+<div class="col-md-2">
+  <div class="social-icon-list">
+    
+
+    
+    <a href="https://github.com/PatzMatias"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a title="Google+" href="117521965885043360258"><img src="/images/glyphicons_social_02_google_plus.png"/></a>
+
+    
+    <a title="Facebook" href="https://facebook.com/patrick.matias"><img src="/images/glyphicons_social_30_facebook.png"/></a>
+
+    
+    <a href="mailto:patzmatias@gmail.com"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4 class="footer-text">Powered by <a href="http://octopress.org/">Octopress</a>
+</div>
+
+
+     	 <script src="/javascripts/main.js"></script>
+     	 <script src="/javascripts/github.js" type="text/javascript"> </script>
+      	 <script src="/javascripts/SmoothScroll.js"></script>
+         <script src="/javascripts/skrollr.min.js"></script>
+         <script type="text/javascript">
+          var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+          var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+          console.log(w);
+
+          if(w>640)
+  	    	  var s = skrollr.init({forceHeight: false});
+          
+
+		    </script>
+         <script type="text/javascript">
+          if (!window.jXHR){
+              var jxhr = document.createElement('script');
+              jxhr.type = 'text/javascript';
+              jxhr.src = '/javascripts/libs/jXHR.js';
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(jxhr, s);
+          }
+
+          github.showRepos({
+              user: 'PatzMatias',
+              count: 3,
+              skip_forks: true,
+              target: '#gh_repos'
+          });
+    </script>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
