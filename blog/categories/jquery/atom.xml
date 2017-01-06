@@ -4,7 +4,7 @@
   <title><![CDATA[Category: jQuery | Patrick A. Matias]]></title>
   <link href="http://PatzMatias.github.io/blog/categories/jquery/atom.xml" rel="self"/>
   <link href="http://PatzMatias.github.io/"/>
-  <updated>2016-05-30T17:49:08+08:00</updated>
+  <updated>2017-01-06T17:17:10+08:00</updated>
   <id>http://PatzMatias.github.io/</id>
   <author>
     <name><![CDATA[Patrick A. Matias]]></name>
@@ -26,7 +26,7 @@
 
 <p>This project thought me how important it is to refactor our codes. Codes should be simple and short as long as possible so it can be easily maintained and to minimize the use of resources (storage and memory).</p>
 
-<p>```js
+<p>```
 $(&lsquo;.contentWrap&rsquo;).click(function(){</p>
 
 <pre><code>var currentBox = $(this).parents($(".contentWrap"));
@@ -61,7 +61,8 @@ expand();
 
 <p>What I liked about jQuery was it is simpler to call an object through <strong>CSS</strong> selectors. In JavaScript you have to use <code>getElementById()</code> or <code>getElementByClass()</code> to call the object. jQuery only requires you to use <code>$('')</code> and write the id and the class name in between the quotation just like how you call it in the CSS stylesheet, like <code>$('#idname')</code> or <code>$('.classname')</code> for example. Using <code>.animate()</code> method is uncomplicated, this line <code>$('.idname').animate({"width":"400px"},"slow");</code> would animate the object slowly by swinging before it gets the 400px width. I learned jQuery through the <a href="http://api.jquery.com/" title="jQuery API Documentation">jQuery API Documentation</a> and there is still more to learn for me. Here is my code for the simple slider.</p>
 
-<p>```js jQuery Simple Image Slider
+<p>```
+// jQuery Simple Image Slider
 jQuery(document).ready(function($){
 var slideWidth = $(&lsquo;.banner&rsquo;).width();
 var contWidth = $(&lsquo;#slidecontent&rsquo;).width();

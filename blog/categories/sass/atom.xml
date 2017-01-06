@@ -4,7 +4,7 @@
   <title><![CDATA[Category: SASS | Patrick A. Matias]]></title>
   <link href="http://PatzMatias.github.io/blog/categories/sass/atom.xml" rel="self"/>
   <link href="http://PatzMatias.github.io/"/>
-  <updated>2016-05-30T17:49:08+08:00</updated>
+  <updated>2017-01-06T17:17:10+08:00</updated>
   <id>http://PatzMatias.github.io/</id>
   <author>
     <name><![CDATA[Patrick A. Matias]]></name>
@@ -30,7 +30,7 @@
 <p>SASS has two type of syntax for coding. The first version which is based on <strong>Haml</strong> is SASS, it doesn&rsquo;t use curly braces <code>{}</code> and semi-colon <code>;</code> and has a strict indentation syntax. The second version is the SCSS which syntax is a lot more similar to CSS, and this is the one I am using.</p>
 
 <p>Here is an example of a normal CSS stylesheet:
-<code>``SASS
+<code>``
 </code>Regular CSS stylesheet`</p>
 
 <p>@font-face {</p>
@@ -94,7 +94,7 @@ div h3{
 
 <p>And this is a SASS stylesheet (SCSS syntax format):</p>
 
-<p>```SASS</p>
+<p>```</p>
 
 <pre><code>`main.scss`
 
@@ -132,7 +132,7 @@ div{  //ENHANCED NESTING
 </code></pre>
 
 <p><code>
-</code>SASS</p>
+</code></p>
 
 <pre><code>`_typography.scss`//partials 
 

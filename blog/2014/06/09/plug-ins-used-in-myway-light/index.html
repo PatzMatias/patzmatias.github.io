@@ -186,7 +186,7 @@ in
 
 <p>Looking into MyWay Light Demo you&rsquo;ll notice how smooth it moves when you use the mousewheel to scroll up and down the website. This plug-in&rsquo;s event is binded into the mousewheel, it also supports the keyboard&rsquo;s arrow keys, navigation keys <code>PageUp</code> and <code>PageDown</code> and touchpad. What it does is it adds an animation and friction into the mouse scroll. SmoothScroll&rsquo;s settings is customizable, so you can set how smooth you would want it to scroll, in MyWay Light&rsquo;s case this is the settings.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -215,36 +215,35 @@ in
 <span class='line-number'>27</span>
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(function(){
+</span><span class='line'>  
+</span><span class='line'>// Scroll Variables (tweakable)
+</span><span class='line'>var defaultOptions = {
 </span><span class='line'>
-</span><span class='line'><span class="c1">// Scroll Variables (tweakable)</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">defaultOptions</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    // Scrolling Core
+</span><span class='line'>    frameRate        : 150, // [Hz]
+</span><span class='line'>    animationTime    : 700, // [px]
+</span><span class='line'>    stepSize         : 40, // [px]
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// Scrolling Core</span>
-</span><span class='line'>    <span class="nx">frameRate</span>        <span class="o">:</span> <span class="mi">150</span><span class="p">,</span> <span class="c1">// [Hz]</span>
-</span><span class='line'>    <span class="nx">animationTime</span>    <span class="o">:</span> <span class="mi">700</span><span class="p">,</span> <span class="c1">// [px]</span>
-</span><span class='line'>    <span class="nx">stepSize</span>         <span class="o">:</span> <span class="mi">40</span><span class="p">,</span> <span class="c1">// [px]</span>
+</span><span class='line'>    // Pulse (less tweakable)
+</span><span class='line'>    // ratio of "tail" to "acceleration"
+</span><span class='line'>    pulseAlgorithm   : true,
+</span><span class='line'>    pulseScale       : 8,
+</span><span class='line'>    pulseNormalize   : 1,
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// Pulse (less tweakable)</span>
-</span><span class='line'>    <span class="c1">// ratio of &quot;tail&quot; to &quot;acceleration&quot;</span>
-</span><span class='line'>    <span class="nx">pulseAlgorithm</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">pulseScale</span>       <span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">pulseNormalize</span>   <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    // Acceleration
+</span><span class='line'>    accelerationDelta : 20,  // 20
+</span><span class='line'>    accelerationMax   : 1,   // 1
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// Acceleration</span>
-</span><span class='line'>    <span class="nx">accelerationDelta</span> <span class="o">:</span> <span class="mi">20</span><span class="p">,</span>  <span class="c1">// 20</span>
-</span><span class='line'>    <span class="nx">accelerationMax</span>   <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>   <span class="c1">// 1</span>
+</span><span class='line'>    // Keyboard Settings
+</span><span class='line'>    keyboardSupport   : true,  // option
+</span><span class='line'>    arrowScroll       : 50,     // [px]
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// Keyboard Settings</span>
-</span><span class='line'>    <span class="nx">keyboardSupport</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>  <span class="c1">// option</span>
-</span><span class='line'>    <span class="nx">arrowScroll</span>       <span class="o">:</span> <span class="mi">50</span><span class="p">,</span>     <span class="c1">// [px]</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Other</span>
-</span><span class='line'>    <span class="nx">touchpadSupport</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">fixedBackground</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">excluded</span>          <span class="o">:</span> <span class="s2">&quot;&quot;</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>    // Other
+</span><span class='line'>    touchpadSupport   : true,
+</span><span class='line'>    fixedBackground   : true, 
+</span><span class='line'>    excluded          : ""    
+</span><span class='line'>};</span></code></pre></td></tr></table></div></figure>
 
 
 <hr />
@@ -291,7 +290,7 @@ in
 
 <p>Form is a plug-in that allows the user to upgrades HTML to use AJAX. It provides several methods to easily manage the form data and form submission. This plug-in was used in the theme to make the success and the failure notifications be thrown at the HTML page instead of a dialog box. Implementing the plug-in is easy, just bind the form through IDs or classes in the script.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -300,16 +299,15 @@ in
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="c1">// wait for the DOM to be loaded </span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// bind &#39;myForm&#39; and provide a simple callback function </span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#myForm&#39;</span><span class="p">).</span><span class="nx">ajaxForm</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Thank you for your comment!&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">});</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;script&gt; 
+</span><span class='line'>    // wait for the DOM to be loaded 
+</span><span class='line'>    $(document).ready(function() { 
+</span><span class='line'>        // bind 'myForm' and provide a simple callback function 
+</span><span class='line'>        $('#myForm').ajaxForm(function() { 
+</span><span class='line'>            alert("Thank you for your comment!"); 
+</span><span class='line'>        }); 
+</span><span class='line'>    }); 
+</span><span class='line'>&lt;/script&gt;</span></code></pre></td></tr></table></div></figure>
 
 
 <hr />

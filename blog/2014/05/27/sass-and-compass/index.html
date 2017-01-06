@@ -178,7 +178,7 @@ in
 
 <p>Here is an example of a normal CSS stylesheet:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -226,60 +226,59 @@ in
 <span class='line-number'>46</span>
 <span class='line-number'>47</span>
 <span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">Regular</span> <span class="nt">CSS</span> <span class="nt">stylesheet</span><span class="err">`</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>`Regular CSS stylesheet`
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro';
+</span><span class='line'>    src: url('/fonts/TisaPro.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Italic&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Ita.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro Italic';
+</span><span class='line'>    src: url('/fonts/TisaPro-Ita.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Bold&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Bold.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro Bold';
+</span><span class='line'>    src: url('/fonts/TisaPro-Bold.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'>  <span class="nt">div</span><span class="err">{</span>
-</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">-webkit-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
-</span><span class='line'>       <span class="na">-moz-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
-</span><span class='line'>          <span class="na">-o-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
-</span><span class='line'>              <span class="na">box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  div{
+</span><span class='line'>   color: #333;
+</span><span class='line'>   background-color: #fff;
+</span><span class='line'>   -webkit-box-shadow: 3px 3px 5px #000;
+</span><span class='line'>       -moz-box-shadow: 3px 3px 5px #000;
+</span><span class='line'>          -o-box-shadow: 3px 3px 5px #000;
+</span><span class='line'>              box-shadow: 3px 3px 5px #000;
+</span><span class='line'>  }
 </span><span class='line'>  
-</span><span class='line'>  <span class="nt">div</span><span class="nd">:hover</span><span class="err">{</span>
-</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  div:hover{
+</span><span class='line'>   color: #fff;
+</span><span class='line'>   background-color: #333;
+</span><span class='line'>  }
 </span><span class='line'>  
-</span><span class='line'>  <span class="nt">div</span> <span class="nt">p</span><span class="err">{</span>
-</span><span class='line'>   <span class="na">text-align</span><span class="o">:</span> <span class="no">justify</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  div p{
+</span><span class='line'>   text-align: justify;
+</span><span class='line'>   color: #fff;
+</span><span class='line'>   background-color: #333;
+</span><span class='line'>  }
 </span><span class='line'>  
-</span><span class='line'>  <span class="nt">div</span> <span class="nt">h3</span><span class="err">{</span>
-</span><span class='line'>   <span class="na">text-align</span><span class="o">:</span> <span class="no">center</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>  div h3{
+</span><span class='line'>   text-align: center;
+</span><span class='line'>   color: #fff;
+</span><span class='line'>   background-color: #333;
+</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
 
 
 <p>And this is a SASS stylesheet (SCSS syntax format):</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -312,43 +311,42 @@ in
 <span class='line-number'>31</span>
 <span class='line-number'>32</span>
 <span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">main</span><span class="nc">.scss</span><span class="err">`</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>`main.scss`
 </span><span class='line'>
-</span><span class='line'><span class="k">@import</span> <span class="s">&quot;typography&quot;;</span> <span class="s">//imports</span> <span class="s">declaration</span>
+</span><span class='line'>@import "typography"; //imports declaration
 </span><span class='line'>
-</span><span class='line'><span class="nv">$light</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span> <span class="c1">//VARIABLES</span>
-</span><span class='line'><span class="nv">$dark</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span> <span class="c1">//VARIABLES</span>
+</span><span class='line'>$light: #fff; //VARIABLES
+</span><span class='line'>$dark: #333; //VARIABLES
 </span><span class='line'>
-</span><span class='line'><span class="k">@mixin</span><span class="nf"> box-shadow</span><span class="p">(</span><span class="nv">$shadow</span><span class="p">)</span> <span class="err">{</span> <span class="c1">//mixins declaration</span>
-</span><span class='line'> <span class="na">-webkit-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">-moz-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
-</span><span class='line'>       <span class="na">-o-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
-</span><span class='line'>              <span class="na">box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@mixin box-shadow($shadow) { //mixins declaration
+</span><span class='line'> -webkit-box-shadow: $shadow;
+</span><span class='line'>   -moz-box-shadow: $shadow;
+</span><span class='line'>       -o-box-shadow: $shadow;
+</span><span class='line'>              box-shadow: $shadow;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="nt">div</span><span class="err">{</span>  <span class="o">//</span><span class="nt">ENHANCED</span> <span class="nt">NESTING</span>
-</span><span class='line'>    <span class="na">color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">background-color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span>
-</span><span class='line'>    <span class="k">@include</span><span class="nd"> box-shadow</span><span class="p">(</span><span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="nv">$dark</span><span class="p">)</span><span class="err">;</span> <span class="c1">//mixins implementation</span>
-</span><span class='line'>    <span class="k">&amp;</span><span class="nd">:hover</span><span class="err">{</span>
-</span><span class='line'>      <span class="na">color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span>
-</span><span class='line'>      <span class="na">background-color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span>
-</span><span class='line'>    <span class="err">}</span>
-</span><span class='line'>  <span class="nt">p</span><span class="err">{</span>
-</span><span class='line'>      <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span>
-</span><span class='line'>      <span class="na">text-align</span><span class="o">:</span> <span class="no">justify</span><span class="err">;</span>
-</span><span class='line'>      <span class="na">color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span> <span class="c1">//extended property</span>
-</span><span class='line'>      <span class="na">background-color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span> <span class="c1">//extended property</span>
-</span><span class='line'>  <span class="err">}</span>
-</span><span class='line'>  <span class="nt">h3</span><span class="err">{</span>
-</span><span class='line'>      <span class="k">@extend</span> <span class="nt">p</span><span class="o">;</span>          <span class="o">//@</span><span class="nt">extend</span> <span class="o">(</span><span class="nt">EXTENDED</span> <span class="nt">PROPERTY</span> <span class="nt">SHARING</span><span class="o">)</span>
-</span><span class='line'>        <span class="na">text-align</span><span class="o">:</span> <span class="no">center</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
-</span><span class='line'><span class="err">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>div{  //ENHANCED NESTING
+</span><span class='line'>    color: $dark;
+</span><span class='line'>    background-color: $light;
+</span><span class='line'>    @include box-shadow(3px 3px 5px $dark); //mixins implementation
+</span><span class='line'>    &:hover{                       
+</span><span class='line'>      color: $light;
+</span><span class='line'>      background-color: $dark;  
+</span><span class='line'>    }
+</span><span class='line'>  p{
+</span><span class='line'>      font-family: 'Tisa Pro'
+</span><span class='line'>      text-align: justify;
+</span><span class='line'>      color: $light; //extended property
+</span><span class='line'>      background-color: $dark; //extended property
+</span><span class='line'>  }
+</span><span class='line'>  h3{
+</span><span class='line'>      @extend p;          //@extend (EXTENDED PROPERTY SHARING)
+</span><span class='line'>        text-align: center;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -370,29 +368,28 @@ in
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">_typography</span><span class="nc">.scss</span><span class="err">`</span><span class="o">//</span><span class="nt">partials</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>`_typography.scss`//partials 
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro';
+</span><span class='line'>    src: url('/fonts/TisaPro.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Italic&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Ita.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro Italic';
+</span><span class='line'>    src: url('/fonts/TisaPro-Ita.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Bold&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Bold.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro Bold';
+</span><span class='line'>    src: url('/fonts/TisaPro-Bold.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
 <p><strong>Variables</strong></p>

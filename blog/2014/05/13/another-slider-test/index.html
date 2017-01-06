@@ -173,17 +173,16 @@ in
 
 <p>This project thought me how important it is to refactor our codes. Codes should be simple and short as long as possible so it can be easily maintained and to minimize the use of resources (storage and memory).</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.contentWrap&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">currentBox</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">parents</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.contentWrap&quot;</span><span class="p">));</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.itemBox&#39;</span><span class="p">).</span><span class="nx">not</span><span class="p">(</span><span class="nx">currentBox</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;display&quot;</span><span class="o">:</span><span class="s2">&quot;none&quot;</span><span class="p">});</span>
-</span><span class='line'>  <span class="nx">expand</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$('.contentWrap').click(function(){
+</span><span class='line'>  var currentBox = $(this).parents($(".contentWrap"));
+</span><span class='line'>  $('.itemBox').not(currentBox).css({"display":"none"});
+</span><span class='line'>  expand();
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
 
 
 <p>The code above is the refactored version of the first version of my code. I noticed while I&rsquo;m writing the code that the lines I&rsquo;m writing is already getting longer and its not normal anymore. If I didn&rsquo;t refactor I may have abused the <code>if-else</code> and class selectors just to arrive with the same function of the code above. Now I know that I should always think of a way to keep my codes short, clean, and simple.</p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Patrick A. Matias]]></title>
   <link href="http://PatzMatias.github.io/atom.xml" rel="self"/>
   <link href="http://PatzMatias.github.io/"/>
-  <updated>2016-05-30T17:49:08+08:00</updated>
+  <updated>2017-01-06T17:17:10+08:00</updated>
   <id>http://PatzMatias.github.io/</id>
   <author>
     <name><![CDATA[Patrick A. Matias]]></name>
@@ -445,85 +445,153 @@ echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
 
 <p>Since the remove button has been modified, we&rsquo;ll now move on to writing the javascript code for it. I wanted to follow the standard of WooCommerce on their coding so I just copied the <code>add_to_cart.js</code> and modified it to my needs. Everything under the <code>$post()</code> refreshes the information from the fragments received in the <code>response</code> data, so it won&rsquo;t just remove the cart item but also attach the new data to the UI.</p>
 
-<pre><code>jQuery( function( $ ) {
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>jQuery( function( $ ) {
+</span><span class='line'>        /* global jQuery, wc_add_to_cart_params */
+</span><span class='line'>        if ( typeof wc_add_to_cart_params === 'undefined' ) {
+</span><span class='line'>            return false;
+</span><span class='line'>        }
+</span><span class='line'>        // Ajax remove cart item
+</span><span class='line'>        $( document ).on( 'click', 'a.remove', function(e) { // Remove button selector
+</span><span class='line'>            e.preventDefault();
+</span><span class='line'>            // AJAX add to cart request
+</span><span class='line'>            var $thisbutton = $( this );
+</span><span class='line'>            if ( $thisbutton.is( '.remove' ) ) {
+</span><span class='line'>                //Check if the button has a product ID
+</span><span class='line'>                if ( ! $thisbutton.attr( 'data-product_id' ) ) { 
+</span><span class='line'>                    return true;
+</span><span class='line'>                }
+</span><span class='line'>                // Get Cart Key
+</span><span class='line'>                var key = $thisbutton.data('key');
+</span><span class='line'>                // Create Post Data
+</span><span class='line'>                var data = {cart_key: key};
+</span><span class='line'>               
+</span><span class='line'>                // Ajax action
+</span><span class='line'>                //passed`minicart_remove_item` endpoint and post dta
+</span><span class='line'>                $.post( 
+</span><span class='line'>                    wc_add_to_cart_params.wc_ajax_url.toString().replace( '%%endpoint%%', 'minicart_remove_item' ), 
+</span><span class='line'>                    data, 
+</span><span class='line'>                    function( response ) {
+</span><span class='line'>                    if ( ! response ) {
+</span><span class='line'>                        return;
+</span><span class='line'>                    }
+</span><span class='line'>                        var this_page = window.location.toString();
+</span><span class='line'>                        $thisbutton.removeClass( 'loading' );
+</span><span class='line'>                        var fragments = response.fragments;
+</span><span class='line'>                        var cart_hash = response.cart_hash;
+</span><span class='line'>                        // Block fragments class
+</span><span class='line'>                        if ( fragments ) {
+</span><span class='line'>                            $.each( fragments, function( key ) {
+</span><span class='line'>                                $( key ).addClass( 'updating' );
+</span><span class='line'>                            });
+</span><span class='line'>                        }
+</span><span class='line'>                        // Block widgets and fragments
+</span><span class='line'>                        $( '.shop_table.cart, .updating, .cart_totals' ).fadeTo( '400', '0.6' ).block({
+</span><span class='line'>                            message: null,
+</span><span class='line'>                            overlayCSS: {
+</span><span class='line'>                                opacity: 0.6
+</span><span class='line'>                            }
+</span><span class='line'>                        });
+</span><span class='line'>                        // Replace fragments
+</span><span class='line'>                        if ( fragments ) {
+</span><span class='line'>                            $.each( fragments, function( key, value ) {
+</span><span class='line'>                                $( key ).replaceWith( value );
+</span><span class='line'>                            });
+</span><span class='line'>                        }
+</span><span class='line'>                        // Unblock
+</span><span class='line'>                        $( '.widget_shopping_cart, .updating' ).stop( true ).css( 'opacity', '1' ).unblock();
+</span><span class='line'>                        // Cart page elements
+</span><span class='line'>                        $( '.shop_table.cart' ).load( this_page + ' .shop_table.cart:eq(0) &gt; *', function() {
+</span><span class='line'>                            $( '.shop_table.cart' ).stop( true ).css( 'opacity', '1' ).unblock();
+</span><span class='line'>                            $( document.body ).trigger( 'cart_page_refreshed' );
+</span><span class='line'>                        });
+</span><span class='line'>                        $( '.cart_totals' ).load( this_page + ' .cart_totals:eq(0) &gt; *', function() {
+</span><span class='line'>                            $( '.cart_totals' ).stop( true ).css( 'opacity', '1' ).unblock();
+</span><span class='line'>                        });
+</span><span class='line'>                        // Trigger event so themes can refresh other areas
+</span><span class='line'>                        $( document.body ).trigger( 'added_to_cart', [ fragments, cart_hash, $thisbutton ] );
+</span><span class='line'>                },
+</span><span class='line'>                'json');
+</span><span class='line'>                e.preventDefault();
+</span><span class='line'>                return false;
+</span><span class='line'>            }
+</span><span class='line'>            return false;
+</span><span class='line'>            // return true;
+</span><span class='line'>        });
+</span><span class='line'>    });</span></code></pre></td></tr></table></div></figure>
 
-    /* global jQuery, wc_add_to_cart_params */
-    if ( typeof wc_add_to_cart_params === 'undefined' ) {
-        return false;
-    }
-    // Ajax remove cart item
-    $( document ).on( 'click', 'a.remove', function(e) { // Remove button selector
-        e.preventDefault();
-        // AJAX add to cart request
-        var $thisbutton = $( this );
-        if ( $thisbutton.is( '.remove' ) ) {
-            //Check if the button has a product ID
-            if ( ! $thisbutton.attr( 'data-product_id' ) ) { 
-                return true;
-            }
-
-            // Get Cart Key
-            var key = $thisbutton.data('key');
-
-            // Create Post Data
-            var data = {cart_key: key};
-
-            // Ajax action
-            //passed`minicart_remove_item` endpoint and post dta
-            $.post( 
-                wc_add_to_cart_params.wc_ajax_url.toString().replace( '%%endpoint%%', 'minicart_remove_item' ), 
-                data, 
-                function( response ) {
-                if ( ! response ) {
-                    return;
-                }
-                    var this_page = window.location.toString();
-                    $thisbutton.removeClass( 'loading' );
-                    var fragments = response.fragments;
-                    var cart_hash = response.cart_hash;
-                    // Block fragments class
-                    if ( fragments ) {
-                        $.each( fragments, function( key ) {
-                            $( key ).addClass( 'updating' );
-                        });
-                    }
-                    // Block widgets and fragments
-                    $( '.shop_table.cart, .updating, .cart_totals' ).fadeTo( '400', '0.6' ).block({
-                        message: null,
-                        overlayCSS: {
-                            opacity: 0.6
-                        }
-                    });
-                    // Replace fragments
-                    if ( fragments ) {
-                        $.each( fragments, function( key, value ) {
-                            $( key ).replaceWith( value );
-                        });
-                    }
-                    // Unblock
-                    $( '.widget_shopping_cart, .updating' ).stop( true ).css( 'opacity', '1' ).unblock();
-                    // Cart page elements
-                    $( '.shop_table.cart' ).load( this_page + ' .shop_table.cart:eq(0) &gt; *', function() {
-                        $( '.shop_table.cart' ).stop( true ).css( 'opacity', '1' ).unblock();
-                        $( document.body ).trigger( 'cart_page_refreshed' );
-                    });
-                    $( '.cart_totals' ).load( this_page + ' .cart_totals:eq(0) &gt; *', function() {
-                        $( '.cart_totals' ).stop( true ).css( 'opacity', '1' ).unblock();
-                    });
-                    // Trigger event so themes can refresh other areas
-                    $( document.body ).trigger( 'added_to_cart', [ fragments, cart_hash, $thisbutton ] );
-            },
-            'json');
-            e.preventDefault();
-            return false;
-        }
-        return false;
-        // return true;
-    });
-});
-</code></pre>
-
-<hr />
 
 <p>Upon testing this modification, for me, the mini-cart behavior became better. You can also add a quantity input field there and modify the quantity of each cart item without refreshing the page.</p>
 
@@ -1199,7 +1267,7 @@ to{...} //properties in-between and to the end animation's duration
 
 <p>Looking into MyWay Light Demo you&rsquo;ll notice how smooth it moves when you use the mousewheel to scroll up and down the website. This plug-in&rsquo;s event is binded into the mousewheel, it also supports the keyboard&rsquo;s arrow keys, navigation keys <code>PageUp</code> and <code>PageDown</code> and touchpad. What it does is it adds an animation and friction into the mouse scroll. SmoothScroll&rsquo;s settings is customizable, so you can set how smooth you would want it to scroll, in MyWay Light&rsquo;s case this is the settings.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1228,36 +1296,35 @@ to{...} //properties in-between and to the end animation's duration
 <span class='line-number'>27</span>
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(function(){
+</span><span class='line'>  
+</span><span class='line'>// Scroll Variables (tweakable)
+</span><span class='line'>var defaultOptions = {
 </span><span class='line'>
-</span><span class='line'><span class="c1">// Scroll Variables (tweakable)</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">defaultOptions</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    // Scrolling Core
+</span><span class='line'>    frameRate        : 150, // [Hz]
+</span><span class='line'>    animationTime    : 700, // [px]
+</span><span class='line'>    stepSize         : 40, // [px]
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// Scrolling Core</span>
-</span><span class='line'>    <span class="nx">frameRate</span>        <span class="o">:</span> <span class="mi">150</span><span class="p">,</span> <span class="c1">// [Hz]</span>
-</span><span class='line'>    <span class="nx">animationTime</span>    <span class="o">:</span> <span class="mi">700</span><span class="p">,</span> <span class="c1">// [px]</span>
-</span><span class='line'>    <span class="nx">stepSize</span>         <span class="o">:</span> <span class="mi">40</span><span class="p">,</span> <span class="c1">// [px]</span>
+</span><span class='line'>    // Pulse (less tweakable)
+</span><span class='line'>    // ratio of "tail" to "acceleration"
+</span><span class='line'>    pulseAlgorithm   : true,
+</span><span class='line'>    pulseScale       : 8,
+</span><span class='line'>    pulseNormalize   : 1,
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// Pulse (less tweakable)</span>
-</span><span class='line'>    <span class="c1">// ratio of &quot;tail&quot; to &quot;acceleration&quot;</span>
-</span><span class='line'>    <span class="nx">pulseAlgorithm</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">pulseScale</span>       <span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">pulseNormalize</span>   <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    // Acceleration
+</span><span class='line'>    accelerationDelta : 20,  // 20
+</span><span class='line'>    accelerationMax   : 1,   // 1
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// Acceleration</span>
-</span><span class='line'>    <span class="nx">accelerationDelta</span> <span class="o">:</span> <span class="mi">20</span><span class="p">,</span>  <span class="c1">// 20</span>
-</span><span class='line'>    <span class="nx">accelerationMax</span>   <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>   <span class="c1">// 1</span>
+</span><span class='line'>    // Keyboard Settings
+</span><span class='line'>    keyboardSupport   : true,  // option
+</span><span class='line'>    arrowScroll       : 50,     // [px]
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// Keyboard Settings</span>
-</span><span class='line'>    <span class="nx">keyboardSupport</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>  <span class="c1">// option</span>
-</span><span class='line'>    <span class="nx">arrowScroll</span>       <span class="o">:</span> <span class="mi">50</span><span class="p">,</span>     <span class="c1">// [px]</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Other</span>
-</span><span class='line'>    <span class="nx">touchpadSupport</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">fixedBackground</span>   <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">excluded</span>          <span class="o">:</span> <span class="s2">&quot;&quot;</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>    // Other
+</span><span class='line'>    touchpadSupport   : true,
+</span><span class='line'>    fixedBackground   : true, 
+</span><span class='line'>    excluded          : ""    
+</span><span class='line'>};</span></code></pre></td></tr></table></div></figure>
 
 
 <hr />
@@ -1304,7 +1371,7 @@ to{...} //properties in-between and to the end animation's duration
 
 <p>Form is a plug-in that allows the user to upgrades HTML to use AJAX. It provides several methods to easily manage the form data and form submission. This plug-in was used in the theme to make the success and the failure notifications be thrown at the HTML page instead of a dialog box. Implementing the plug-in is easy, just bind the form through IDs or classes in the script.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1313,16 +1380,15 @@ to{...} //properties in-between and to the end animation's duration
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="c1">// wait for the DOM to be loaded </span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// bind &#39;myForm&#39; and provide a simple callback function </span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#myForm&#39;</span><span class="p">).</span><span class="nx">ajaxForm</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Thank you for your comment!&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">});</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;script&gt; 
+</span><span class='line'>    // wait for the DOM to be loaded 
+</span><span class='line'>    $(document).ready(function() { 
+</span><span class='line'>        // bind 'myForm' and provide a simple callback function 
+</span><span class='line'>        $('#myForm').ajaxForm(function() { 
+</span><span class='line'>            alert("Thank you for your comment!"); 
+</span><span class='line'>        }); 
+</span><span class='line'>    }); 
+</span><span class='line'>&lt;/script&gt;</span></code></pre></td></tr></table></div></figure>
 
 
 <hr />
@@ -1434,15 +1500,14 @@ to{...} //properties in-between and to the end animation's duration
 
 <p>After that code you should call the plug-in and use the id as selector, in this case the id is <code>carousel-example-generic</code>:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#carousel-example-generic&#39;</span><span class="p">).</span><span class="nx">carousel</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">interval</span><span class="o">:</span> <span class="mi">2000</span>
-</span><span class='line'>  <span class="nx">pause</span><span class="o">:</span> <span class="nx">hover</span>
-</span><span class='line'>  <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  $('#carousel-example-generic').carousel({
+</span><span class='line'>  interval: 2000
+</span><span class='line'>  pause: hover
+</span><span class='line'>  });</span></code></pre></td></tr></table></div></figure>
 
 
 <p>See it in this demo:</p>
@@ -1479,15 +1544,14 @@ to{...} //properties in-between and to the end animation's duration
 
 <p>Bootstrap&rsquo;s responsive image class can be used by adding the class prefix <code>img-responsive</code> to the <code>&lt;img&gt;</code> tag. These class adds the following properties to the object that makes it responsive.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">.</span><span class="nx">img</span><span class="o">-</span><span class="nx">responsive</span><span class="p">{</span>
-</span><span class='line'>    <span class="nx">max</span><span class="o">-</span><span class="nx">width</span><span class="o">:</span> <span class="mi">100</span><span class="o">%</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">height</span><span class="o">:</span> <span class="nx">auto</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>.img-responsive{
+</span><span class='line'>    max-width: 100%;
+</span><span class='line'>    height: auto;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
 
@@ -1527,7 +1591,7 @@ Next, I&rsquo;ll be writing about the plug-ins I used in my previous project and
 
 <p>Here is an example of a normal CSS stylesheet:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1575,60 +1639,59 @@ Next, I&rsquo;ll be writing about the plug-ins I used in my previous project and
 <span class='line-number'>46</span>
 <span class='line-number'>47</span>
 <span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">Regular</span> <span class="nt">CSS</span> <span class="nt">stylesheet</span><span class="err">`</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>`Regular CSS stylesheet`
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro';
+</span><span class='line'>    src: url('/fonts/TisaPro.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Italic&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Ita.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro Italic';
+</span><span class='line'>    src: url('/fonts/TisaPro-Ita.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Bold&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Bold.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro Bold';
+</span><span class='line'>    src: url('/fonts/TisaPro-Bold.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'>  <span class="nt">div</span><span class="err">{</span>
-</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">-webkit-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
-</span><span class='line'>       <span class="na">-moz-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
-</span><span class='line'>          <span class="na">-o-box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
-</span><span class='line'>              <span class="na">box-shadow</span><span class="o">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mh">#000</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  div{
+</span><span class='line'>   color: #333;
+</span><span class='line'>   background-color: #fff;
+</span><span class='line'>   -webkit-box-shadow: 3px 3px 5px #000;
+</span><span class='line'>       -moz-box-shadow: 3px 3px 5px #000;
+</span><span class='line'>          -o-box-shadow: 3px 3px 5px #000;
+</span><span class='line'>              box-shadow: 3px 3px 5px #000;
+</span><span class='line'>  }
 </span><span class='line'>  
-</span><span class='line'>  <span class="nt">div</span><span class="nd">:hover</span><span class="err">{</span>
-</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  div:hover{
+</span><span class='line'>   color: #fff;
+</span><span class='line'>   background-color: #333;
+</span><span class='line'>  }
 </span><span class='line'>  
-</span><span class='line'>  <span class="nt">div</span> <span class="nt">p</span><span class="err">{</span>
-</span><span class='line'>   <span class="na">text-align</span><span class="o">:</span> <span class="no">justify</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'>  div p{
+</span><span class='line'>   text-align: justify;
+</span><span class='line'>   color: #fff;
+</span><span class='line'>   background-color: #333;
+</span><span class='line'>  }
 </span><span class='line'>  
-</span><span class='line'>  <span class="nt">div</span> <span class="nt">h3</span><span class="err">{</span>
-</span><span class='line'>   <span class="na">text-align</span><span class="o">:</span> <span class="no">center</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">color</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">background-color</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>  div h3{
+</span><span class='line'>   text-align: center;
+</span><span class='line'>   color: #fff;
+</span><span class='line'>   background-color: #333;
+</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
 
 
 <p>And this is a SASS stylesheet (SCSS syntax format):</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1661,43 +1724,42 @@ Next, I&rsquo;ll be writing about the plug-ins I used in my previous project and
 <span class='line-number'>31</span>
 <span class='line-number'>32</span>
 <span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">main</span><span class="nc">.scss</span><span class="err">`</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>`main.scss`
 </span><span class='line'>
-</span><span class='line'><span class="k">@import</span> <span class="s">&quot;typography&quot;;</span> <span class="s">//imports</span> <span class="s">declaration</span>
+</span><span class='line'>@import "typography"; //imports declaration
 </span><span class='line'>
-</span><span class='line'><span class="nv">$light</span><span class="o">:</span> <span class="mh">#fff</span><span class="err">;</span> <span class="c1">//VARIABLES</span>
-</span><span class='line'><span class="nv">$dark</span><span class="o">:</span> <span class="mh">#333</span><span class="err">;</span> <span class="c1">//VARIABLES</span>
+</span><span class='line'>$light: #fff; //VARIABLES
+</span><span class='line'>$dark: #333; //VARIABLES
 </span><span class='line'>
-</span><span class='line'><span class="k">@mixin</span><span class="nf"> box-shadow</span><span class="p">(</span><span class="nv">$shadow</span><span class="p">)</span> <span class="err">{</span> <span class="c1">//mixins declaration</span>
-</span><span class='line'> <span class="na">-webkit-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
-</span><span class='line'>   <span class="na">-moz-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
-</span><span class='line'>       <span class="na">-o-box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
-</span><span class='line'>              <span class="na">box-shadow</span><span class="o">:</span> <span class="nv">$shadow</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@mixin box-shadow($shadow) { //mixins declaration
+</span><span class='line'> -webkit-box-shadow: $shadow;
+</span><span class='line'>   -moz-box-shadow: $shadow;
+</span><span class='line'>       -o-box-shadow: $shadow;
+</span><span class='line'>              box-shadow: $shadow;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="nt">div</span><span class="err">{</span>  <span class="o">//</span><span class="nt">ENHANCED</span> <span class="nt">NESTING</span>
-</span><span class='line'>    <span class="na">color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">background-color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span>
-</span><span class='line'>    <span class="k">@include</span><span class="nd"> box-shadow</span><span class="p">(</span><span class="mi">3</span><span class="kt">px</span> <span class="mi">3</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="nv">$dark</span><span class="p">)</span><span class="err">;</span> <span class="c1">//mixins implementation</span>
-</span><span class='line'>    <span class="k">&amp;</span><span class="nd">:hover</span><span class="err">{</span>
-</span><span class='line'>      <span class="na">color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span>
-</span><span class='line'>      <span class="na">background-color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span>
-</span><span class='line'>    <span class="err">}</span>
-</span><span class='line'>  <span class="nt">p</span><span class="err">{</span>
-</span><span class='line'>      <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span>
-</span><span class='line'>      <span class="na">text-align</span><span class="o">:</span> <span class="no">justify</span><span class="err">;</span>
-</span><span class='line'>      <span class="na">color</span><span class="o">:</span> <span class="nv">$light</span><span class="err">;</span> <span class="c1">//extended property</span>
-</span><span class='line'>      <span class="na">background-color</span><span class="o">:</span> <span class="nv">$dark</span><span class="err">;</span> <span class="c1">//extended property</span>
-</span><span class='line'>  <span class="err">}</span>
-</span><span class='line'>  <span class="nt">h3</span><span class="err">{</span>
-</span><span class='line'>      <span class="k">@extend</span> <span class="nt">p</span><span class="o">;</span>          <span class="o">//@</span><span class="nt">extend</span> <span class="o">(</span><span class="nt">EXTENDED</span> <span class="nt">PROPERTY</span> <span class="nt">SHARING</span><span class="o">)</span>
-</span><span class='line'>        <span class="na">text-align</span><span class="o">:</span> <span class="no">center</span><span class="err">;</span>
-</span><span class='line'>  <span class="err">}</span>
-</span><span class='line'><span class="err">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>div{  //ENHANCED NESTING
+</span><span class='line'>    color: $dark;
+</span><span class='line'>    background-color: $light;
+</span><span class='line'>    @include box-shadow(3px 3px 5px $dark); //mixins implementation
+</span><span class='line'>    &:hover{                       
+</span><span class='line'>      color: $light;
+</span><span class='line'>      background-color: $dark;  
+</span><span class='line'>    }
+</span><span class='line'>  p{
+</span><span class='line'>      font-family: 'Tisa Pro'
+</span><span class='line'>      text-align: justify;
+</span><span class='line'>      color: $light; //extended property
+</span><span class='line'>      background-color: $dark; //extended property
+</span><span class='line'>  }
+</span><span class='line'>  h3{
+</span><span class='line'>      @extend p;          //@extend (EXTENDED PROPERTY SHARING)
+</span><span class='line'>        text-align: center;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1719,29 +1781,28 @@ Next, I&rsquo;ll be writing about the plug-ins I used in my previous project and
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='SASS'><span class='line'><span class="err">`</span><span class="nt">_typography</span><span class="nc">.scss</span><span class="err">`</span><span class="o">//</span><span class="nt">partials</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>`_typography.scss`//partials 
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro';
+</span><span class='line'>    src: url('/fonts/TisaPro.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Italic&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Ita.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro Italic';
+</span><span class='line'>    src: url('/fonts/TisaPro-Ita.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'><span class="k">@font-face</span> <span class="err">{</span>
-</span><span class='line'>    <span class="na">font-family</span><span class="o">:</span> <span class="s1">&#39;</span><span class="s2">Tisa Pro Bold&#39;</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">src</span><span class="o">:</span> <span class="sx">url(&#39;/fonts/TisaPro-Bold.otf&#39;)</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-weight</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'>    <span class="na">font-style</span><span class="o">:</span> <span class="no">normal</span><span class="err">;</span>
-</span><span class='line'><span class="err">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>@font-face {
+</span><span class='line'>    font-family: 'Tisa Pro Bold';
+</span><span class='line'>    src: url('/fonts/TisaPro-Bold.otf');
+</span><span class='line'>    font-weight: normal;
+</span><span class='line'>    font-style: normal;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
 <p><strong>Variables</strong></p>
@@ -1819,17 +1880,16 @@ compass validate //Compass is also capable of validating the CSS style sheets
 
 <p>This project thought me how important it is to refactor our codes. Codes should be simple and short as long as possible so it can be easily maintained and to minimize the use of resources (storage and memory).</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.contentWrap&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">currentBox</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">parents</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.contentWrap&quot;</span><span class="p">));</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.itemBox&#39;</span><span class="p">).</span><span class="nx">not</span><span class="p">(</span><span class="nx">currentBox</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;display&quot;</span><span class="o">:</span><span class="s2">&quot;none&quot;</span><span class="p">});</span>
-</span><span class='line'>  <span class="nx">expand</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$('.contentWrap').click(function(){
+</span><span class='line'>  var currentBox = $(this).parents($(".contentWrap"));
+</span><span class='line'>  $('.itemBox').not(currentBox).css({"display":"none"});
+</span><span class='line'>  expand();
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
 
 
 <p>The code above is the refactored version of the first version of my code. I noticed while I&rsquo;m writing the code that the lines I&rsquo;m writing is already getting longer and its not normal anymore. If I didn&rsquo;t refactor I may have abused the <code>if-else</code> and class selectors just to arrive with the same function of the code above. Now I know that I should always think of a way to keep my codes short, clean, and simple.</p>
@@ -1856,7 +1916,7 @@ compass validate //Compass is also capable of validating the CSS style sheets
 
 <p>What I liked about jQuery was it is simpler to call an object through <strong>CSS</strong> selectors. In JavaScript you have to use <code>getElementById()</code> or <code>getElementByClass()</code> to call the object. jQuery only requires you to use <code>$('')</code> and write the id and the class name in between the quotation just like how you call it in the CSS stylesheet, like <code>$('#idname')</code> or <code>$('.classname')</code> for example. Using <code>.animate()</code> method is uncomplicated, this line <code>$('.idname').animate({"width":"400px"},"slow");</code> would animate the object slowly by swinging before it gets the 400px width. I learned jQuery through the <a href="http://api.jquery.com/" title="jQuery API Documentation">jQuery API Documentation</a> and there is still more to learn for me. Here is my code for the simple slider.</p>
 
-<figure class='code'><figcaption><span>jQuery Simple Image Slider</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1966,117 +2026,118 @@ compass validate //Compass is also capable of validating the CSS style sheets
 <span class='line-number'>108</span>
 <span class='line-number'>109</span>
 <span class='line-number'>110</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">jQuery</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">){</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">slideWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.banner&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">contWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">clicks</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class='line-number'>111</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// jQuery Simple Image Slider
+</span><span class='line'>jQuery(document).ready(function($){
+</span><span class='line'>var slideWidth = $('.banner').width();
+</span><span class='line'>var contWidth = $('#slidecontent').width();
+</span><span class='line'>var counter=1;
+</span><span class='line'>var clicks=1;
 </span><span class='line'>
-</span><span class='line'><span class="nx">startSlider</span><span class="p">();</span> <span class="c1">//starts the animation of the slider</span>
+</span><span class='line'>startSlider(); //starts the animation of the slider
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">// start move images to left and right</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#prev&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="p">();</span>      <span class="p">});</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#next&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="p">();</span> <span class="p">});</span>
+</span><span class='line'>  // start move images to left and right
+</span><span class='line'>  $('#prev').click(function(){left();     });
+</span><span class='line'>  $('#next').click(function(){right();    });
 </span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">left</span><span class="p">(){</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">){</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;+=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="nx">pre</span><span class="p">());</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
-</span><span class='line'>      <span class="nx">counter</span><span class="o">--</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span><span class="p">{</span>
-</span><span class='line'>      <span class="nx">counter</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>
-</span><span class='line'>      <span class="nx">left</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  function left(){
+</span><span class='line'>      if(counter&gt;0){
+</span><span class='line'>      $('#slidecontent').animate({"margin-left":"+=693px"},700, pre());
+</span><span class='line'>      $('#slidecount p').text(counter+" / 3");
+</span><span class='line'>      counter--;
+</span><span class='line'>      }
+</span><span class='line'>      else{
+</span><span class='line'>      counter=3;
+</span><span class='line'>      left();
+</span><span class='line'>      }
+</span><span class='line'>  }
 </span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">right</span><span class="p">(){</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">){</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="nx">app</span><span class="p">());</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
-</span><span class='line'>      <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span><span class="p">{</span>
-</span><span class='line'>      <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>      <span class="nx">right</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="c1">// end move images to left and right</span>
+</span><span class='line'>  function right(){
+</span><span class='line'>      if(counter&lt;=3){
+</span><span class='line'>      $('#slidecontent').animate({"margin-left":"-=693px"},700, app());
+</span><span class='line'>      $('#slidecount p').text(counter+" / 3");
+</span><span class='line'>      counter++;
+</span><span class='line'>      }
+</span><span class='line'>      else{
+</span><span class='line'>      counter=1;
+</span><span class='line'>      right();
+</span><span class='line'>      }
+</span><span class='line'>  }
+</span><span class='line'>  // end move images to left and right
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//prepend last child of ul before the first child </span>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">pre</span><span class="p">(){</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:last-child&#39;</span><span class="p">).</span><span class="nx">prependTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:first&#39;</span><span class="p">));</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-693px&quot;</span><span class="p">});</span>
-</span><span class='line'>       <span class="p">}</span>
+</span><span class='line'>  //prepend last child of ul before the first child 
+</span><span class='line'>  function pre(){
+</span><span class='line'>          $('.slides ul &gt; li:last-child').prependTo($('.slides ul:first'));
+</span><span class='line'>          $('#slidecontent').css({"margin-left":"-693px"});
+</span><span class='line'>       }
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//append first child of ul after the last child</span>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">app</span><span class="p">(){</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
-</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  //append first child of ul after the last child
+</span><span class='line'>  function app(){
+</span><span class='line'>          $('.slides ul &gt; li:first').appendTo($('.slides ul:last'));
+</span><span class='line'>          $('#slidecontent').css({"margin-left":"0px"});
+</span><span class='line'>  }
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//start:code for automatic slide</span>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">startSlider</span><span class="p">(){</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/pause.png&#39;)&quot;</span><span class="p">});</span>
-</span><span class='line'>      <span class="nx">loop</span><span class="o">=</span><span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  //start:code for automatic slide
+</span><span class='line'>  function startSlider(){
+</span><span class='line'>      $('#plause').css({"background-image":"url('resources/pause.png')"});
+</span><span class='line'>      loop=setInterval(function(){ 
 </span><span class='line'>
-</span><span class='line'>          <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">){</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
-</span><span class='line'>              <span class="p">});</span>
-</span><span class='line'>              <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>          <span class="k">else</span><span class="p">{</span>
-</span><span class='line'>              <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
-</span><span class='line'>              <span class="p">});</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>      <span class="p">},</span> <span class="mi">3000</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="c1">//end:code for automatic slide</span>
+</span><span class='line'>          if(counter&lt;3){
+</span><span class='line'>              $('#slidecontent').animate({"margin-left":"-=693px"},700, function(){
+</span><span class='line'>              $('.slides ul &gt; li:first').appendTo($('.slides ul:last'));
+</span><span class='line'>              $('#slidecontent').css({"margin-left":"0px"});
+</span><span class='line'>              $('#slidecount p').text(counter+" / 3");
+</span><span class='line'>              });
+</span><span class='line'>              counter++;
+</span><span class='line'>          }
+</span><span class='line'>          else{
+</span><span class='line'>              counter=1;
+</span><span class='line'>              $('#slidecontent').animate({"margin-left":"-=693px"},700, function(){
+</span><span class='line'>              $('.slides ul &gt; li:first').appendTo($('.slides ul:last'));
+</span><span class='line'>              $('#slidecontent').css({"margin-left":"0px"});
+</span><span class='line'>              $('#slidecount p').text(counter+" / 3");
+</span><span class='line'>              });
+</span><span class='line'>          }
+</span><span class='line'>      }, 3000);
+</span><span class='line'>  }
+</span><span class='line'>  //end:code for automatic slide
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//start: stops the animation of the slider</span>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">stopSlider</span><span class="p">(){</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/play.png&#39;)&quot;</span><span class="p">});</span>
-</span><span class='line'>      <span class="nx">clicks</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>      <span class="nb">window</span><span class="p">.</span><span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">loop</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="c1">//end: stops the animation of the slider</span>
+</span><span class='line'>  //start: stops the animation of the slider
+</span><span class='line'>  function stopSlider(){
+</span><span class='line'>      $('#plause').css({"background-image":"url('resources/play.png')"});
+</span><span class='line'>      clicks=2;
+</span><span class='line'>      window.clearTimeout(loop);
+</span><span class='line'>  }
+</span><span class='line'>  //end: stops the animation of the slider
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//start: play/pause function</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">clicks</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/play.png&#39;)&quot;</span><span class="p">});</span>
-</span><span class='line'>          <span class="nx">clicks</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">clicks</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/pause.png&#39;)&quot;</span><span class="p">});</span>
-</span><span class='line'>          <span class="nx">clicks</span><span class="o">--</span><span class="p">;</span>
-</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
-</span><span class='line'>          <span class="nx">startSlider</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>  <span class="c1">//end: play/pause function</span>
+</span><span class='line'>  //start: play/pause function
+</span><span class='line'>  $('#plause').click(function(){
+</span><span class='line'>      if(clicks==1){
+</span><span class='line'>          $('#plause').css({"background-image":"url('resources/play.png')"});
+</span><span class='line'>          clicks++;
+</span><span class='line'>          stopSlider();
+</span><span class='line'>      }
+</span><span class='line'>      else if(clicks==2){
+</span><span class='line'>          $('#plause').css({"background-image":"url('resources/pause.png')"});
+</span><span class='line'>          clicks--;
+</span><span class='line'>          stopSlider();
+</span><span class='line'>          startSlider();
+</span><span class='line'>      }
+</span><span class='line'>  });
+</span><span class='line'>  //end: play/pause function
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//start: hover function</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slidenav&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
-</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">},</span>
-</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
-</span><span class='line'>          <span class="nx">startSlider</span><span class="p">();</span>   
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">);</span>
-</span><span class='line'>  <span class="c1">//stop: hover function</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>  //start: hover function
+</span><span class='line'>  $('.slidenav').hover(
+</span><span class='line'>      function(){
+</span><span class='line'>          stopSlider();
+</span><span class='line'>      },
+</span><span class='line'>      function(){
+</span><span class='line'>          stopSlider();
+</span><span class='line'>          startSlider();  
+</span><span class='line'>      }
+</span><span class='line'>  );
+</span><span class='line'>  //stop: hover function
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
 
 
 <p>I was really happy when I finished this exercise. Now I can make my own customized sliders without depending on third-party plugins. To end this post here is a screenshot of my output.</p>

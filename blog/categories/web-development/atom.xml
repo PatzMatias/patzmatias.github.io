@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Web Development | Patrick A. Matias]]></title>
   <link href="http://PatzMatias.github.io/blog/categories/web-development/atom.xml" rel="self"/>
   <link href="http://PatzMatias.github.io/"/>
-  <updated>2016-05-30T17:49:08+08:00</updated>
+  <updated>2017-01-06T17:17:10+08:00</updated>
   <id>http://PatzMatias.github.io/</id>
   <author>
     <name><![CDATA[Patrick A. Matias]]></name>
@@ -181,7 +181,7 @@ function shortcode_function( $atts, $content,$tag ) {
 
 <p>Looking into MyWay Light Demo you&rsquo;ll notice how smooth it moves when you use the mousewheel to scroll up and down the website. This plug-in&rsquo;s event is binded into the mousewheel, it also supports the keyboard&rsquo;s arrow keys, navigation keys <code>PageUp</code> and <code>PageDown</code> and touchpad. What it does is it adds an animation and friction into the mouse scroll. SmoothScroll&rsquo;s settings is customizable, so you can set how smooth you would want it to scroll, in MyWay Light&rsquo;s case this is the settings.</p>
 
-<p>```javascript
+<p>```
 (function(){</p>
 
 <p>// Scroll Variables (tweakable)
@@ -257,7 +257,7 @@ excluded          : ""
 
 <p>Form is a plug-in that allows the user to upgrades HTML to use AJAX. It provides several methods to easily manage the form data and form submission. This plug-in was used in the theme to make the success and the failure notifications be thrown at the HTML page instead of a dialog box. Implementing the plug-in is easy, just bind the form through IDs or classes in the script.</p>
 
-<p>```js</p>
+<p>```</p>
 
 <script> 
     // wait for the DOM to be loaded 
@@ -379,7 +379,7 @@ excluded          : ""
 
 <p>After that code you should call the plug-in and use the id as selector, in this case the id is <code>carousel-example-generic</code>:</p>
 
-<p><code>js
+<p><code>
   $('#carousel-example-generic').carousel({
   interval: 2000
   pause: hover
@@ -458,7 +458,7 @@ Next, I&rsquo;ll be writing about the plug-ins I used in my previous project and
 <p>SASS has two type of syntax for coding. The first version which is based on <strong>Haml</strong> is SASS, it doesn&rsquo;t use curly braces <code>{}</code> and semi-colon <code>;</code> and has a strict indentation syntax. The second version is the SCSS which syntax is a lot more similar to CSS, and this is the one I am using.</p>
 
 <p>Here is an example of a normal CSS stylesheet:
-<code>``SASS
+<code>``
 </code>Regular CSS stylesheet`</p>
 
 <p>@font-face {</p>
@@ -522,7 +522,7 @@ div h3{
 
 <p>And this is a SASS stylesheet (SCSS syntax format):</p>
 
-<p>```SASS</p>
+<p>```</p>
 
 <pre><code>`main.scss`
 
@@ -560,7 +560,7 @@ div{  //ENHANCED NESTING
 </code></pre>
 
 <p><code>
-</code>SASS</p>
+</code></p>
 
 <pre><code>`_typography.scss`//partials 
 
@@ -663,7 +663,7 @@ compass validate //Compass is also capable of validating the CSS style sheets
 
 <p>This project thought me how important it is to refactor our codes. Codes should be simple and short as long as possible so it can be easily maintained and to minimize the use of resources (storage and memory).</p>
 
-<p>```js
+<p>```
 $(&lsquo;.contentWrap&rsquo;).click(function(){</p>
 
 <pre><code>var currentBox = $(this).parents($(".contentWrap"));

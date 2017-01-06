@@ -1,4 +1,4 @@
-/* line 17, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 17, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -19,38 +19,38 @@ time, mark, audio, video {
   font-size: 100%;
   vertical-align: baseline; }
 
-/* line 22, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1; }
 
-/* line 24, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none; }
 
-/* line 26, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-/* line 28, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle; }
 
-/* line 30, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none; }
-  /* line 103, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+  /* line 103, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
   q:before, q:after, blockquote:before, blockquote:after {
     content: "";
     content: none; }
 
-/* line 32, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 32, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none; }
 
-/* line 116, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 116, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block; }
 
@@ -66,7 +66,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
     text-align: right;
     font-size: 13px;
     line-height: 1.45em;
-    background: #073642 url('/images/noise.png?1464601640') top left !important;
+    background: #073642 url('/images/noise.png?1483693591') top left !important;
     border-right: 1px solid #00232c !important;
     -webkit-box-shadow: #083e4b -1px 0 inset;
     -moz-box-shadow: #083e4b -1px 0 inset;
@@ -112,13 +112,13 @@ html .gist .gist-file {
     border: 1px solid #083e4b !important;
     color: #586e75;
     font-size: .7em !important;
-    background: #073642 url('/images/noise.png?1464601640') top left;
+    background: #073642 url('/images/noise.png?1483693591') top left;
     line-height: 1.5em; }
     /* line 76, ../../sass/base/_syntax.scss */
     html .gist .gist-file .gist-meta a {
       color: #75878b !important;
       text-decoration: none; }
-      /* line 4, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/typography/links/_hover-link.scss */
+      /* line 4, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/typography/links/_hover-link.scss */
       html .gist .gist-file .gist-meta a:hover {
         text-decoration: underline; }
       /* line 79, ../../sass/base/_syntax.scss */
@@ -140,7 +140,7 @@ html .gist .gist-file {
 
 /* line 93, ../../sass/base/_syntax.scss */
 pre {
-  background: #002b36 url('/images/noise.png?1464601640') top left;
+  background: #002b36 url('/images/noise.png?1483693591') top left;
   -webkit-border-radius: 0.4em;
   -moz-border-radius: 0.4em;
   -ms-border-radius: 0.4em;
@@ -194,7 +194,7 @@ p pre code, li pre code {
   padding: .8em !important;
   overflow-x: auto;
   line-height: 1.45em;
-  background: #002b36 url('/images/noise.png?1464601640') top left !important;
+  background: #002b36 url('/images/noise.png?1483693591') top left !important;
   color: #93a1a1 !important;
   /* Comment */
   /* Comment.Multiline */
@@ -501,7 +501,7 @@ figure.code {
   -webkit-border-top-right-radius: 5px;
   border-top-right-radius: 5px;
   font-family: "Helvetica Neue", Arial, "Lucida Grande", "Lucida Sans Unicode", Lucida, sans-serif;
-  background: #aaaaaa url('/images/code_bg.png?1464601640') top repeat-x;
+  background: #aaaaaa url('/images/code_bg.png?1483693591') top repeat-x;
   border: 1px solid #565656;
   border-top-color: #cbcbcb;
   border-left-color: #a5a5a5;
@@ -518,7 +518,7 @@ figure.code {
   font-size: 13px;
   text-shadow: #cbcccc 0 1px 0;
   padding-left: 3em; }
-  /* line 4, ../../../../.rvm/gems/ruby-2.2.1/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/typography/links/_hover-link.scss */
+  /* line 4, C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/typography/links/_hover-link.scss */
   .download-source:hover, html .gist .gist-file .gist-meta a[href*=raw]:hover, figure.code figcaption a:hover {
     text-decoration: underline; }
 

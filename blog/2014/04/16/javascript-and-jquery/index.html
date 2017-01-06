@@ -180,7 +180,7 @@ in
 
 <p>What I liked about jQuery was it is simpler to call an object through <strong>CSS</strong> selectors. In JavaScript you have to use <code>getElementById()</code> or <code>getElementByClass()</code> to call the object. jQuery only requires you to use <code>$('')</code> and write the id and the class name in between the quotation just like how you call it in the CSS stylesheet, like <code>$('#idname')</code> or <code>$('.classname')</code> for example. Using <code>.animate()</code> method is uncomplicated, this line <code>$('.idname').animate({"width":"400px"},"slow");</code> would animate the object slowly by swinging before it gets the 400px width. I learned jQuery through the <a href="http://api.jquery.com/" title="jQuery API Documentation">jQuery API Documentation</a> and there is still more to learn for me. Here is my code for the simple slider.</p>
 
-<figure class='code'><figcaption><span>jQuery Simple Image Slider</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -290,117 +290,118 @@ in
 <span class='line-number'>108</span>
 <span class='line-number'>109</span>
 <span class='line-number'>110</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">jQuery</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">){</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">slideWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.banner&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">contWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">clicks</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class='line-number'>111</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// jQuery Simple Image Slider
+</span><span class='line'>jQuery(document).ready(function($){
+</span><span class='line'>var slideWidth = $('.banner').width();
+</span><span class='line'>var contWidth = $('#slidecontent').width();
+</span><span class='line'>var counter=1;
+</span><span class='line'>var clicks=1;
 </span><span class='line'>
-</span><span class='line'><span class="nx">startSlider</span><span class="p">();</span> <span class="c1">//starts the animation of the slider</span>
+</span><span class='line'>startSlider(); //starts the animation of the slider
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">// start move images to left and right</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#prev&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">left</span><span class="p">();</span>      <span class="p">});</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#next&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">right</span><span class="p">();</span> <span class="p">});</span>
+</span><span class='line'>  // start move images to left and right
+</span><span class='line'>  $('#prev').click(function(){left();     });
+</span><span class='line'>  $('#next').click(function(){right();    });
 </span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">left</span><span class="p">(){</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">){</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;+=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="nx">pre</span><span class="p">());</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
-</span><span class='line'>      <span class="nx">counter</span><span class="o">--</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span><span class="p">{</span>
-</span><span class='line'>      <span class="nx">counter</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>
-</span><span class='line'>      <span class="nx">left</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  function left(){
+</span><span class='line'>      if(counter&gt;0){
+</span><span class='line'>      $('#slidecontent').animate({"margin-left":"+=693px"},700, pre());
+</span><span class='line'>      $('#slidecount p').text(counter+" / 3");
+</span><span class='line'>      counter--;
+</span><span class='line'>      }
+</span><span class='line'>      else{
+</span><span class='line'>      counter=3;
+</span><span class='line'>      left();
+</span><span class='line'>      }
+</span><span class='line'>  }
 </span><span class='line'>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">right</span><span class="p">(){</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">){</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="nx">app</span><span class="p">());</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
-</span><span class='line'>      <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span><span class="p">{</span>
-</span><span class='line'>      <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>      <span class="nx">right</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="c1">// end move images to left and right</span>
+</span><span class='line'>  function right(){
+</span><span class='line'>      if(counter&lt;=3){
+</span><span class='line'>      $('#slidecontent').animate({"margin-left":"-=693px"},700, app());
+</span><span class='line'>      $('#slidecount p').text(counter+" / 3");
+</span><span class='line'>      counter++;
+</span><span class='line'>      }
+</span><span class='line'>      else{
+</span><span class='line'>      counter=1;
+</span><span class='line'>      right();
+</span><span class='line'>      }
+</span><span class='line'>  }
+</span><span class='line'>  // end move images to left and right
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//prepend last child of ul before the first child </span>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">pre</span><span class="p">(){</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:last-child&#39;</span><span class="p">).</span><span class="nx">prependTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:first&#39;</span><span class="p">));</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-693px&quot;</span><span class="p">});</span>
-</span><span class='line'>       <span class="p">}</span>
+</span><span class='line'>  //prepend last child of ul before the first child 
+</span><span class='line'>  function pre(){
+</span><span class='line'>          $('.slides ul &gt; li:last-child').prependTo($('.slides ul:first'));
+</span><span class='line'>          $('#slidecontent').css({"margin-left":"-693px"});
+</span><span class='line'>       }
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//append first child of ul after the last child</span>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">app</span><span class="p">(){</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
-</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  //append first child of ul after the last child
+</span><span class='line'>  function app(){
+</span><span class='line'>          $('.slides ul &gt; li:first').appendTo($('.slides ul:last'));
+</span><span class='line'>          $('#slidecontent').css({"margin-left":"0px"});
+</span><span class='line'>  }
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//start:code for automatic slide</span>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">startSlider</span><span class="p">(){</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/pause.png&#39;)&quot;</span><span class="p">});</span>
-</span><span class='line'>      <span class="nx">loop</span><span class="o">=</span><span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  //start:code for automatic slide
+</span><span class='line'>  function startSlider(){
+</span><span class='line'>      $('#plause').css({"background-image":"url('resources/pause.png')"});
+</span><span class='line'>      loop=setInterval(function(){ 
 </span><span class='line'>
-</span><span class='line'>          <span class="k">if</span><span class="p">(</span><span class="nx">counter</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">){</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
-</span><span class='line'>              <span class="p">});</span>
-</span><span class='line'>              <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>          <span class="k">else</span><span class="p">{</span>
-</span><span class='line'>              <span class="nx">counter</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">animate</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;-=693px&quot;</span><span class="p">},</span><span class="mi">700</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul &gt; li:first&#39;</span><span class="p">).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slides ul:last&#39;</span><span class="p">));</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecontent&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;margin-left&quot;</span><span class="o">:</span><span class="s2">&quot;0px&quot;</span><span class="p">});</span>
-</span><span class='line'>              <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#slidecount p&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="o">+</span><span class="s2">&quot; / 3&quot;</span><span class="p">);</span>
-</span><span class='line'>              <span class="p">});</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>      <span class="p">},</span> <span class="mi">3000</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="c1">//end:code for automatic slide</span>
+</span><span class='line'>          if(counter&lt;3){
+</span><span class='line'>              $('#slidecontent').animate({"margin-left":"-=693px"},700, function(){
+</span><span class='line'>              $('.slides ul &gt; li:first').appendTo($('.slides ul:last'));
+</span><span class='line'>              $('#slidecontent').css({"margin-left":"0px"});
+</span><span class='line'>              $('#slidecount p').text(counter+" / 3");
+</span><span class='line'>              });
+</span><span class='line'>              counter++;
+</span><span class='line'>          }
+</span><span class='line'>          else{
+</span><span class='line'>              counter=1;
+</span><span class='line'>              $('#slidecontent').animate({"margin-left":"-=693px"},700, function(){
+</span><span class='line'>              $('.slides ul &gt; li:first').appendTo($('.slides ul:last'));
+</span><span class='line'>              $('#slidecontent').css({"margin-left":"0px"});
+</span><span class='line'>              $('#slidecount p').text(counter+" / 3");
+</span><span class='line'>              });
+</span><span class='line'>          }
+</span><span class='line'>      }, 3000);
+</span><span class='line'>  }
+</span><span class='line'>  //end:code for automatic slide
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//start: stops the animation of the slider</span>
-</span><span class='line'>  <span class="kd">function</span> <span class="nx">stopSlider</span><span class="p">(){</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/play.png&#39;)&quot;</span><span class="p">});</span>
-</span><span class='line'>      <span class="nx">clicks</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>      <span class="nb">window</span><span class="p">.</span><span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">loop</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="c1">//end: stops the animation of the slider</span>
+</span><span class='line'>  //start: stops the animation of the slider
+</span><span class='line'>  function stopSlider(){
+</span><span class='line'>      $('#plause').css({"background-image":"url('resources/play.png')"});
+</span><span class='line'>      clicks=2;
+</span><span class='line'>      window.clearTimeout(loop);
+</span><span class='line'>  }
+</span><span class='line'>  //end: stops the animation of the slider
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//start: play/pause function</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">clicks</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/play.png&#39;)&quot;</span><span class="p">});</span>
-</span><span class='line'>          <span class="nx">clicks</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">clicks</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#plause&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span><span class="s2">&quot;background-image&quot;</span><span class="o">:</span><span class="s2">&quot;url(&#39;resources/pause.png&#39;)&quot;</span><span class="p">});</span>
-</span><span class='line'>          <span class="nx">clicks</span><span class="o">--</span><span class="p">;</span>
-</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
-</span><span class='line'>          <span class="nx">startSlider</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>  <span class="c1">//end: play/pause function</span>
+</span><span class='line'>  //start: play/pause function
+</span><span class='line'>  $('#plause').click(function(){
+</span><span class='line'>      if(clicks==1){
+</span><span class='line'>          $('#plause').css({"background-image":"url('resources/play.png')"});
+</span><span class='line'>          clicks++;
+</span><span class='line'>          stopSlider();
+</span><span class='line'>      }
+</span><span class='line'>      else if(clicks==2){
+</span><span class='line'>          $('#plause').css({"background-image":"url('resources/pause.png')"});
+</span><span class='line'>          clicks--;
+</span><span class='line'>          stopSlider();
+</span><span class='line'>          startSlider();
+</span><span class='line'>      }
+</span><span class='line'>  });
+</span><span class='line'>  //end: play/pause function
 </span><span class='line'>
-</span><span class='line'>  <span class="c1">//start: hover function</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slidenav&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
-</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">},</span>
-</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>          <span class="nx">stopSlider</span><span class="p">();</span>
-</span><span class='line'>          <span class="nx">startSlider</span><span class="p">();</span>   
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">);</span>
-</span><span class='line'>  <span class="c1">//stop: hover function</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>  //start: hover function
+</span><span class='line'>  $('.slidenav').hover(
+</span><span class='line'>      function(){
+</span><span class='line'>          stopSlider();
+</span><span class='line'>      },
+</span><span class='line'>      function(){
+</span><span class='line'>          stopSlider();
+</span><span class='line'>          startSlider();  
+</span><span class='line'>      }
+</span><span class='line'>  );
+</span><span class='line'>  //stop: hover function
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
 
 
 <p>I was really happy when I finished this exercise. Now I can make my own customized sliders without depending on third-party plugins. To end this post here is a screenshot of my output.</p>
