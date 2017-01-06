@@ -324,8 +324,9 @@ These are lines 45-53. I had to tweak this a bit to make it work with the behavi
 Since the remove button has been modified, we'll now move on to writing the javascript code for it. I wanted to follow the standard of WooCommerce on their coding so I just copied the `add_to_cart.js` and modified it to my needs. Everything under the `$post()` refreshes the information from the fragments received in the `response` data, so it won't just remove the cart item but also attach the new data to the UI.
 
 
-    jQuery( function( $ ) {
 
+```    
+jQuery( function( $ ) {
         /* global jQuery, wc_add_to_cart_params */
         if ( typeof wc_add_to_cart_params === 'undefined' ) {
             return false;
@@ -340,10 +341,8 @@ Since the remove button has been modified, we'll now move on to writing the java
                 if ( ! $thisbutton.attr( 'data-product_id' ) ) { 
                     return true;
                 }
-
                 // Get Cart Key
                 var key = $thisbutton.data('key');
-
                 // Create Post Data
                 var data = {cart_key: key};
                
@@ -400,9 +399,7 @@ Since the remove button has been modified, we'll now move on to writing the java
             // return true;
         });
     });
-
----
-
+```
 Upon testing this modification, for me, the mini-cart behavior became better. You can also add a quantity input field there and modify the quantity of each cart item without refreshing the page.
 
 So that's it for now. I'll do another post about `fragments` in my next post. Thanks!

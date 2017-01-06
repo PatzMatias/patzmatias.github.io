@@ -16,7 +16,7 @@ It is amazing to know how creative we can get in web development. My second proj
 This project thought me how important it is to refactor our codes. Codes should be simple and short as long as possible so it can be easily maintained and to minimize the use of resources (storage and memory).
 
 
-```js
+```
 $('.contentWrap').click(function(){
 	var currentBox = $(this).parents($(".contentWrap"));
 	$('.itemBox').not(currentBox).css({"display":"none"});

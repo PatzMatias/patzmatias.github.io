@@ -19,7 +19,8 @@ Given the circumstances, I decided to move on to **jQuery**. jQuery is a plugin 
 
 What I liked about jQuery was it is simpler to call an object through **CSS** selectors. In JavaScript you have to use `getElementById()` or `getElementByClass()` to call the object. jQuery only requires you to use `$('')` and write the id and the class name in between the quotation just like how you call it in the CSS stylesheet, like `$('#idname')` or `$('.classname')` for example. Using `.animate()` method is uncomplicated, this line `$('.idname').animate({"width":"400px"},"slow");` would animate the object slowly by swinging before it gets the 400px width. I learned jQuery through the [jQuery API Documentation](http://api.jquery.com/ "jQuery API Documentation") and there is still more to learn for me. Here is my code for the simple slider.
 
-```js jQuery Simple Image Slider
+``` 
+// jQuery Simple Image Slider
 jQuery(document).ready(function($){
 var slideWidth = $('.banner').width();
 var contWidth = $('#slidecontent').width();

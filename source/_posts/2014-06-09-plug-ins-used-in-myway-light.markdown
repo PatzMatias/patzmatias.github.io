@@ -24,7 +24,7 @@ ___
 
 Looking into MyWay Light Demo you'll notice how smooth it moves when you use the mousewheel to scroll up and down the website. This plug-in's event is binded into the mousewheel, it also supports the keyboard's arrow keys, navigation keys `PageUp` and `PageDown` and touchpad. What it does is it adds an animation and friction into the mouse scroll. SmoothScroll's settings is customizable, so you can set how smooth you would want it to scroll, in MyWay Light's case this is the settings.
 
-```javascript
+```
 (function(){
   
 // Scroll Variables (tweakable)
@@ -91,7 +91,7 @@ ___
 
 Form is a plug-in that allows the user to upgrades HTML to use AJAX. It provides several methods to easily manage the form data and form submission. This plug-in was used in the theme to make the success and the failure notifications be thrown at the HTML page instead of a dialog box. Implementing the plug-in is easy, just bind the form through IDs or classes in the script.
 
-```js
+```
 <script> 
     // wait for the DOM to be loaded 
     $(document).ready(function() { 

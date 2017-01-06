@@ -88,7 +88,7 @@ Bootstrap's built-in carousel allows user to easily add a carousel without writi
 
 After that code you should call the plug-in and use the id as selector, in this case the id is `carousel-example-generic`:
 
-```js
+```
   $('#carousel-example-generic').carousel({
   interval: 2000
   pause: hover

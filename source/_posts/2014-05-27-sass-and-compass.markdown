@@ -19,7 +19,7 @@ SASS has two type of syntax for coding. The first version which is based on **Ha
 
 
 Here is an example of a normal CSS stylesheet:
-```SASS
+```
 `Regular CSS stylesheet`
 
 @font-face {
@@ -73,7 +73,7 @@ Here is an example of a normal CSS stylesheet:
 
 And this is a SASS stylesheet (SCSS syntax format):
 
-```SASS
+```
     `main.scss`
     
     @import "typography"; //imports declaration
@@ -108,7 +108,7 @@ And this is a SASS stylesheet (SCSS syntax format):
     	}
 	}
 ```
-```SASS
+```
     `_typography.scss`//partials 
 
     @font-face {
